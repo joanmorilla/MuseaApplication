@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,81 +18,93 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:text="Propers"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
 
         <ScrollView
             android:layout_width="wrap_content"
-            android:scrollbars="none"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
             <HorizontalScrollView
                 android:layout_width="wrap_content"
-                android:scrollbars="none"
-                android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:scrollbars="none">
 
-                <Button
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="1" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="2" />
+                    <Button
+                        android:id="@+id/button1"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="1" />
 
-                <Button
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="3" />
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="2" />
 
-                <Button
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="4" />
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="3" />
 
-                <Button
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="5" />
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="4" />
 
-                <Button
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="6" />
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="5" />
 
-                <Button
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="7" />
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="6" />
 
-                <Button
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="8" />
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="7" />
 
-                <Button
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="9" />
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="8" />
 
-            </LinearLayout>
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="9" />
+
+                </LinearLayout>
             </HorizontalScrollView>
         </ScrollView>
 
@@ -102,33 +115,38 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:textSize="20sp"
             android:text="Pais"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
         <ScrollView
             android:id="@+id/scroll_pais"
             android:layout_width="wrap_content"
-            android:scrollbars="none"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
             <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scrollbars="none">
+
                 <LinearLayout
                     android:id="@+id/layout_pais"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-                    <Button
-                        android:layout_width="200dp"
-                        android:layout_height="150dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="1" />
 
                 </LinearLayout>
             </HorizontalScrollView>

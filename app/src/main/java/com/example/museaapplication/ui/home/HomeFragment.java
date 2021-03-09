@@ -2,6 +2,7 @@ package com.example.museaapplication.ui.home;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +42,12 @@ public class HomeFragment extends Fragment {
             param.setMargins(pixToDp(10), 0, 0, 0);
             b.setLayoutParams(param);
             b.setBackground(getResources().getDrawable(R.drawable.mnac_default));
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getContext(), "Museum Clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
             scrollPais.addView(b);
         }
         return root;
