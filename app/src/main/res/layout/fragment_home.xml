@@ -110,6 +110,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
+            android:id="@+id/scroll_pais"
             android:layout_width="wrap_content"
             android:scrollbars="none"
             android:layout_height="wrap_content">
@@ -118,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="none">
                 <LinearLayout
+                    android:id="@+id/layout_pais"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -127,54 +129,6 @@
                         android:layout_height="150dp"
                         android:layout_marginLeft="10dp"
                         android:text="1" />
-
-                    <Button
-                        android:layout_width="200dp"
-                        android:layout_height="150dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="2" />
-
-                    <Button
-                        android:layout_width="200dp"
-                        android:layout_height="150dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="3" />
-
-                    <Button
-                        android:layout_width="200dp"
-                        android:layout_height="150dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="4" />
-
-                    <Button
-                        android:layout_width="200dp"
-                        android:layout_height="150dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="5" />
-
-                    <Button
-                        android:layout_width="200dp"
-                        android:layout_height="150dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="6" />
-
-                    <Button
-                        android:layout_width="200dp"
-                        android:layout_height="150dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="7" />
-
-                    <Button
-                        android:layout_width="200dp"
-                        android:layout_height="150dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="8" />
-
-                    <Button
-                        android:layout_width="200dp"
-                        android:layout_height="150dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="9" />
 
                 </LinearLayout>
             </HorizontalScrollView>
