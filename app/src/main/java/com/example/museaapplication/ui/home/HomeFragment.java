@@ -30,6 +30,9 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private Drawable image;
+    private boolean interactable = true;
+    int j = 0;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -47,20 +50,52 @@ public class HomeFragment extends Fragment {
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(pixToDp(200), pixToDp(150));
             param.setMargins(pixToDp(10), 0, 0, 0);
             b.setLayoutParams(param);
-            b.setBackground(getResources().getDrawable(R.drawable.mnac_default));
+
             image = b.getBackground();
-            b.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Toast.makeText(getContext(), "Museum Clicked", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(getContext(), MuseuActivity.class);
-                    SingletonDataHolder.getInstance().setCodedImage(imageToString(R.drawable.mnac_default));
-                    startActivity(i);
-                }
-            });
+            if (i % 2 == 0) {
+                b.setBackground(getResources().getDrawable(R.drawable.mnac_default));
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Toast.makeText(getContext(), "Museum Clicked", Toast.LENGTH_SHORT).show();
+                        if (interactable) {
+                            Intent i = new Intent(getContext(), MuseuActivity.class);
+                                SingletonDataHolder.getInstance().setCodedImage(imageToString(R.drawable.mnac_default));
+                                i.putExtra("Name", "Mnac");
+                            startActivity(i);
+                            interactable = false;
+                        }
+                    }
+                });
+            }else{
+                b.setBackground(getResources().getDrawable(R.drawable.louvre_default));
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Toast.makeText(getContext(), "Museum Clicked", Toast.LENGTH_SHORT).show();
+                        if (interactable) {
+                            Intent i = new Intent(getContext(), MuseuActivity.class);
+                            SingletonDataHolder.getInstance().setCodedImage(imageToString(R.drawable.louvre_default));
+                            i.putExtra("Name", "Louvre");
+                            startActivity(i);
+                            interactable = false;
+                        }
+                    }
+                });
+            }
             scrollPais.addView(b);
         }
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        interactable = true;
+    }
+
+    protected void onRestart() {
+
     }
 
     int pixToDp(int value){

@@ -25,7 +25,7 @@ public class MuseuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_museu);
-        setTitle("MNAC");
+        setTitle(getIntent().getExtras().getString("Name"));
         // Setting the action bar buttons
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
