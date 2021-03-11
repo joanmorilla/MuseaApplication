@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.PropersFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginLeft="10dp"
+                android:text="1" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginLeft="10dp"
+                android:text="2" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginLeft="10dp"
+                android:text="3" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginLeft="10dp"
+                android:text="4" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginLeft="10dp"
+                android:text="5" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginLeft="10dp"
+                android:text="6" />
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:layout_marginLeft="10dp"
+                android:text="7" />
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:layout_marginLeft="10dp"
+                android:text="8" />
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:layout_marginLeft="10dp"
+                android:text="9" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
