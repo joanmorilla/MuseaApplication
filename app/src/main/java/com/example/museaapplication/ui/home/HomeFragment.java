@@ -25,6 +25,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.museaapplication.Classes.Dominio.Museo;
+import com.example.museaapplication.Classes.Dominio.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.MuseuActivity;
@@ -33,6 +34,7 @@ import com.example.museaapplication.R;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.List;
 
 import retrofit2.Call;
@@ -42,14 +44,16 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    private Drawable image;
     private boolean interactable = true;
-    int j = 0;
+    View root;
+
+    String[] strings;
+    Museo[] museus;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        root = inflater.inflate(R.layout.fragment_home, container, false);
         final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -57,59 +61,8 @@ public class HomeFragment extends Fragment {
                 textView.setText(s);
             }
         });
+        getMuseums();
 
-        // Request
-        Button button = root.findViewById(R.id.button2);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getMuseums();
-            }
-        });
-
-
-
-        LinearLayout scrollPais = root.findViewById(R.id.layout_pais);
-        for(int i = 0; i < 10; i++){
-            Button b = new Button(scrollPais.getContext());
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(pixToDp(200), pixToDp(150));
-            param.setMargins(pixToDp(10), 0, 0, 0);
-            b.setLayoutParams(param);
-
-            image = b.getBackground();
-            if (i % 2 == 0) {
-                b.setBackground(getResources().getDrawable(R.drawable.mnac_default));
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Toast.makeText(getContext(), "Museum Clicked", Toast.LENGTH_SHORT).show();
-                        if (interactable) {
-                            Intent i = new Intent(getContext(), MuseuActivity.class);
-                                SingletonDataHolder.getInstance().setCodedImage(imageToString(R.drawable.mnac_default));
-                                i.putExtra("Name", "Mnac");
-                            startActivity(i);
-                            interactable = false;
-                        }
-                    }
-                });
-            }else{
-                b.setBackground(getResources().getDrawable(R.drawable.louvre_default));
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Toast.makeText(getContext(), "Museum Clicked", Toast.LENGTH_SHORT).show();
-                        if (interactable) {
-                            Intent i = new Intent(getContext(), MuseuActivity.class);
-                            SingletonDataHolder.getInstance().setCodedImage(imageToString(R.drawable.louvre_default));
-                            i.putExtra("Name", "Louvre");
-                            startActivity(i);
-                            interactable = false;
-                        }
-                    }
-                });
-            }
-            scrollPais.addView(b);
-        }
         return root;
     }
 
@@ -140,25 +93,59 @@ public class HomeFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     void getMuseums(){
-        Call<List<Museo>> call = RetrofitClient.getInstance().getMyApi().getMuseums();
-        call.enqueue(new Callback<List<Museo>>() {
+        Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseums("Louvre");
+        call.enqueue(new Callback<MuseoValue>() {
             @Override
-            public void onResponse(Call<List<Museo>> call, Response<List<Museo>> response) {
-                List<Museo> mymuseumList = response.body();
-                String[] oneMuseum = new String[mymuseumList.size()];
-
-                for (int i = 0; i < mymuseumList.size(); i++) {
-                    oneMuseum[i] = mymuseumList.get(i).getName();
+            public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
+                MuseoValue mymuseumList = response.body();
+                Museo[] museums = mymuseumList.getMuseums();
+                strings = new String[museums.length];
+                museus = new Museo[museums.length];
+                for (int i = 0; i < museums.length; i++){
+                    strings[i] = museums[i].getName();
+                    museus[i] = museums[i];
+                    Log.d("museos",museums[i].getName());
                 }
-                Toast.makeText(getContext(), oneMuseum[0], Toast.LENGTH_SHORT).show();
-
+                GenerarBotones();
+                Toast.makeText(getContext(), strings[1], Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<List<Museo>> call, Throwable t) {
-                Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show();
-                Log.d("Causa","" + t.getCause());
+            public void onFailure(Call<MuseoValue> call, Throwable t) {
+                //Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show();
+                Log.e("TAG1", t.getLocalizedMessage());
+                Log.e("TAG2", t.getMessage());
+                t.printStackTrace();
+                getMuseums();
             }
         });
+    }
+    void GenerarBotones() {
+        LinearLayout scrollPais = root.findViewById(R.id.layout_pais);
+        for(int i = strings.length - 1; i >= 0; i--){
+            Button b = new Button(scrollPais.getContext());
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(pixToDp(200), pixToDp(150));
+            param.setMargins(pixToDp(10), 0, 0, 0);
+            b.setLayoutParams(param);
+            b.setBackground(getResources().getDrawable(R.drawable.mnac_default));
+            b.setOnClickListener(clickFunc(i));
+            scrollPais.addView(b);
+        }
+    }
+    View.OnClickListener clickFunc(int index) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (interactable) {
+                    Intent i = new Intent(getContext(), MuseuActivity.class);
+                    SingletonDataHolder.getInstance().setCodedImage(imageToString(R.drawable.mnac_default));
+                    i.putExtra("Name", strings[index]);
+                    Bundle bundle = new Bundle();
+                    i.putExtra("Museu", (Serializable)museus[index]);
+                    startActivity(i);
+                    interactable = false;
+                }
+            }
+        };
     }
 }

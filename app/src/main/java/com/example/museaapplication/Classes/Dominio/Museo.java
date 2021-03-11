@@ -1,19 +1,23 @@
 package com.example.museaapplication.Classes.Dominio;
 
-import java.util.ArrayList;
+import com.example.museaapplication.Classes.Json.Descriptions;
 
-public class Museo {
-    private float[] location;
+import java.io.Serializable;
+
+public class Museo implements Serializable {
+
+    private Location[] location;
     private String[] exhibitions;
     private String _id;
     private String name;
     private String address;
     private String city;
     private String country;
+    private Descriptions descriptions;
 
 
     public Museo(String n, String address, String c, String count) {
-        location = new float[2];
+        location = new Location[2];
         exhibitions = new String[1];
         city = c;
         country = count;
@@ -46,11 +50,11 @@ public class Museo {
         this.name = name;
     }
 
-    public float[] getLocation() {
+    public Location[] getLocation() {
         return location;
     }
 
-    public void setLocation(float[] location) {
+    public void setLocation(Location[] location) {
         this.location = location;
     }
 
@@ -68,5 +72,13 @@ public class Museo {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Descriptions getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(Descriptions descriptions) {
+        this.descriptions = descriptions;
     }
 }
