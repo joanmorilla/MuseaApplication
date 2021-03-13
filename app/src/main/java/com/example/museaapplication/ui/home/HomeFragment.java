@@ -1,5 +1,6 @@
 package com.example.museaapplication.ui.home;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +25,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.museaapplication.Classes.APIRequests;
+import com.example.museaapplication.Classes.Delegate;
 import com.example.museaapplication.Classes.Json.Museo;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
@@ -38,16 +41,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    private boolean interactable = true;
+    boolean interactable = true;
     View root;
 
-    String[] strings;
     Museo[] museus;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -58,7 +60,15 @@ public class HomeFragment extends Fragment {
                 textView.setText(s);
             }
         });
-        getMuseums();
+
+        // Ejecucion asincrona, obetenemos museos y generamos botones
+        APIRequests.getInstance().getAllMuseums(new Delegate() {
+            @Override
+            public void Execute() {
+                GenerarBotones();
+            }
+        });
+
         setHasOptionsMenu(true);
         return root;
     }
@@ -97,10 +107,8 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
                 MuseoValue mymuseumList = response.body();
                 Museo[] museums = mymuseumList.getMuseums();
-                strings = new String[museums.length];
                 museus = new Museo[museums.length];
                 for (int i = 0; i < museums.length; i++){
-                    strings[i] = museums[i].getName();
                     museus[i] = museums[i];
                     Log.d("museos",museums[i].getName());
                 }
@@ -120,7 +128,8 @@ public class HomeFragment extends Fragment {
     }
     void GenerarBotones() {
         LinearLayout scrollPais = root.findViewById(R.id.layout_pais);
-        for(int i = strings.length - 1; i >= 0; i--){
+        Museo[] museums = SingletonDataHolder.getInstance().getMuseums();
+        for(int i = museums.length - 1; i >= 0; i--){
             Button b = new Button(scrollPais.getContext());
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(pixToDp(200), pixToDp(150));
             param.setMargins(pixToDp(10), 0, 0, 0);
@@ -137,9 +146,8 @@ public class HomeFragment extends Fragment {
                 if (interactable) {
                     Intent i = new Intent(getContext(), MuseuActivity.class);
                     SingletonDataHolder.getInstance().setCodedImage(imageToString(R.drawable.mnac_default));
-                    i.putExtra("Name", strings[index]);
                     Bundle bundle = new Bundle();
-                    i.putExtra("Museu", (Serializable)museus[index]);
+                    i.putExtra("Museu", (Serializable) SingletonDataHolder.getInstance().getMuseums()[index]);
                     startActivity(i);
                     interactable = false;
                 }
