@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_default">
+
+
+    <ImageView
+        android:id="@+id/image_holder"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="@dimen/vertical_bias_l" />
+
+    <EditText
+        android:inputType="textEmailAddress"
+        android:id="@+id/enter_username"
+        android:layout_width="@dimen/enter_text_width"
+        android:layout_height="@dimen/enter_text_height"
+        android:text="@string/enter_username"
+        android:background="@drawable/rounded_corner"
+        android:paddingHorizontal="10dp"
+
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_holder"
+        app:layout_constraintVertical_bias="@dimen/vertical_bias_m" />
+
+    <EditText
+        android:inputType="textPassword"
+        android:id="@+id/enter_password"
+        android:layout_width="@dimen/enter_text_width"
+        android:layout_height="@dimen/enter_text_height"
+        android:text="@string/enter_password"
+        android:background="@drawable/rounded_corner"
+        android:paddingHorizontal="10dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enter_username"
+        app:layout_constraintVertical_bias="@dimen/vertical_bias_s" />
+
+    <CheckBox
+        android:id="@+id/checkbox_remember_me"
+        android:layout_width="@dimen/checkbox_width"
+        android:layout_height="@dimen/checkbox_height"
+        android:text= "@string/checkbox_remember_me"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enter_password"
+        app:layout_constraintVertical_bias="@dimen/vertical_bias_s" />
+
+    <Button
+
+        android:id="@+id/button_login"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        android:text="@string/button_login"
+
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_remember_me"
+        app:layout_constraintVertical_bias="@dimen/vertical_bias_xl"/>
+
+    <TextView
+        android:id="@+id/text_signup"
+        android:layout_width="@dimen/text_width"
+        android:layout_height="@dimen/text_height"
+        android:textSize="@dimen/text_size_xs"
+        android:text="@string/signup_suggestion"
+        android:textAlignment="center"
+        android:gravity="center"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_login"
+        app:layout_constraintVertical_bias="@dimen/vertical_bias_4xl"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

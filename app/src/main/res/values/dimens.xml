@@ -2,4 +2,28 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="enter_text_width">250dp</dimen>
+    <dimen name="enter_text_height">42dp</dimen>
+
+    <dimen name="checkbox_width">250dp</dimen>
+    <dimen name="checkbox_height">24dp</dimen>
+
+    <dimen name="button_width">200dp</dimen>
+    <dimen name="button_height">42dp</dimen>
+    <dimen name="button_text_size">15dp</dimen>
+
+    <dimen name="vertical_bias_s">0.047</dimen>
+    <dimen name="vertical_bias_m">0.097</dimen>
+    <dimen name="vertical_bias_l">0.2</dimen>
+    <dimen name="vertical_bias_xl">0.4</dimen>
+    <dimen name="vertical_bias_4xl">0.9</dimen>
+
+
+    <dimen name="text_width">250dp</dimen>
+    <dimen name="text_height">24dp</dimen>
+    <dimen name="text_size_xs">12dp</dimen>
+    <dimen name="text_size_s">24dp</dimen>
+    <dimen name="text_size_m">36dp</dimen>
+    <dimen name="text_size_l">42dp</dimen>
 </resources>
