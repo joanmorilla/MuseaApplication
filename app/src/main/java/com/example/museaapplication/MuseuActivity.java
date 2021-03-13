@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.Menu;
@@ -29,7 +30,10 @@ public class MuseuActivity extends AppCompatActivity {
         setTitle(getIntent().getExtras().getString("Name"));
         // Setting the action bar buttons
         ActionBar actionBar = getSupportActionBar();
+        //actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setElevation(10);
+
 
         // Set the image we get from previous activity
         String image = SingletonDataHolder.getInstance().getCodedImage();

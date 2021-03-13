@@ -17,7 +17,7 @@
         android:title="@string/title_notifications" />
     <item android:id="@+id/navigation_user"
         android:title="@string/title_user"
-        android:icon="@drawable/filled_heart"
+        android:icon="@drawable/ic_action_user"
 
         />
 

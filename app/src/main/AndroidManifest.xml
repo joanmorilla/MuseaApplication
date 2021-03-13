@@ -9,9 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MuseaApplication">
-        <activity android:name=".MuseuActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".MuseuActivity"
+            android:theme="@style/Theme.Museum"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"

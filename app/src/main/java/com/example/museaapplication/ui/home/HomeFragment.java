@@ -3,19 +3,19 @@ package com.example.museaapplication.ui.home;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,11 +31,8 @@ import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.MuseuActivity;
 import com.example.museaapplication.R;
 
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,8 +59,14 @@ public class HomeFragment extends Fragment {
             }
         });
         getMuseums();
-
+        setHasOptionsMenu(true);
         return root;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.home_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -71,13 +74,8 @@ public class HomeFragment extends Fragment {
         super.onResume();
         interactable = true;
     }
-
-    protected void onRestart() {
-
-    }
-
     int pixToDp(int value){
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics()));
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, root.getResources().getDisplayMetrics()));
     }
     String imageToString(int id){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -107,7 +105,7 @@ public class HomeFragment extends Fragment {
                     Log.d("museos",museums[i].getName());
                 }
                 GenerarBotones();
-                Toast.makeText(getContext(), strings[1], Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), strings[1], Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -127,7 +125,7 @@ public class HomeFragment extends Fragment {
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(pixToDp(200), pixToDp(150));
             param.setMargins(pixToDp(10), 0, 0, 0);
             b.setLayoutParams(param);
-            b.setBackground(getResources().getDrawable(R.drawable.mnac_default));
+            b.setBackground(root.getResources().getDrawable(R.drawable.mnac_default));
             b.setOnClickListener(clickFunc(i));
             scrollPais.addView(b);
         }
