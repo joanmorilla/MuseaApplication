@@ -1,6 +1,4 @@
-package com.example.museaapplication.Classes.Dominio;
-
-import com.example.museaapplication.Classes.Json.Descriptions;
+package com.example.museaapplication.Classes.Json;
 
 import java.io.Serializable;
 
@@ -80,5 +78,13 @@ public class Museo implements Serializable {
 
     public void setDescriptions(Descriptions descriptions) {
         this.descriptions = descriptions;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 }

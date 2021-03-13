@@ -1,4 +1,6 @@
-package com.example.museaapplication.Classes.Dominio;
+package com.example.museaapplication.Classes.Json;
+
+import com.example.museaapplication.Classes.Json.Museo;
 
 public class MuseoValue {
     private Museo[] museums;

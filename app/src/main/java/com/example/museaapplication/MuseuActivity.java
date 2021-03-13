@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.Menu;
@@ -15,7 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.museaapplication.Classes.Dominio.Museo;
+import com.example.museaapplication.Classes.Json.Museo;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 
 public class MuseuActivity extends AppCompatActivity {

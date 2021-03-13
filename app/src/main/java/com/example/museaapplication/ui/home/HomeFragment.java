@@ -24,8 +24,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.museaapplication.Classes.Dominio.Museo;
-import com.example.museaapplication.Classes.Dominio.MuseoValue;
+import com.example.museaapplication.Classes.Json.Museo;
+import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.MuseuActivity;

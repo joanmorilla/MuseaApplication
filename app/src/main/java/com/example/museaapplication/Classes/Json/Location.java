@@ -1,4 +1,4 @@
-package com.example.museaapplication.Classes.Dominio;
+package com.example.museaapplication.Classes.Json;
 
 import java.io.Serializable;
 

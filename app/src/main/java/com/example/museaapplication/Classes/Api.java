@@ -1,9 +1,6 @@
 package com.example.museaapplication.Classes;
 
-import com.example.museaapplication.Classes.Dominio.Museo;
-import com.example.museaapplication.Classes.Dominio.MuseoValue;
-
-import java.util.List;
+import com.example.museaapplication.Classes.Json.MuseoValue;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

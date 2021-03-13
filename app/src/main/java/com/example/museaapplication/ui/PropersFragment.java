@@ -18,11 +18,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Space;
-import android.widget.Toast;
 
-import com.example.museaapplication.Classes.Dominio.Museo;
-import com.example.museaapplication.Classes.Dominio.MuseoValue;
+import com.example.museaapplication.Classes.Json.Museo;
+import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.MuseuActivity;
