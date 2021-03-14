@@ -68,7 +68,6 @@ public class HomeFragment extends Fragment {
                 GenerarBotones();
             }
         });
-
         setHasOptionsMenu(true);
         return root;
     }

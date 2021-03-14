@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        for (Fragment f: fm.getFragments()) {
+        for (Fragment f: fm.getFragments()) {   
             fm.beginTransaction().remove(f).commit();
         }
 
@@ -91,11 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
-
-    @Override
-    protected void onApplyThemeResource(Resources.Theme theme, int resid, boolean first) {
-        super.onApplyThemeResource(theme, resid, first);
     }
 
     void selectIniFrag(){
