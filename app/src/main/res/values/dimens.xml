@@ -19,11 +19,14 @@
     <dimen name="vertical_bias_xl">0.4</dimen>
     <dimen name="vertical_bias_4xl">0.9</dimen>
 
-
     <dimen name="text_width">250dp</dimen>
+    <dimen name="text_width_small">125dp</dimen>
     <dimen name="text_height">24dp</dimen>
+    <dimen name="text_height_small">15dp</dimen>
     <dimen name="text_size_xs">12dp</dimen>
     <dimen name="text_size_s">24dp</dimen>
     <dimen name="text_size_m">36dp</dimen>
     <dimen name="text_size_l">42dp</dimen>
+
+    <dimen name="space_linear_layout">10dp</dimen>
 </resources>

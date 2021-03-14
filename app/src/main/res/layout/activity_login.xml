@@ -24,7 +24,7 @@
         android:id="@+id/enter_username"
         android:layout_width="@dimen/enter_text_width"
         android:layout_height="@dimen/enter_text_height"
-        android:text="@string/enter_username"
+        android:hint="@string/enter_username"
         android:background="@drawable/rounded_corner"
         android:paddingHorizontal="10dp"
 
@@ -40,7 +40,7 @@
         android:id="@+id/enter_password"
         android:layout_width="@dimen/enter_text_width"
         android:layout_height="@dimen/enter_text_height"
-        android:text="@string/enter_password"
+        android:hint="@string/enter_password"
         android:background="@drawable/rounded_corner"
         android:paddingHorizontal="10dp"
 

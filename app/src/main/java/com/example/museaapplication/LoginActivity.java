@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,12 +39,16 @@ public class LoginActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.image_holder);
         imageView.setImageBitmap(stringToImage(image));
 
+        // Get text del username y de la password
+        final EditText username = (EditText)findViewById(R.id.enter_username);
+        final EditText password = (EditText)findViewById(R.id.enter_password);
+
         // Implementación del botton 'login'
         final Button loginButton = (Button)findViewById(R.id.button_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Log In !!");
+                System.out.println("Log In !!\n" + username.getText() + "\n" + password.getText());
             }
         });
 
@@ -52,9 +57,10 @@ public class LoginActivity extends AppCompatActivity {
         signupText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Sign Up !!");
-                //Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                //startActivity(intent);
+                System.out.println("Sign Up !! " + username.getText());
+                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                intent.putExtra("USERNAME", username.getText().toString());
+                startActivity(intent);
             }
         });
     }

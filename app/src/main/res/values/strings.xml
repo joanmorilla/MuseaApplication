@@ -8,12 +8,26 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
+    <!-- textos para las activities login y signup -->
     <string name="enter_username">Username</string>
+    <string name="enter_email">Email</string>
     <string name="enter_password">Password</string>
+    <string name="enter_password_twice">Repeat password</string>
 
     <string name="checkbox_remember_me">Remember me</string>
 
     <string name="button_login">Login</string>
-    
+    <string name="button_signup">Sign up</string>
+
     <string name="signup_suggestion">Not logged in? Sign up</string>
+    <string name="welcome_message">WELCOME TO MUSEA</string>
+
+    <!-- signup warnings -->
+    <string name="warning_used_username">This username is already being used!</string>
+    <string name="warning_short_username">The username must have at least 6 characters</string>
+    <string name="warning_used_email">This email is already being used!</string>
+    <string name="warning_not_email">The email address must be a correct address</string>
+    <string name="warning_short_password">The password must have at least 6 characters</string>
+    <string name="warning_weak_password">The password must contain a capital letter, a lower letter and a number</string>
+    <string name="warning_not_match_password">Passwords do not match!</string>
 </resources>
