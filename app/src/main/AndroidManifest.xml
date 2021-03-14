@@ -11,7 +11,6 @@
         android:theme="@style/Theme.MuseaApplication">
         <activity
             android:name=".MuseuActivity"
-            android:theme="@style/Theme.Museum"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"

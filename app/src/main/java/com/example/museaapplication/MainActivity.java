@@ -1,9 +1,13 @@
 package com.example.museaapplication;
 
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.ui.UserFragment;
 import com.example.museaapplication.ui.dashboard.DashboardFragment;
 import com.example.museaapplication.ui.home.HomeFragment;
@@ -32,23 +36,27 @@ public class MainActivity extends AppCompatActivity {
     Fragment active = mHomeFragment;
 
 
-
-
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        fm.beginTransaction().add(R.id.nav_host_fragment, mHomeFragment, "0").commit();
+        for (Fragment f: fm.getFragments()) {
+            fm.beginTransaction().remove(f).commit();
+        }
+
+
+        setContentView(R.layout.activity_main);
+        fm.beginTransaction().add(R.id.nav_host_fragment, mHomeFragment, "0").hide(mHomeFragment).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, mDashboardFragment, "1").hide(mDashboardFragment).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, mNotificationsFragment, "2").hide(mNotificationsFragment).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, mUserFragment, "3").hide(mUserFragment).commit();
 
+        selectIniFrag();
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         setTitle("Menu Principal");
-
+        // Definimos comportamiento de la barra de navegación
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -58,55 +66,53 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navigation_home:
                         fm.beginTransaction().hide(active).show(mHomeFragment).commit();
                         active = mHomeFragment;
+                        SingletonDataHolder.getInstance().main_initial_frag = 0;
                         setTitle("Menu Principal");
                         return true;
                     case R.id.navigation_dashboard:
                         fm.beginTransaction().hide(active).show(mDashboardFragment).commit();
                         active = mDashboardFragment;
+                        SingletonDataHolder.getInstance().main_initial_frag = 1;
                         setTitle("Buscar");
                         return true;
                     case R.id.navigation_notifications:
                         fm.beginTransaction().hide(active).show(mNotificationsFragment).commit();
                         active = mNotificationsFragment;
+                        SingletonDataHolder.getInstance().main_initial_frag = 2;
                         setTitle("Notifications");
                         return true;
                     case R.id.navigation_user:
                         fm.beginTransaction().hide(active).show(mUserFragment).commit();
                         active = mUserFragment;
+                        SingletonDataHolder.getInstance().main_initial_frag = 3;
                         setTitle("Usuari");
                         return true;
                 }
-                //loadFragment(ac);
                 return false;
             }
         });
-
-
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_user)
-                .build();
-
-        //loadFragment(new HomeFragment());
-
-        /*NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);*/
     }
 
+    @Override
+    protected void onApplyThemeResource(Resources.Theme theme, int resid, boolean first) {
+        super.onApplyThemeResource(theme, resid, first);
+    }
 
-    private boolean loadFragment(Fragment fragment) {
-        //switching fragment
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment, fragment)
-                    .commit();
-            return true;
+    void selectIniFrag(){
+        switch (SingletonDataHolder.getInstance().main_initial_frag){
+            case 1:
+                active = mDashboardFragment;
+                break;
+            case 2:
+                active = mNotificationsFragment;
+                break;
+            case 3:
+                active = mUserFragment;
+                break;
+            default:
+                active = mHomeFragment;
+                break;
         }
-        return false;
+        fm.beginTransaction().show(active).commit();
     }
-
 }

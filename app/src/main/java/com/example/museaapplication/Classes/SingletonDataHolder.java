@@ -20,6 +20,8 @@ public class SingletonDataHolder {
 
     private Museo[] museums;
 
+    public int main_initial_frag = 0;
+
 
 
     public String getCodedImage(){
