@@ -1,33 +1,54 @@
-package com.example.museaapplication;
+package com.example.museaapplication.ui.signup;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
-public class SignupActivity extends AppCompatActivity {
+import com.example.museaapplication.R;
+
+public class SignupFragment extends Fragment {
+
+    View root;
+    FragmentManager fm;
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        //super.onCreate(savedInstanceState);
+        root = inflater.inflate(R.layout.fragment_signup, container, false);
+        fm = getParentFragmentManager();
+        //setContentView(R.layout.activity_signup);
 
         // Get text del formulario
-        final EditText username = (EditText)findViewById(R.id.enter_username);
-        final EditText email = (EditText)findViewById(R.id.enter_email);
-        final EditText password = (EditText)findViewById(R.id.enter_password);
-        final EditText password2 = (EditText)findViewById(R.id.enter_password2);
+        final EditText username = root.findViewById(R.id.enter_username);
+        final EditText email = root.findViewById(R.id.enter_email);
+        final EditText password = root.findViewById(R.id.enter_password);
+        final EditText password2 = root.findViewById(R.id.enter_password2);
 
-        final TextView textWarnings = (TextView)findViewById(R.id.text_warnigs);
+        final TextView textWarnings = root.findViewById(R.id.text_warnigs);
 
         // Si el usuario ya ha escrito un username se lo colocamos directamente en username
-        username.setText(getIntent().getStringExtra("USERNAME"));
+        // username.setText(getIntent().getStringExtra("USERNAME"));
+        Bundle bundle = getArguments();
+        if (bundle == null) {
+            System.out.println("No Data");
+            return root;
+        }
+        username.setText(bundle.getString("USERNAME"));
 
         // Implementación del botton 'signup'
-        final Button signup = (Button)findViewById(R.id.button_signup);
+        final Button signup = root.findViewById(R.id.button_signup);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,44 +56,44 @@ public class SignupActivity extends AppCompatActivity {
                 String warningMessage = new String();
 
                 if (username.getText().toString().length() < 6) {
-                    warningMessage = getApplicationContext().getResources().getString(R.string.warning_short_username);
+                    warningMessage = getContext().getResources().getString(R.string.warning_short_username);
                     b = false;
                 }
                 else if (existsUsername(username.getText().toString())) {
-                    warningMessage = getApplicationContext().getResources().getString(R.string.warning_used_username);
+                    warningMessage = getContext().getResources().getString(R.string.warning_used_username);
                     b = false;
                 }
 
                 if (!isEmail(email.getText().toString())) {
                     if (!warningMessage.isEmpty())
                         warningMessage += "\n";
-                    warningMessage += getApplicationContext().getResources().getString(R.string.warning_not_email);
+                    warningMessage += getContext().getResources().getString(R.string.warning_not_email);
                     b = false;
                 }
                 else if (existsEmail(email.getText().toString())) {
                     if (!warningMessage.isEmpty())
                         warningMessage += "\n";
-                    warningMessage += getApplicationContext().getResources().getString(R.string.warning_used_email);
+                    warningMessage += getContext().getResources().getString(R.string.warning_used_email);
                     b = false;
                 }
 
                 if (password.getText().toString().length() < 6) {
                     if (!warningMessage.isEmpty())
                         warningMessage += "\n";
-                    warningMessage += getApplicationContext().getResources().getString(R.string.warning_short_password);
+                    warningMessage += getContext().getResources().getString(R.string.warning_short_password);
                     b = false;
                 }
                 else if (isPassword(password.getText().toString())) {
                     if (!warningMessage.isEmpty())
                         warningMessage += "\n";
-                    warningMessage += getApplicationContext().getResources().getString(R.string.warning_weak_password);
+                    warningMessage += getContext().getResources().getString(R.string.warning_weak_password);
                     b = false;
                 }
 
                 if (!password2.getText().toString().equals(password.getText().toString())) {
                     if (!warningMessage.isEmpty())
                         warningMessage += "\n";
-                    warningMessage += getApplicationContext().getResources().getString(R.string.warning_not_match_password);
+                    warningMessage += getContext().getResources().getString(R.string.warning_not_match_password);
                     b = false;
                 }
 
@@ -81,11 +102,14 @@ public class SignupActivity extends AppCompatActivity {
                     textWarnings.setText(warningMessage);
                 else {
                     // TODO: Mostrar que se ha registrado correctamente el nuevo usuario y volver a LoginActivity
-                    finish(); // termina SignupActivity y regresa a LoginActivity
+                    // finish(); // termina SignupActivity y regresa a LoginActivity
+                    getFragmentManager().popBackStack();
+
                 }
 
             }
         });
+        return root;
     }
 
     private boolean existsUsername(String username) {
