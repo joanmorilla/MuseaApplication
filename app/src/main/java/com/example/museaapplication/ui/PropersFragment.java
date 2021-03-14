@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.example.museaapplication.Classes.APIRequests;
+import com.example.museaapplication.Classes.Delegate;
 import com.example.museaapplication.Classes.Json.Museo;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
@@ -101,6 +103,12 @@ public class PropersFragment extends Fragment {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_propers, container, false);
         getMuseums();
+        /*APIRequests.getInstance().getAllMuseums(new Delegate() {
+            @Override
+            public void Execute() {
+                GenerarBotones();
+            }
+        });*/
         return root;
     }
 

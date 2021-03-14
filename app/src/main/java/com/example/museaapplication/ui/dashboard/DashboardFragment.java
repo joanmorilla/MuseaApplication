@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.PropersFragment;
 import com.example.museaapplication.ui.UserFragment;
@@ -54,17 +55,21 @@ public class DashboardFragment extends Fragment {
 // and NOT a FragmentPagerAdapter.
 class PagerAdapter extends FragmentPagerAdapter {
 
-    private Fragment f1 = new PropersFragment();
+    private Fragment f1 = new PropersFragment();;
     private Fragment f2 = new PropersFragment();
     private Fragment f3 = new UserFragment();
+
+    FragmentManager fragmentManager;
 
 
     public PagerAdapter(FragmentManager fm) {
         super(fm);
+        fragmentManager = fm;
     }
 
     @Override
     public Fragment getItem(int i) {
+
         Fragment f = new Fragment();
         switch (i){
             case 0:
