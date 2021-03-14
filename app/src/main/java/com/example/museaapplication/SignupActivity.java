@@ -21,7 +21,7 @@ public class SignupActivity extends AppCompatActivity {
         final EditText password = (EditText)findViewById(R.id.enter_password);
         final EditText password2 = (EditText)findViewById(R.id.enter_password2);
 
-        TextView textWarnings = (TextView)findViewById(R.id.text_warnigs);
+        final TextView textWarnings = (TextView)findViewById(R.id.text_warnigs);
 
         // Si el usuario ya ha escrito un username se lo colocamos directamente en username
         username.setText(getIntent().getStringExtra("USERNAME"));
@@ -88,20 +88,20 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private boolean existsUsername(String toString) {
+    private boolean existsUsername(String username) {
         // TODO: implementar logica para determinar si ya existe un usuario con el mismo username
         return true;
     }
 
-    private boolean isEmail(String toString) {
+    private boolean isEmail(String email) {
         // TODO: implementar logica para determinar si es un email correcto
         return true;
     }
-    private boolean existsEmail(String toString) {
+    private boolean existsEmail(String email) {
         // TODO: implementar logica para determinar si es un email ya existe
         return true;
     }
-    private boolean isPassword(String toString) {
+    private boolean isPassword(String password) {
         // TODO: implementar logica para determinar si el password cumple con las restricciones mínimas
         return true;
     }

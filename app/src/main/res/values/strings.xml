@@ -14,7 +14,7 @@
     <string name="enter_password">Password</string>
     <string name="enter_password_twice">Repeat password</string>
 
-    <string name="checkbox_remember_me">Remember me</string>
+    <string name="checkbox_remember_password">Remember password</string>
 
     <string name="button_login">Login</string>
     <string name="button_signup">Sign up</string>
@@ -30,4 +30,7 @@
     <string name="warning_short_password">The password must have at least 6 characters</string>
     <string name="warning_weak_password">The password must contain a capital letter, a lower letter and a number</string>
     <string name="warning_not_match_password">Passwords do not match!</string>
+
+    <!-- login warnings -->
+    <string name="warning_login">Wrong username or password</string>
 </resources>

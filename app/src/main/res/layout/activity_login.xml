@@ -54,7 +54,7 @@
         android:id="@+id/checkbox_remember_me"
         android:layout_width="@dimen/checkbox_width"
         android:layout_height="@dimen/checkbox_height"
-        android:text= "@string/checkbox_remember_me"
+        android:text= "@string/checkbox_remember_password"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,6 +62,20 @@
         app:layout_constraintTop_toBottomOf="@+id/enter_password"
         app:layout_constraintVertical_bias="@dimen/vertical_bias_s" />
 
+    <TextView
+        android:id="@+id/text_warnigs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:textColor="@color/red_alert"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_remember_me"
+        app:layout_constraintVertical_bias="@dimen/vertical_bias_s" />
     <Button
 
         android:id="@+id/button_login"

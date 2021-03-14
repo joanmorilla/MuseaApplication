@@ -12,9 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.museaapplication.Classes.SingletonDataHolder;
 
@@ -43,12 +45,20 @@ public class LoginActivity extends AppCompatActivity {
         final EditText username = (EditText)findViewById(R.id.enter_username);
         final EditText password = (EditText)findViewById(R.id.enter_password);
 
+        final TextView textWarnings = (TextView)findViewById(R.id.text_warnigs);
+
         // Implementación del botton 'login'
         final Button loginButton = (Button)findViewById(R.id.button_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Log In !!\n" + username.getText() + "\n" + password.getText());
+                if (!validUsernamePassword(username.getText().toString(),password.getText().toString())) {
+                    textWarnings.setText(getApplicationContext().getResources().getString(R.string.warning_login));
+                }
+                else{
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -57,12 +67,28 @@ public class LoginActivity extends AppCompatActivity {
         signupText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Sign Up !! " + username.getText());
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
                 intent.putExtra("USERNAME", username.getText().toString());
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final EditText password = (EditText)findViewById(R.id.enter_password);
+        final CheckBox checkBoxRememberMe = (CheckBox)findViewById(R.id.checkbox_remember_me);
+        if (!checkBoxRememberMe.isChecked())
+            password.setText("");
+
+    }
+
+    private boolean validUsernamePassword(String username, String password) {
+        // TODO: Implementar logica de validacion de usuario y contraseña
+        if (username.isEmpty() || password.isEmpty())
+            return false;
+        return true;
     }
 
     String imageToString(int id){
