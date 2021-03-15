@@ -80,25 +80,25 @@ public class MainActivity extends AppCompatActivity {
                         fm.beginTransaction().hide(active).show(mHomeFragment).commit();
                         active = mHomeFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 0;
-                        setTitle("Menu Principal");
+                        setTitle(R.string.title_home);
                         return true;
                     case R.id.navigation_dashboard:
                         fm.beginTransaction().hide(active).show(mDashboardFragment).commit();
                         active = mDashboardFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 1;
-                        setTitle("Buscar");
+                        setTitle(R.string.title_dashboard);
                         return true;
                     case R.id.navigation_notifications:
                         fm.beginTransaction().hide(active).show(mNotificationsFragment).commit();
                         active = mNotificationsFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 2;
-                        setTitle("Notifications");
+                        setTitle(R.string.title_notifications);
                         return true;
                     case R.id.navigation_user:
                         fm.beginTransaction().hide(active).show(mUserFragment).commit();
                         active = mUserFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 3;
-                        setTitle("Usuari");
+                        setTitle(R.string.title_user);
                         return true;
                 }
                 return false;

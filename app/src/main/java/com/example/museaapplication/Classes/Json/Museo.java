@@ -1,6 +1,8 @@
 package com.example.museaapplication.Classes.Json;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Museo implements Serializable {
 
@@ -13,15 +15,20 @@ public class Museo implements Serializable {
     private String country;
     private Descriptions descriptions;
 
+    //private List<Exhibition> exhibitionObjects = new ArrayList<>();
 
     public Museo(String n, String address, String c, String count) {
-        location = new Location[2];
-        exhibitions = new String[1];
+        /*location = new Location[2];
+        exhibitions = new String[1];*/
         city = c;
         country = count;
         name = n;
         this.address = address;
         _id ="";
+    }
+
+    public void addExhibition(Exhibition e){
+        //exhibitionObjects.add(e);
     }
 
     public String getCountry() {
@@ -86,5 +93,9 @@ public class Museo implements Serializable {
 
     public void set_id(String _id) {
         this._id = _id;
+    }
+
+    public void setExhibitionObjects(List<Exhibition> exhibitionObjects) {
+        //this.exhibitionObjects = exhibitionObjects;
     }
 }
