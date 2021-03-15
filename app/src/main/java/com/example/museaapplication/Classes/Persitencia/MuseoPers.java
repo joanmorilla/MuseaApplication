@@ -1,10 +1,6 @@
 package com.example.museaapplication.Classes.Persitencia;
 
-import com.example.museaapplication.Classes.Json.Museo;
-import com.example.museaapplication.Classes.Json.MuseoValue;
-import com.example.museaapplication.Classes.RetrofitClient;
-
-import retrofit2.Call;
+import com.example.museaapplication.Classes.Dominio.Museo;
 
 public class MuseoPers implements IMuseu{
 

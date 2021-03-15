@@ -1,6 +1,11 @@
-package com.example.museaapplication.Classes.Json;
+package com.example.museaapplication.Classes.Dominio;
+
+import com.example.museaapplication.Classes.Json.Descriptions;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Exhibition implements Serializable {
     private String[] works;
@@ -9,7 +14,12 @@ public class Exhibition implements Serializable {
     private String room;
     private Descriptions descriptions;
 
-    private Work[] workObjects;
+    private List<Work> workObjects = new ArrayList<>();
+
+
+    public void addWork(Work w) {
+        workObjects.add(w);
+    }
 
     public String[] getWorks() {
         return works;
@@ -49,5 +59,12 @@ public class Exhibition implements Serializable {
 
     public void setDescriptions(Descriptions descriptions) {
         this.descriptions = descriptions;
+    }
+
+    public void setWorkObjects(List<Work> workObjects) {
+        this.workObjects = workObjects;
+    }
+    public List<Work> getWorkObjects() {
+        return workObjects;
     }
 }

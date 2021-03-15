@@ -1,12 +1,15 @@
-package com.example.museaapplication.Classes.Json;
+package com.example.museaapplication.Classes.Dominio;
+
+import com.example.museaapplication.Classes.Json.Descriptions;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Museo implements Serializable {
-
     private Location[] location;
+    @SerializedName("expositions")
     private String[] exhibitions;
     private String _id;
     private String name;
@@ -15,7 +18,7 @@ public class Museo implements Serializable {
     private String country;
     private Descriptions descriptions;
 
-    //private List<Exhibition> exhibitionObjects = new ArrayList<>();
+    private List<Exhibition> exhibitionObjects = new ArrayList<>();
 
     public Museo(String n, String address, String c, String count) {
         /*location = new Location[2];
@@ -25,10 +28,11 @@ public class Museo implements Serializable {
         name = n;
         this.address = address;
         _id ="";
+        exhibitionObjects = new ArrayList<>();
     }
 
     public void addExhibition(Exhibition e){
-        //exhibitionObjects.add(e);
+        exhibitionObjects.add(e);
     }
 
     public String getCountry() {
@@ -96,6 +100,9 @@ public class Museo implements Serializable {
     }
 
     public void setExhibitionObjects(List<Exhibition> exhibitionObjects) {
-        //this.exhibitionObjects = exhibitionObjects;
+        this.exhibitionObjects = exhibitionObjects;
+    }
+    public List<Exhibition> getExhibitionObjects() {
+        return exhibitionObjects;
     }
 }

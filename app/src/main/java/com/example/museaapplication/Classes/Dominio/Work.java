@@ -1,4 +1,6 @@
-package com.example.museaapplication.Classes.Json;
+package com.example.museaapplication.Classes.Dominio;
+
+import com.example.museaapplication.Classes.Json.Descriptions;
 
 import java.io.Serializable;
 
@@ -9,6 +11,7 @@ public class Work implements Serializable {
     private float score;
     private String type;
     private Descriptions descriptions;
+
 
     public String get_id() {
         return _id;

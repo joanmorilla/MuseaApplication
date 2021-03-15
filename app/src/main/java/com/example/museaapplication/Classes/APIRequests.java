@@ -2,23 +2,20 @@ package com.example.museaapplication.Classes;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.example.museaapplication.Classes.Json.Exhibition;
-import com.example.museaapplication.Classes.Json.Museo;
+import com.example.museaapplication.Classes.Dominio.Exhibition;
+import com.example.museaapplication.Classes.Dominio.Work;
+import com.example.museaapplication.Classes.Json.ExhibitionValue;
+import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Json.MuseoValue;
+import com.example.museaapplication.Classes.Json.WorkValue;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class APIRequests {
     private static APIRequests _instance;
@@ -35,9 +32,8 @@ public class APIRequests {
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
                 MuseoValue mymuseumList = response.body();
                 Museo[] museums = mymuseumList.getMuseums();
-                Log.d("AA","" + museums[0].getExhibitions());
                 SingletonDataHolder.getInstance().setMuseums(museums);
-                CacheObjects();
+                CacheExhibitions();
                 if (function != null)
                     function.Execute();
             }
@@ -54,17 +50,17 @@ public class APIRequests {
     }
 
     public void getExhibitions(Museo m, String id_exh) {
-        Call<Exhibition> call = RetrofitClient.getInstance().getMyApi().getExhibition(m.get_id(), id_exh);
-        call.enqueue(new Callback<Exhibition>() {
+        Call<ExhibitionValue> call = RetrofitClient.getInstance().getMyApi().getExhibition(m.get_id(), id_exh);
+        call.enqueue(new Callback<ExhibitionValue>() {
             @Override
-            public void onResponse(Call<Exhibition> call, Response<Exhibition> response) {
-                Exhibition exh = response.body();
-                m.addExhibition(exh);
-                Log.d("Exhibitions", exh.getName());
+            public void onResponse(Call<ExhibitionValue> call, Response<ExhibitionValue> response) {
+                ExhibitionValue exh = response.body();
+                m.addExhibition(exh.getExhibition());
+                CacheWorks(m, exh.getExhibition());
             }
 
             @Override
-            public void onFailure(Call<Exhibition> call, Throwable t) {
+            public void onFailure(Call<ExhibitionValue> call, Throwable t) {
                 Log.e("TAG1", t.getLocalizedMessage());
                 Log.e("TAG2", t.getMessage());
                 t.printStackTrace();
@@ -72,13 +68,62 @@ public class APIRequests {
         });
     }
 
-    private void CacheObjects() {
+    public void getExhibitionText(Museo m, String id_exh) {
+        Retrofit retro = new Retrofit.Builder().baseUrl(Api.BASE_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+        Api api = retro.create(Api.class);
+        Call<String> call = api.getExhibitionText(m.get_id(), id_exh);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.d("ExhibitionsText", "" + response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("TAG1", t.getLocalizedMessage());
+                Log.e("TAG2", t.getMessage());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    void getWork(Exhibition e, String idMuseo , String idObra){
+        Call<WorkValue> call = RetrofitClient.getInstance().getMyApi().getWork(idMuseo,e.get_id(), idObra);
+        call.enqueue(new Callback<WorkValue>() {
+            @Override
+            public void onResponse(Call<WorkValue> call, Response<WorkValue> response) {
+                WorkValue wv = response.body();
+                Log.d("obra", wv.getWork().getAuthor());
+                e.addWork(wv.getWork());
+            }
+
+            @Override
+            public void onFailure(Call<WorkValue> call, Throwable t) {
+                Log.e("TAG1", t.getLocalizedMessage());
+                Log.e("TAG2", t.getMessage());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void CacheExhibitions() {
         Museo[] museums = SingletonDataHolder.getInstance().getMuseums();
         for (Museo m: museums){
-            Log.d("BB", ""+ m.getLocation()[0].getNumberDecimal());
             m.setExhibitionObjects(new ArrayList<>());
-            if (m.getExhibitions() != null)
-                getExhibitions(m, m.getExhibitions()[0]);
+            for(String s : m.getExhibitions()){
+                if (!s.equals("")) {
+                    getExhibitions(m, s);
+                }
+            }
+
+        }
+    }
+    private void CacheWorks(Museo m, Exhibition e){
+        for (String s : e.getWorks()){
+            getWork(e, m.get_id(), s);
         }
     }
 }

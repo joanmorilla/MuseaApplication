@@ -1,6 +1,5 @@
 package com.example.museaapplication.ui.home;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,7 +26,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.museaapplication.Classes.APIRequests;
 import com.example.museaapplication.Classes.Delegate;
-import com.example.museaapplication.Classes.Json.Museo;
+import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;

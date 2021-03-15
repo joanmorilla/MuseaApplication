@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.museaapplication.Classes.Json.Museo;
+import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 
 public class MuseuActivity extends AppCompatActivity {

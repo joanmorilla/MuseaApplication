@@ -1,9 +1,6 @@
 package com.example.museaapplication.Classes;
 
-import androidx.fragment.app.Fragment;
-
-import com.example.museaapplication.Classes.Json.Museo;
-import com.example.museaapplication.ui.PropersFragment;
+import com.example.museaapplication.Classes.Dominio.Museo;
 
 import java.util.Stack;
 
