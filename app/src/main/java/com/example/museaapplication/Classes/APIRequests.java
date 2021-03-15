@@ -104,6 +104,7 @@ public class APIRequests {
             public void onFailure(Call<WorkValue> call, Throwable t) {
                 Log.e("TAG1", t.getLocalizedMessage());
                 Log.e("TAG2", t.getMessage());
+
                 t.printStackTrace();
             }
         });
