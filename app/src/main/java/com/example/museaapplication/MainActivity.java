@@ -28,83 +28,77 @@ import androidx.navigation.ui.NavigationUI;
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
-
+    // Fragmentos del hub de navegación inferior
     final Fragment mHomeFragment = new HomeFragment();
     final Fragment mDashboardFragment = new DashboardFragment();
     final Fragment mNotificationsFragment = new NotificationsFragment();
     final Fragment mUserFragment = new UserFragment();
-
+    // Cogemos el fragment manager e inicializamos estado activo
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = mHomeFragment;
+
     BottomNavigationView navView;
-    
-    Stack<Integer> backStack = new Stack<>();
+    // Pila de ventanas para volver en orden adecuado
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        backStack.push(R.id.navigation_home);
+        SingletonDataHolder.getInstance().backStack.push(R.id.navigation_home);
         for (Fragment f: fm.getFragments()) {   
             fm.beginTransaction().remove(f).commit();
         }
 
-
+        // Inicialización del fragment manager
         setContentView(R.layout.activity_main);
         fm.beginTransaction().add(R.id.nav_host_fragment, mHomeFragment, "0").hide(mHomeFragment).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, mDashboardFragment, "1").hide(mDashboardFragment).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, mNotificationsFragment, "2").hide(mNotificationsFragment).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, mUserFragment, "3").hide(mUserFragment).commit();
-
+        // Mantenemos el estado al recargar la activity (cambio de tema)
         selectIniFrag();
-
         navView = findViewById(R.id.nav_view);
-        setTitle("Menu Principal");
         // Definimos comportamiento de la barra de navegación
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                //Fragment fragment = null;
-
-                /*if (!backStack.isEmpty() && !backStack.lastElement().equals(item.getItemId()))
-                    backStack.push(item.getItemId());*/
-                if (backStack.isEmpty()) backStack.push(item.getItemId());
+                // Por cada click añadimos el elemento solo si la pila esta vacía o el ultimo elemento no es el item seleccionado
+                if (SingletonDataHolder.getInstance().backStack.isEmpty()) SingletonDataHolder.getInstance().backStack.push(item.getItemId());
                 else {
-                    if (!backStack.lastElement().equals(item.getItemId())) backStack.push(item.getItemId());
+                    // Elimina el elemento de la pila si ya esta dentro antes de insertarlo de nuevo
+                    // Asi limitamos el tamaño de la pila a la cantidad de ventanas
+                    if (SingletonDataHolder.getInstance().backStack.contains(item.getItemId())){
+                        int index = SingletonDataHolder.getInstance().backStack.indexOf(item.getItemId());
+                        SingletonDataHolder.getInstance().backStack.remove(index);
+                    }
+                    if (!SingletonDataHolder.getInstance().backStack.lastElement().equals(item.getItemId())) SingletonDataHolder.getInstance().backStack.push(item.getItemId());
                 }
 
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        fm.beginTransaction().hide(active).show(mHomeFragment)/*.addToBackStack("HomeFragment")*/.commit();
+                        fm.beginTransaction().hide(active).show(mHomeFragment).commit();
                         active = mHomeFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 0;
                         setTitle("Menu Principal");
-                        //backStack.push(R.id.navigation_home);
                         return true;
                     case R.id.navigation_dashboard:
-                        fm.beginTransaction().hide(active).show(mDashboardFragment)/*.addToBackStack("DashFragment")*/.commit();
+                        fm.beginTransaction().hide(active).show(mDashboardFragment).commit();
                         active = mDashboardFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 1;
                         setTitle("Buscar");
-                        /*if (!backStack.isEmpty() && !backStack.lastElement().equals(R.id.navigation_dashboard))
-                            backStack.push(R.id.navigation_dashboard);
-                        else if (backStack.isEmpty()) backStack.push(R.id.navigation_dashboard);*/
                         return true;
                     case R.id.navigation_notifications:
-                        fm.beginTransaction().hide(active).show(mNotificationsFragment)/*.addToBackStack("NotFragment")*/.commit();
+                        fm.beginTransaction().hide(active).show(mNotificationsFragment).commit();
                         active = mNotificationsFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 2;
                         setTitle("Notifications");
-                        //backStack.push(R.id.navigation_notifications);
                         return true;
                     case R.id.navigation_user:
-                        fm.beginTransaction().hide(active).show(mUserFragment)/*.addToBackStack("UserFragment")*/.commit();
+                        fm.beginTransaction().hide(active).show(mUserFragment).commit();
                         active = mUserFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 3;
                         setTitle("Usuari");
-                        /*if (!backStack.lastElement().equals(R.id.navigation_user))
-                            backStack.push(R.id.navigation_user);*/
                         return true;
                 }
                 return false;
@@ -115,14 +109,13 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     @Override
     public void onBackPressed() {
-        if (backStack.isEmpty()) Log.d("State", "isEmpty");
-        else {
-            backStack.pop();
-            if (!backStack.isEmpty()) {
-                int i = backStack.pop();
+        if (!SingletonDataHolder.getInstance().backStack.isEmpty()){
+            // Cada vez que presionamos añadimos a stack
+            // Aqui quitamos el estado actual antes de volver al anterior
+            SingletonDataHolder.getInstance().backStack.pop();
+            if (!SingletonDataHolder.getInstance().backStack.isEmpty()) {
+                int i = SingletonDataHolder.getInstance().backStack.pop();
                 navView.setSelectedItemId(i);
-                Log.d("Stack2", "" + navView.getSelectedItemId());
-                Log.d("Stack", "" + i);
             } else super.onBackPressed();
         }
     }
