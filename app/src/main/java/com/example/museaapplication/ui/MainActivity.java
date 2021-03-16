@@ -1,4 +1,4 @@
-package com.example.museaapplication;
+package com.example.museaapplication.ui;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.museaapplication.Classes.SingletonDataHolder;
+import com.example.museaapplication.R;
 import com.example.museaapplication.ui.UserFragment;
 import com.example.museaapplication.ui.dashboard.DashboardFragment;
 import com.example.museaapplication.ui.home.HomeFragment;

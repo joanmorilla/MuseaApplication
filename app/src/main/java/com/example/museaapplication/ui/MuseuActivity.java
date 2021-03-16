@@ -1,4 +1,4 @@
-package com.example.museaapplication;
+package com.example.museaapplication.ui;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.SingletonDataHolder;
+import com.example.museaapplication.R;
 
 public class MuseuActivity extends AppCompatActivity {
 
@@ -36,6 +38,7 @@ public class MuseuActivity extends AppCompatActivity {
 
         // Set the image we get from previous activity
         String image = SingletonDataHolder.getInstance().getCodedImage();
+        Log.d("ImagenMuseo", image.trim());
         ImageView imageView = findViewById(R.id.image_holder);
         imageView.setImageBitmap(stringToImage(image));
 

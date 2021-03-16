@@ -23,7 +23,6 @@ import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
-import com.example.museaapplication.MuseuActivity;
 import com.example.museaapplication.R;
 
 import java.io.ByteArrayOutputStream;
@@ -128,7 +127,7 @@ public class PropersFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     void getMuseums(){
-        Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseums("Louvre");
+        Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseums();
         call.enqueue(new Callback<MuseoValue>() {
             @Override
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {

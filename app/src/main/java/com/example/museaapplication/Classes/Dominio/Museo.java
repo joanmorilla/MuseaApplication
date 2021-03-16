@@ -17,6 +17,8 @@ public class Museo implements Serializable {
     private String city;
     private String country;
     private Descriptions descriptions;
+    @SerializedName("image")
+    private String image;
 
     private List<Exhibition> exhibitionObjects = new ArrayList<>();
 
@@ -104,5 +106,13 @@ public class Museo implements Serializable {
     }
     public List<Exhibition> getExhibitionObjects() {
         return exhibitionObjects;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

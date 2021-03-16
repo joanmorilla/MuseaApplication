@@ -26,7 +26,7 @@ public class APIRequests {
 
 
     public void getAllMuseums(Delegate function) {
-        Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseums("Louvre");
+        Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseums();
         call.enqueue(new Callback<MuseoValue>() {
             @Override
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
