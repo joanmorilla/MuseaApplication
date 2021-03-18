@@ -13,13 +13,14 @@ public class Exhibition implements Serializable {
     private String name;
     private String room;
     private Descriptions descriptions;
+    private String image;
 
-    private List<Work> workObjects = new ArrayList<>();
+    //private List<Work> workObjects = new ArrayList<>();
 
 
-    public void addWork(Work w) {
+    /*public void addWork(Work w) {
         workObjects.add(w);
-    }
+    }*/
 
     public String[] getWorks() {
         return works;
@@ -61,10 +62,18 @@ public class Exhibition implements Serializable {
         this.descriptions = descriptions;
     }
 
-    public void setWorkObjects(List<Work> workObjects) {
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+   /* public void setWorkObjects(List<Work> workObjects) {
         this.workObjects = workObjects;
     }
     public List<Work> getWorkObjects() {
         return workObjects;
-    }
+    }*/
 }

@@ -1,6 +1,8 @@
 package com.example.museaapplication.Classes;
 
 import com.example.museaapplication.Classes.Json.ExhibitionValue;
+import com.example.museaapplication.Classes.Json.ExpositionListValue;
+import com.example.museaapplication.Classes.Json.ExpositionsList;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
 
@@ -16,6 +18,9 @@ public interface Api {
 
     @GET("museums/{idMuseo}/{idExpo}")
     Call<ExhibitionValue> getExhibition(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId);
+
+    @GET("museums/{idMuseo}")
+    Call<ExpositionListValue> getExpositions(@Path("idMuseo") String idMuseo);
 
     @GET("museums/{idMuseo}/{idExpo}")
     Call<String> getExhibitionText(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId);

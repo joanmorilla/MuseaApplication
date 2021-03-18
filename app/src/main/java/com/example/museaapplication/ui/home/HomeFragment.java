@@ -105,10 +105,10 @@ public class HomeFragment extends Fragment {
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(pixToDp(225), pixToDp(175));
             param.setMargins(pixToDp(10), 0, 0, 0);
             b.setLayoutParams(param);
-            BitmapDrawable drawable = new BitmapDrawable(getResources(),stringToImage(museums[i].getImage()));
+            //BitmapDrawable drawable = new BitmapDrawable(getResources(),stringToImage(museums[i].getImage()));
             SingletonDataHolder.getInstance().setCodedImage(m[i].getImage());
             //b.setBackground(getResources().getDrawable(R.drawable.mnac_default));
-            Picasso.get().load("https://www.barcelonacheckin.com/img/stored_images/barcelona/mappoints/15_community_page_new.png").into(b);
+            Picasso.get().load(m[i].getImage()).into(b);
             b.setOnClickListener(clickFunc(m[i]));
             scrollPais.addView(b);
         }

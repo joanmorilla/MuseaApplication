@@ -29,6 +29,13 @@
                 android:layout_height="wrap_content">
 
             </TextView>
+
+            <ImageView
+                android:id="@+id/image_holder_test_expo"
+                android:layout_width="match_parent"
+                android:scaleType="centerCrop"
+                android:layout_height="300dp"></ImageView>
+
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="20dp"></Space>

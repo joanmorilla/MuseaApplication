@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.museaapplication.Classes.APIRequests;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
@@ -41,6 +42,7 @@ public class HomeViewModel extends ViewModel {
                 MuseoValue mymuseumList = response.body();
                 Museo[] museums = mymuseumList.getMuseums();
                 Museums.postValue(museums);
+                cacheExpositions(museums);
             }
 
             @Override
@@ -51,6 +53,11 @@ public class HomeViewModel extends ViewModel {
                 SingletonDataHolder.getInstance().setMuseums(null);
             }
         });
+    }
+    private void cacheExpositions(Museo[] museums) {
+        for(Museo m: museums){
+            APIRequests.getInstance().getExpositionsOfMuseums(m);
+        }
     }
 
     public LiveData<String> getText() {

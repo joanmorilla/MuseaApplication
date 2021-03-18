@@ -34,6 +34,7 @@ public class Museo implements Serializable {
     }
 
     public void addExhibition(Exhibition e){
+        if (exhibitionObjects == null) exhibitionObjects = new ArrayList<>();
         exhibitionObjects.add(e);
     }
 

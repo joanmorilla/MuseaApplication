@@ -37,20 +37,19 @@ public class MuseuActivity extends AppCompatActivity {
 
         Picasso.get().setLoggingEnabled(true);
 
-        // Set the image we get from previous activity
-        String image = SingletonDataHolder.getInstance().getCodedImage();
-        ImageView imageView = findViewById(R.id.image_holder);
-        //imageView.setImageBitmap(stringToImage(image));
-        String url = "https://www.barcelonacheckin.com/img/stored_images/barcelona/mappoints/15_community_page_new.png";
-        Picasso.get().load(url).fit().centerCrop().into(imageView);
-
-
         TextView txtV = findViewById(R.id.text_view);
         Bundle b = getIntent().getExtras();
         Museo museum = (Museo)b.getSerializable("Museu");
         setTitle(museum.getName());
 
+        // Set the image we get from previous activity
+        ImageView imageView = findViewById(R.id.image_holder);
+        String url = museum.getImage();
+        Picasso.get().load(url).fit().centerCrop().into(imageView);
 
+        ImageView imageView1 = findViewById(R.id.image_holder_test_expo);
+        url = museum.getExhibitionObjects().get(0).getImage().replace("http", "https");
+        Picasso.get().load(url).fit().centerCrop().into(imageView1);
 
 
         /*txtV.setText(museum.getCountry() + "\n"

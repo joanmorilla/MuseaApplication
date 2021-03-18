@@ -6,6 +6,8 @@ import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.Json.ExhibitionValue;
 import com.example.museaapplication.Classes.Dominio.Museo;
+import com.example.museaapplication.Classes.Json.ExpositionListValue;
+import com.example.museaapplication.Classes.Json.ExpositionsList;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
 
@@ -56,7 +58,7 @@ public class APIRequests {
             public void onResponse(Call<ExhibitionValue> call, Response<ExhibitionValue> response) {
                 ExhibitionValue exh = response.body();
                 m.addExhibition(exh.getExhibition());
-                CacheWorks(m, exh.getExhibition());
+                //CacheWorks(m, exh.getExhibition());
             }
 
             @Override
@@ -97,11 +99,35 @@ public class APIRequests {
             public void onResponse(Call<WorkValue> call, Response<WorkValue> response) {
                 WorkValue wv = response.body();
                 Log.d("obra", wv.getWork().getAuthor());
-                e.addWork(wv.getWork());
+                //e.addWork(wv.getWork());
             }
 
             @Override
             public void onFailure(Call<WorkValue> call, Throwable t) {
+                Log.e("TAG1", t.getLocalizedMessage());
+                Log.e("TAG2", t.getMessage());
+
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getExpositionsOfMuseums(Museo m){
+        Call<ExpositionListValue> call = RetrofitClient.getInstance().getMyApi().getExpositions(m.get_id());
+        call.enqueue(new Callback<ExpositionListValue>() {
+            @Override
+            public void onResponse(Call<ExpositionListValue> call, Response<ExpositionListValue> response) {
+                ExpositionListValue expoListVal = response.body();
+                for(Exhibition e : expoListVal.getMuseum().getExhibitions()) {
+                    if (e != null){
+                        Log.d("Mus", m.getName());
+                        m.addExhibition(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ExpositionListValue> call, Throwable t) {
                 Log.e("TAG1", t.getLocalizedMessage());
                 Log.e("TAG2", t.getMessage());
 
