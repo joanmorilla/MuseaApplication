@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
+import com.example.museaapplication.ui.Map.MapFragment;
 import com.example.museaapplication.ui.UserFragment;
 import com.example.museaapplication.ui.dashboard.DashboardFragment;
 import com.example.museaapplication.ui.home.HomeFragment;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     // Fragmentos del hub de navegación inferior
     final Fragment mHomeFragment = new HomeFragment();
     final Fragment mDashboardFragment = new DashboardFragment();
+    final Fragment mMapFragment = new MapFragment();
     final Fragment mNotificationsFragment = new NotificationsFragment();
     final Fragment mUserFragment = new UserFragment();
     // Cogemos el fragment manager e inicializamos estado activo
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         fm.beginTransaction().add(R.id.nav_host_fragment, mHomeFragment, "0").hide(mHomeFragment).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, mDashboardFragment, "1").hide(mDashboardFragment).commit();
+        fm.beginTransaction().add(R.id.nav_host_fragment, mMapFragment, "4").hide(mMapFragment).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, mNotificationsFragment, "2").hide(mNotificationsFragment).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, mUserFragment, "3").hide(mUserFragment).commit();
         // Mantenemos el estado al recargar la activity (cambio de tema)
@@ -88,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
                         active = mDashboardFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 1;
                         setTitle(R.string.title_dashboard);
+                        return true;
+                    case R.id.navigation_maps:
+                        fm.beginTransaction().hide(active).show(mMapFragment).commit();
+                        active = mMapFragment;
+                        SingletonDataHolder.getInstance().main_initial_frag = 4;
+                        setTitle(R.string.title_maps);
                         return true;
                     case R.id.navigation_notifications:
                         fm.beginTransaction().hide(active).show(mNotificationsFragment).commit();
@@ -131,6 +140,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 3:
                 active = mUserFragment;
+                break;
+            case 4:
+                active = mMapFragment;
                 break;
             default:
                 active = mHomeFragment;

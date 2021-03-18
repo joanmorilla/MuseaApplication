@@ -10,7 +10,11 @@
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/ic_action_search"
         android:title="@string/title_dashboard" />
-
+    <item
+        android:title="Mapa"
+        android:id="@+id/navigation_maps"
+        android:icon="@drawable/ic_action_map"
+        />
     <item
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_notifications_black_24dp"
