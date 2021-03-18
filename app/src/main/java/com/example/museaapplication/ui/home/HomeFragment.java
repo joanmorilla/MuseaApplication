@@ -16,7 +16,9 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,6 +36,7 @@ import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.ui.MuseuActivity;
 import com.example.museaapplication.R;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
@@ -98,13 +101,14 @@ public class HomeFragment extends Fragment {
         LinearLayout scrollPais = root.findViewById(R.id.layout_pais);
         Museo[] museums = m;
         for(int i = museums.length - 1; i >= 0; i--){
-            Button b = new Button(scrollPais.getContext());
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(pixToDp(200), pixToDp(150));
+            ImageButton b = new ImageButton(scrollPais.getContext());
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(pixToDp(225), pixToDp(175));
             param.setMargins(pixToDp(10), 0, 0, 0);
             b.setLayoutParams(param);
             BitmapDrawable drawable = new BitmapDrawable(getResources(),stringToImage(museums[i].getImage()));
             SingletonDataHolder.getInstance().setCodedImage(m[i].getImage());
-            b.setBackground(getResources().getDrawable(R.drawable.mnac_default));
+            //b.setBackground(getResources().getDrawable(R.drawable.mnac_default));
+            Picasso.get().load("https://www.barcelonacheckin.com/img/stored_images/barcelona/mappoints/15_community_page_new.png").into(b);
             b.setOnClickListener(clickFunc(m[i]));
             scrollPais.addView(b);
         }

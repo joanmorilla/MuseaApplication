@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
+import com.squareup.picasso.Picasso;
 
 public class MuseuActivity extends AppCompatActivity {
 
@@ -34,18 +35,23 @@ public class MuseuActivity extends AppCompatActivity {
         //actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-
+        Picasso.get().setLoggingEnabled(true);
 
         // Set the image we get from previous activity
         String image = SingletonDataHolder.getInstance().getCodedImage();
-        Log.d("ImagenMuseo", image.trim());
         ImageView imageView = findViewById(R.id.image_holder);
-        imageView.setImageBitmap(stringToImage(image));
+        //imageView.setImageBitmap(stringToImage(image));
+        String url = "https://www.barcelonacheckin.com/img/stored_images/barcelona/mappoints/15_community_page_new.png";
+        Picasso.get().load(url).fit().centerCrop().into(imageView);
+
 
         TextView txtV = findViewById(R.id.text_view);
         Bundle b = getIntent().getExtras();
         Museo museum = (Museo)b.getSerializable("Museu");
         setTitle(museum.getName());
+
+
+
 
         /*txtV.setText(museum.getCountry() + "\n"
                 +    museum.getCity() + "\n"
