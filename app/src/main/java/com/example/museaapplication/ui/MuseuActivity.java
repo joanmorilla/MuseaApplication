@@ -48,7 +48,8 @@ public class MuseuActivity extends AppCompatActivity {
         Picasso.get().load(url).fit().centerCrop().into(imageView);
 
         ImageView imageView1 = findViewById(R.id.image_holder_test_expo);
-        url = museum.getExhibitionObjects().get(0).getImage().replace("http", "https");
+        url = museum.getExhibitionObjects().get(0).getImage();
+        if (!url.contains("https")) url = url.replace("http", "https");
         Picasso.get().load(url).fit().centerCrop().into(imageView1);
 
 
