@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     Fragment active = mHomeFragment;
 
     BottomNavigationView navView;
-    // Pila de ventanas para volver en orden adecuado
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

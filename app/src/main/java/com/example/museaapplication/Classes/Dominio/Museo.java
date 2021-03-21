@@ -106,6 +106,7 @@ public class Museo implements Serializable {
         this.exhibitionObjects = exhibitionObjects;
     }
     public List<Exhibition> getExhibitionObjects() {
+        if (exhibitionObjects == null) exhibitionObjects = new ArrayList<>();
         return exhibitionObjects;
     }
 

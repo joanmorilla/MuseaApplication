@@ -50,7 +50,7 @@ public class HomeViewModel extends ViewModel {
                 Log.e("TAG1", t.getLocalizedMessage());
                 Log.e("TAG2", t.getMessage());
                 t.printStackTrace();
-                SingletonDataHolder.getInstance().setMuseums(null);
+                loadUsers();
             }
         });
     }
