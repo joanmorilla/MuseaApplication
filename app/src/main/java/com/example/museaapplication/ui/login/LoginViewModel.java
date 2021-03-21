@@ -42,8 +42,12 @@ public class LoginViewModel extends ViewModel {
                 return false;
         }
 
-
-        // TODO: Implementar logica de validacion de usuario y contraseña
+        /* TODO: Implementar logica de validacion de usuario y contraseña
+            1. Conectar con el servidor "https://musea-authorization-server.herokuapp.com/oauth/token"
+            2. Mandarle un Basic Auth con Username: mobile i password: mobilePass
+            3. Pasar en @Body con formato form-data grant_type: password; username: test@test.com; password: testPass
+        */
+        
         if (username.isEmpty() || password.isEmpty())
             return false;
         return true;

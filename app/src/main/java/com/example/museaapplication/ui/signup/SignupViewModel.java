@@ -1,28 +1,30 @@
 package com.example.museaapplication.ui.signup;
 
+
 import android.util.Patterns;
 
 import androidx.lifecycle.ViewModel;
 
-import java.sql.SQLOutput;
-import java.util.regex.Matcher;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.regex.Pattern;
 
 public class SignupViewModel extends ViewModel {
-
-    public boolean existsUsername(String username) {
+    /*
+    public boolean existsUser(String username, String email) {
         // TODO: implementar logica para determinar si ya existe un usuario con el mismo username
         return true;
     }
+    public boolean existsEmail(String email) {
+        // TODO: implementar logica para determinar si es un email ya existe
+        return true;
+    }
+    */
 
     public boolean isEmail(String email) {
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         return pattern.matcher(email).matches();
-    }
-
-    public boolean existsEmail(String email) {
-        // TODO: implementar logica para determinar si es un email ya existe
-        return true;
     }
 
     public boolean isValidPassword(String password) {
@@ -33,4 +35,25 @@ public class SignupViewModel extends ViewModel {
         return password.matches(NumberRegex) && password.matches(UpperCaseRegex) && password.matches(LowerCaseRegex);
 
     }
+
+    public boolean newSignup(String username, String password, String email) {
+        // TODO: json que tenga username: testUser, password: testPass, email: test@test.com
+
+        final JSONObject root = new JSONObject();
+        try {
+            root.put("username", username);
+            root.put("password", password);
+            root.put("email", email);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /* TODO: Conectar al servidor "https://musea-authorization-server.herokuapp.com/signup", mandarle el JSON y tratar el resultado
+            Si retorna 200 se ha creado correctamente si es 404 ya existe el usuario
+        */
+
+        return true;
+    }
+
+
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -55,21 +56,21 @@ public class SignupFragment extends Fragment {
                 boolean b = true;
                 String warningMessage = new String();
 
-                /*
                 if (username.getText().toString().length() < 6) {
                     warningMessage = getContext().getResources().getString(R.string.warning_short_username);
                     b = false;
                 }
-                else if (signupViewModel.existsUsername(username.getText().toString())) {
-                    warningMessage = getContext().getResources().getString(R.string.warning_used_username);
-                    b = false;
-                }
-                */
 
                 if (!signupViewModel.isEmail(email.getText().toString())) {
                     if (!warningMessage.isEmpty())
                         warningMessage += "\n";
                     warningMessage += getContext().getResources().getString(R.string.warning_not_email);
+                    b = false;
+                }
+
+                /*
+                if (signupViewModel.existsUser(username.getText().toString(), email.getText().toString())) {
+                    warningMessage = getContext().getResources().getString(R.string.warning_used_username);
                     b = false;
                 }
                 else if (signupViewModel.existsEmail(email.getText().toString())) {
@@ -78,6 +79,7 @@ public class SignupFragment extends Fragment {
                     warningMessage += getContext().getResources().getString(R.string.warning_used_email);
                     b = false;
                 }
+                */
 
                 if (!signupViewModel.isValidPassword(password.getText().toString()) || password.getText().toString().length()<8) {
                     if (!warningMessage.isEmpty())
@@ -97,7 +99,10 @@ public class SignupFragment extends Fragment {
                 if (!b)
                     textWarnings.setText(warningMessage);
                 else {
-                    // TODO: Mostrar que se ha registrado correctamente el nuevo usuario y volver a LoginActivity
+                    if (signupViewModel.newSignup(username.getText().toString(),password.getText().toString(),email.getText().toString()))
+                        Toast.makeText(getContext(),"User created!",Toast.LENGTH_SHORT);
+                    else
+                        Toast.makeText(getContext(),"User already exist",Toast.LENGTH_SHORT);
                     fm.popBackStack();
                 }
 
