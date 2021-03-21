@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MuseuActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".ui.MuseuActivity">
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -17,8 +18,8 @@
 
             <ImageView
                 android:id="@+id/image_holder"
-                android:layout_width="wrap_content"
-                android:scaleType="fitXY"
+                android:layout_width="match_parent"
+                android:scaleType="centerCrop"
                 android:layout_height="300dp">
 
             </ImageView>
@@ -28,6 +29,18 @@
                 android:layout_height="wrap_content">
 
             </TextView>
+
+            <ImageView
+                android:id="@+id/image_holder_test_expo"
+                android:layout_width="match_parent"
+                android:scaleType="centerCrop"
+                android:layout_height="300dp"
+                android:elevation="4dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"></ImageView>
+
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="20dp"></Space>

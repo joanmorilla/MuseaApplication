@@ -1,4 +1,4 @@
-package com.example.museaapplication.ui.home;
+package com.example.museaapplication.Classes.ViewModels;
 
 import android.util.Log;
 
@@ -6,30 +6,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.museaapplication.Classes.APIRequests;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeViewModel extends ViewModel {
-
-    private MutableLiveData<String> mText;
     private MutableLiveData<Museo[]> Museums;
-
-    public HomeViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("Propers");
-    }
-
     public LiveData<Museo[]> getMuseums() {
         if (Museums == null){
             Museums = new MutableLiveData<Museo[]>();
-            loadUsers();
         }
         return Museums;
     }
@@ -42,7 +34,6 @@ public class HomeViewModel extends ViewModel {
                 MuseoValue mymuseumList = response.body();
                 Museo[] museums = mymuseumList.getMuseums();
                 Museums.postValue(museums);
-                cacheExpositions(museums);
             }
 
             @Override
@@ -53,14 +44,5 @@ public class HomeViewModel extends ViewModel {
                 SingletonDataHolder.getInstance().setMuseums(null);
             }
         });
-    }
-    private void cacheExpositions(Museo[] museums) {
-        for(Museo m: museums){
-            APIRequests.getInstance().getExpositionsOfMuseums(m);
-        }
-    }
-
-    public LiveData<String> getText() {
-        return mText;
     }
 }

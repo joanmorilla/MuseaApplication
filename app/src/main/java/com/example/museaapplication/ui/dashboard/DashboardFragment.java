@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.PropersFragment;
 import com.example.museaapplication.ui.UserFragment;
@@ -48,35 +49,27 @@ public class DashboardFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
-    /*@Override
-    public void onDetach() {
-        try {
-            Field childFragmentManager = android.app.Fragment.class.getDeclaredField("mChildFragmentManager");
-            childFragmentManager.setAccessible(true);
-            childFragmentManager.set(this, null);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        super.onDetach();
-    }*/
 }
 
 // Since this is an object collection, use a FragmentStatePagerAdapter,
 // and NOT a FragmentPagerAdapter.
 class PagerAdapter extends FragmentPagerAdapter {
 
-    private Fragment f1 = new PropersFragment();
+    private Fragment f1 = new PropersFragment();;
     private Fragment f2 = new PropersFragment();
+    private Fragment f3 = new UserFragment();
+
+    FragmentManager fragmentManager;
 
 
     public PagerAdapter(FragmentManager fm) {
         super(fm);
+        fragmentManager = fm;
     }
 
     @Override
     public Fragment getItem(int i) {
+
         Fragment f = new Fragment();
         switch (i){
             case 0:
@@ -85,6 +78,9 @@ class PagerAdapter extends FragmentPagerAdapter {
             case 1:
                  f = f1;
                  break;
+            case 2:
+                f = f3;
+                break;
             default:
                 throw new IllegalArgumentException();
         }
@@ -93,7 +89,7 @@ class PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -105,6 +101,10 @@ class PagerAdapter extends FragmentPagerAdapter {
                 break;
             case 1:
                 s = "Pais";
+                break;
+
+            case 2:
+                s = "Favorits";
                 break;
         }
         return s;
