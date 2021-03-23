@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
@@ -77,42 +78,45 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (!SingletonDataHolder.getInstance().backStack.lastElement().equals(item.getItemId())) SingletonDataHolder.getInstance().backStack.push(item.getItemId());
                 }
-
+                TextView txt = findViewById(R.id.title_test);
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
                         fm.beginTransaction().hide(active).show(mHomeFragment).commit();
                         active = mHomeFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 0;
-                        setTitle(R.string.title_home);
+                        txt.setText(R.string.title_home);
                         return true;
                     case R.id.navigation_dashboard:
                         fm.beginTransaction().hide(active).show(mDashboardFragment).commit();
                         active = mDashboardFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 1;
-                        setTitle(R.string.title_dashboard);
+                        txt.setText(R.string.title_dashboard);
                         return true;
                     case R.id.navigation_maps:
                         fm.beginTransaction().hide(active).show(mMapFragment).commit();
                         active = mMapFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 4;
-                        setTitle(R.string.title_maps);
+                        txt.setText(R.string.title_maps);
                         return true;
                     case R.id.navigation_notifications:
                         fm.beginTransaction().hide(active).show(mNotificationsFragment).commit();
                         active = mNotificationsFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 2;
-                        setTitle(R.string.title_notifications);
+                        txt.setText(R.string.title_notifications);
                         return true;
                     case R.id.navigation_user:
                         fm.beginTransaction().hide(active).show(mUserFragment).commit();
                         active = mUserFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 3;
-                        setTitle(R.string.title_user);
+                        txt.setText(R.string.title_user);
                         return true;
                 }
                 return false;
             }
         });
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(R.layout.appbar_layout_test);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
