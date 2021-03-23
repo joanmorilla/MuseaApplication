@@ -50,12 +50,16 @@ public class SignupFragment extends Fragment {
             System.out.println("No Data");
             return root;
         }
-        username.setText(bundle.getString("USERNAME"));
+        email.setText(bundle.getString("USERNAME"));
+
+        final View loadingPanel = root.findViewById(R.id.loadingPanelSignup);
+        loadingPanel.setVisibility(View.GONE);
 
         signupViewModel.getRes().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 r = integer;
+                loadingPanel.setVisibility(View.GONE);
                 if (r.equals(1)) {
                     Log.d("Response state","Usuario creado!");
                     Toast.makeText(getContext(), "User created!", Toast.LENGTH_LONG).show();
@@ -64,6 +68,7 @@ public class SignupFragment extends Fragment {
                 else if (r.equals(2)) {
                     Log.d("Response state","Usuario ya existe");
                     Toast.makeText(getContext(), "User already exist", Toast.LENGTH_LONG).show();
+                    textWarnings.setText(getContext().getResources().getString(R.string.warning_user_exists));
                 }
                 else if (r.equals(-1)){
                     Log.d("Response state","algo ocurrio");
@@ -71,6 +76,7 @@ public class SignupFragment extends Fragment {
                 }
                 else {
                     Log.d("Response state","esperando respuesta...");
+                    loadingPanel.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -137,4 +143,10 @@ public class SignupFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        final View loadingPanel = root.findViewById(R.id.loadingPanelSignup);
+        loadingPanel.setVisibility(View.GONE);
+    }
 }

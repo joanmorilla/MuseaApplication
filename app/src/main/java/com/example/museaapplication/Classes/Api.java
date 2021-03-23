@@ -44,4 +44,7 @@ public interface Api {
     @POST("https://musea-authorization-server.herokuapp.com/oauth/token")
     Call<UserValue> getUser(@Header("Authorization") String authHeader,
                             @Body RequestBody body);
+
+    @GET("https://museaimages.s3.eu-west-3.amazonaws.com/logo.png")
+    Call<User> getImage();
 }

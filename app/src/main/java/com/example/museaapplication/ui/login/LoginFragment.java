@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -24,6 +25,7 @@ import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.ui.MainActivity;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.signup.SignupFragment;
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -50,10 +52,9 @@ public class LoginFragment extends Fragment {
         fm = getParentFragmentManager();
 
         // Imagen de portada
-        SingletonDataHolder.getInstance().setCodedImage(imageToString(R.drawable.image_holder));
-        String image = SingletonDataHolder.getInstance().getCodedImage();
         ImageView imageView = root.findViewById(R.id.image_holder);
-        imageView.setImageBitmap(stringToImage(image));
+        String url = getContext().getResources().getString(R.string.url_logo);
+        Picasso.get().load(url).fit().into(imageView);
 
         // Get text del username y de la password
         final EditText username = root.findViewById(R.id.enter_username);
@@ -61,11 +62,14 @@ public class LoginFragment extends Fragment {
 
         final TextView textWarnings = root.findViewById(R.id.text_warnigs);
 
+        final View loadingPanel = root.findViewById(R.id.loadingPanel);
+        loadingPanel.setVisibility(View.GONE);
 
         loginViewModel.getRes().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer integer) {
                 r = integer;
+                loadingPanel.setVisibility(View.GONE);
                 if (r.equals(1)) {
                     Log.d("Response state","Succesfuly Login");
                     Toast.makeText(getContext(), "Logged", Toast.LENGTH_SHORT).show();
@@ -82,6 +86,7 @@ public class LoginFragment extends Fragment {
                 }
                 else {
                     Log.d("Response state","esperando respuesta...");
+                    loadingPanel.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -144,6 +149,8 @@ public class LoginFragment extends Fragment {
         if (!checkBoxRememberMe.isChecked())
             password.setText("");
 
+        final View loadingPanel = root.findViewById(R.id.loadingPanel);
+        loadingPanel.setVisibility(View.GONE);
     }
 
     String imageToString(int id){

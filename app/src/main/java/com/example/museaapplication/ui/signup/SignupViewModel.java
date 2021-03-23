@@ -66,7 +66,7 @@ public class SignupViewModel extends ViewModel {
                     Log.d("Respuesta","Usuario creado!");
                     res.setValue(1);
                 }
-                else if (response.code() == 404) {
+                else if (response.code() == 400) {
                     Log.d("Respuesta","Usuario ya existe");
                     res.setValue(2);
                 }

@@ -30,12 +30,13 @@
     <string name="warning_used_username">This username is already being used!</string>
     <string name="warning_short_username">The username must have at least 6 characters</string>
     <string name="warning_used_email">This email is already being used!</string>
+    <string name="warning_user_exists">This user already exists!</string>
     <string name="warning_not_email">The email address must be a correct address</string>
     <string name="warning_password">Password must contain minimum 8 characters, at least 1 Upercase, 1 Lowercase and 1 Number</string>
     <string name="warning_not_match_password">Passwords do not match!</string>
 
     <!-- login warnings -->
-    <string name="warning_login">Wrong username or password</string>
+    <string name="warning_login">Wrong email or password</string>
     <string name="warning_attempts_exceeded">You have exceeded the number of attempts allowed!</string>
     <string name="remaining_time">seconds left</string>
     <string name="warning_login2">\"Please enter username and password\"</string>
