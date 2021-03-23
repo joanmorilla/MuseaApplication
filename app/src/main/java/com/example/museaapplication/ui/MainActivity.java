@@ -22,8 +22,8 @@ import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity {
     // Fragmentos del hub de navegación inferior
-    final Fragment mHomeFragment = new UserFragment();
-    final Fragment mDashboardFragment = new UserFragment();
+    final Fragment mHomeFragment = new HomeFragment();
+    final Fragment mDashboardFragment = new DashboardFragment();
     final Fragment mMapFragment = new MapFragment();
     final Fragment mNotificationsFragment = new NotificationsFragment();
     final Fragment mUserFragment = new UserFragment();
