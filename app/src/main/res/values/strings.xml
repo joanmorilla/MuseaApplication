@@ -3,11 +3,13 @@
     <string name="title_home">Menu Principal</string>
     <string name="title_dashboard">Buscar</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_user">Usuari</string>
+    <string name="title_user">Perfil Usuari</string>
     <string name="title_maps">Mapa</string>
     <string name="tab_propers">Propers</string>
     <string name="tab_pais">Pais</string>
     <string name="tab_favorits">Favorits</string>
+    <string name="button_eu">Editar Usuari</string>
+    <string name="vis_mus">Museus Visitats</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

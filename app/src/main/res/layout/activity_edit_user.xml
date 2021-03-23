@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".ui.edit_user">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Editar Perfil"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:textAlignment="center"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="30dp" />
+
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nom"
+        android:id="@+id/et_name_up"
+        android:layout_margin="4dp"
+        android:drawablePadding="7dp"
+        android:drawableLeft="@drawable/ic_action_user"
+        android:paddingLeft="10dp"
+        android:textColor="@android:color/black" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Bio"
+        android:id="@+id/et_bio_up"
+        android:layout_margin="4dp"
+        android:drawablePadding="7dp"
+        android:drawableLeft="@drawable/ic_action_user"
+        android:paddingLeft="10dp"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Guardar Canvis"
+        android:textSize="20dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_up"/>
+
+
+
+
+</LinearLayout>

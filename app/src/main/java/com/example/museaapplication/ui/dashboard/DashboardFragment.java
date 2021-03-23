@@ -5,27 +5,18 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.PropersFragment;
-import com.example.museaapplication.ui.UserFragment;
-import com.example.museaapplication.ui.home.HomeFragment;
-import com.example.museaapplication.ui.notifications.NotificationsFragment;
+import com.example.museaapplication.ui.user.UserFragment;
 import com.google.android.material.tabs.TabLayout;
-
-import java.lang.reflect.Field;
 
 public class DashboardFragment extends Fragment {
 
