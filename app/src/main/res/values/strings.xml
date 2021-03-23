@@ -38,4 +38,5 @@
     <string name="warning_login">Wrong username or password</string>
     <string name="warning_attempts_exceeded">You have exceeded the number of attempts allowed!</string>
     <string name="remaining_time">seconds left</string>
+    <string name="warning_login2">\"Please enter username and password\"</string>
 </resources>

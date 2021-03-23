@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MuseaApplication">
         <activity
-            android:name=".MuseuActivity"
+            android:name=".ui.MuseuActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".InitialActivity"

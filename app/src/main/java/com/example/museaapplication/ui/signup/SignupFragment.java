@@ -1,6 +1,7 @@
 package com.example.museaapplication.ui.signup;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.museaapplication.R;
@@ -21,6 +24,7 @@ public class SignupFragment extends Fragment {
     private View root;
     private FragmentManager fm;
     private SignupViewModel signupViewModel;
+    private Integer r;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -47,6 +51,30 @@ public class SignupFragment extends Fragment {
             return root;
         }
         username.setText(bundle.getString("USERNAME"));
+
+        signupViewModel.getRes().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                r = integer;
+                if (r.equals(1)) {
+                    Log.d("Response state","Usuario creado!");
+                    Toast.makeText(getContext(), "User created!", Toast.LENGTH_LONG).show();
+                    fm.popBackStack();
+                }
+                else if (r.equals(2)) {
+                    Log.d("Response state","Usuario ya existe");
+                    Toast.makeText(getContext(), "User already exist", Toast.LENGTH_LONG).show();
+                }
+                else if (r.equals(-1)){
+                    Log.d("Response state","algo ocurrio");
+                    Toast.makeText(getContext(), "Something went wrong try again later", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Log.d("Response state","esperando respuesta...");
+                }
+
+            }
+        });
 
         // Implementación del botton 'signup'
         final Button signup = root.findViewById(R.id.button_signup);
@@ -99,11 +127,9 @@ public class SignupFragment extends Fragment {
                 if (!b)
                     textWarnings.setText(warningMessage);
                 else {
-                    if (signupViewModel.newSignup(username.getText().toString(),password.getText().toString(),email.getText().toString()))
-                        Toast.makeText(getContext(),"User created!",Toast.LENGTH_SHORT);
-                    else
-                        Toast.makeText(getContext(),"User already exist",Toast.LENGTH_SHORT);
-                    fm.popBackStack();
+                    textWarnings.setText("");
+                    r = 0;
+                    signupViewModel.newSignup(username.getText().toString(),password.getText().toString(),email.getText().toString());
                 }
 
             }

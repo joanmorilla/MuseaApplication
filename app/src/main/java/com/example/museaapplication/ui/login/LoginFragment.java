@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.museaapplication.Classes.SingletonDataHolder;
-import com.example.museaapplication.MainActivity;
+import com.example.museaapplication.ui.MainActivity;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.signup.SignupFragment;
 
@@ -37,6 +39,7 @@ public class LoginFragment extends Fragment {
     private View root;
     private FragmentManager fm;
     private LoginViewModel loginViewModel;
+    private Integer r;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -58,18 +61,38 @@ public class LoginFragment extends Fragment {
 
         final TextView textWarnings = root.findViewById(R.id.text_warnigs);
 
+
+        loginViewModel.getRes().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                r = integer;
+                if (r.equals(1)) {
+                    Log.d("Response state","Succesfuly Login");
+                    Toast.makeText(getContext(), "Logged", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+                else if (r.equals(2)) {
+                    Log.d("Response state","Wrong username or password");
+                    textWarnings.setText(getContext().getResources().getString(R.string.warning_login));
+                }
+                else if (r.equals(-1)){
+                    Log.d("Response state","algo ocurrio");
+                    Toast.makeText(getContext(), "Something went wrong try again later", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Log.d("Response state","esperando respuesta...");
+                }
+            }
+        });
+
         // Implementación del botton 'login'
         final Button loginButton = root.findViewById(R.id.button_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!loginViewModel.validUsernamePassword(username.getText().toString(),password.getText().toString())) {
-                    if (textWarnings.getText().toString().isEmpty()) textWarnings.setText(getContext().getResources().getString(R.string.warning_login));
-                }
-                else{
-                    // change activity
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    startActivity(intent);
+                    if (textWarnings.getText().toString().isEmpty()) textWarnings.setText(getContext().getResources().getString(R.string.warning_login2));
                 }
             }
         });
@@ -116,6 +139,8 @@ public class LoginFragment extends Fragment {
 
         final EditText password = root.findViewById(R.id.enter_password);
         final CheckBox checkBoxRememberMe = root.findViewById(R.id.checkbox_remember_me);
+        final TextView textWarnings = root.findViewById(R.id.text_warnigs);
+        textWarnings.setText("");
         if (!checkBoxRememberMe.isChecked())
             password.setText("");
 

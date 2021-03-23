@@ -1,26 +1,41 @@
 package com.example.museaapplication.ui.signup;
 
 
+import android.app.Activity;
+import android.app.Application;
+import android.util.Log;
 import android.util.Patterns;
+import android.widget.Toast;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.museaapplication.Classes.Dominio.Museo;
+import com.example.museaapplication.Classes.Dominio.User;
+import com.example.museaapplication.Classes.Json.MuseoValue;
+import com.example.museaapplication.Classes.RetrofitClient;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.regex.Pattern;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SignupViewModel extends ViewModel {
-    /*
-    public boolean existsUser(String username, String email) {
-        // TODO: implementar logica para determinar si ya existe un usuario con el mismo username
-        return true;
+
+    private MutableLiveData<Integer> res;
+
+    public SignupViewModel() {
+        res = new MutableLiveData<Integer>();
+        res.setValue(0);
     }
-    public boolean existsEmail(String email) {
-        // TODO: implementar logica para determinar si es un email ya existe
-        return true;
+    public MutableLiveData<Integer> getRes() {
+        return res;
     }
-    */
 
     public boolean isEmail(String email) {
         Pattern pattern = Patterns.EMAIL_ADDRESS;
@@ -36,24 +51,44 @@ public class SignupViewModel extends ViewModel {
 
     }
 
-    public boolean newSignup(String username, String password, String email) {
-        // TODO: json que tenga username: testUser, password: testPass, email: test@test.com
+    public void newSignup(String username, String password, String email) {
+        User newUser = new User(username,password,email);
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().createUser(newUser);
+        res.setValue(0);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
 
-        final JSONObject root = new JSONObject();
-        try {
-            root.put("username", username);
-            root.put("password", password);
-            root.put("email", email);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                Log.d("toString",response.toString());
+                Log.d("code","" + response.code());
 
-        /* TODO: Conectar al servidor "https://musea-authorization-server.herokuapp.com/signup", mandarle el JSON y tratar el resultado
-            Si retorna 200 se ha creado correctamente si es 404 ya existe el usuario
-        */
+                if (response.code() == 200) {
+                    Log.d("Respuesta","Usuario creado!");
+                    res.setValue(1);
+                }
+                else if (response.code() == 404) {
+                    Log.d("Respuesta","Usuario ya existe");
+                    res.setValue(2);
+                }
 
-        return true;
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("TAG1", t.getLocalizedMessage());
+                Log.e("TAG2", t.getMessage());
+                t.printStackTrace();
+                res.setValue(-1);
+            }
+
+
+        });
+
+
     }
 
 
+    public void setRes(MutableLiveData<Integer> res) {
+        this.res = res;
+    }
 }
