@@ -6,7 +6,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
@@ -85,30 +87,41 @@ public class MainActivity extends AppCompatActivity {
                         active = mHomeFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 0;
                         txt.setText(R.string.title_home);
+                        txt.setClickable(true);
+                        txt.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getApplicationContext(), "Funca", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         return true;
                     case R.id.navigation_dashboard:
                         fm.beginTransaction().hide(active).show(mDashboardFragment).commit();
                         active = mDashboardFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 1;
                         txt.setText(R.string.title_dashboard);
+                        txt.setClickable(false);
                         return true;
                     case R.id.navigation_maps:
                         fm.beginTransaction().hide(active).show(mMapFragment).commit();
                         active = mMapFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 4;
                         txt.setText(R.string.title_maps);
+                        txt.setClickable(false);
                         return true;
                     case R.id.navigation_notifications:
                         fm.beginTransaction().hide(active).show(mNotificationsFragment).commit();
                         active = mNotificationsFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 2;
                         txt.setText(R.string.title_notifications);
+                        txt.setClickable(false);
                         return true;
                     case R.id.navigation_user:
                         fm.beginTransaction().hide(active).show(mUserFragment).commit();
                         active = mUserFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 3;
                         txt.setText(R.string.title_user);
+                        txt.setClickable(false);
                         return true;
                 }
                 return false;

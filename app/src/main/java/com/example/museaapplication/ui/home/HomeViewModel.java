@@ -42,9 +42,11 @@ public class HomeViewModel extends ViewModel {
             @Override
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
                 MuseoValue mymuseumList = response.body();
+                /*
                 Museo[] museums = mymuseumList.getMuseums();
                 Museums.postValue(museums);
                 cacheExpositions(museums);
+                 */
             }
 
             @Override

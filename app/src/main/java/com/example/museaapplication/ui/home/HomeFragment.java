@@ -18,8 +18,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,7 +61,14 @@ public class HomeFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_home, container, false);
         TextView txt = super.getActivity().findViewById(R.id.title_test);
         txt.setText(R.string.title_home);
-        final TextView textView = root.findViewById(R.id.text_home);
+        txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Funca", Toast.LENGTH_SHORT).show();
+            }
+        });
+        ProgressBar pb = (ProgressBar) root.findViewById(R.id.progress_bar);
+        pb.setVisibility(View.VISIBLE);
         homeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
             @Override
             public void onChanged(Museo[] museos) {
