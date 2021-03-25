@@ -1,6 +1,8 @@
 package com.example.museaapplication.ui;
 
+import android.Manifest;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,12 +19,18 @@ import com.example.museaapplication.ui.UserFragment;
 import com.example.museaapplication.ui.dashboard.DashboardFragment;
 import com.example.museaapplication.ui.home.HomeFragment;
 import com.example.museaapplication.ui.notifications.NotificationsFragment;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
@@ -32,7 +40,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import java.util.Stack;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     // Fragmentos del hub de navegación inferior
     final Fragment mHomeFragment = new HomeFragment();
     final Fragment mDashboardFragment = new DashboardFragment();
@@ -44,12 +52,19 @@ public class MainActivity extends AppCompatActivity {
     Fragment active = mHomeFragment;
 
     BottomNavigationView navView;
+    private MapView mMapView;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mMapView = findViewById(R.id.map_view);
+
+
+
+
         SingletonDataHolder.getInstance().backStack.push(R.id.navigation_home);
         for (Fragment f: fm.getFragments()) {   
             fm.beginTransaction().remove(f).commit();
@@ -165,5 +180,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         fm.beginTransaction().show(active).commit();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 }

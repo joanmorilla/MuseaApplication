@@ -1,44 +1,92 @@
 package com.example.museaapplication.ui.Map;
 
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.app.ActionBar;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.R;
+import com.example.museaapplication.ui.home.HomeViewModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.util.Objects;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
 
     private MapViewModel mViewModel;
+    private HomeViewModel mHomeViewModel;
     private MapView mMapView;
+    private GoogleMap mMap;
 
     public static MapFragment newInstance() {
         return new MapFragment();
     }
+    Bitmap d = null;
+
+    Museo[] museums;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.map_fragment, container, false);
         mMapView = root.findViewById(R.id.map_view);
+        mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
+        mHomeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
+            @Override
+            public void onChanged(Museo[] museos) {
+                for(Museo m: museos){
+                    Picasso.get().load(m.getImage()).into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            d = bitmap;
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                        }
+                    });
+                    LatLng pos = new LatLng(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal());
+                    mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.getDescriptions().getEn())
+                    );
+
+                }
+            }
+        });
         initGoogleMap(savedInstanceState);
         /*TextView txt = super.getActivity().findViewById(R.id.title_test);
         txt.setText(R.string.title_maps);*/
@@ -56,7 +104,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         actionBar.setCustomView(R.layout.appbar_layout_test);*/
     }
 
-    private void initGoogleMap(Bundle savedInstanceState){
+    private void initGoogleMap(Bundle savedInstanceState) {
         // *** IMPORTANT ***
         // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
         // objects or sub-Bundles.
@@ -103,10 +151,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap map) {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+        mMap = map;
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -114,9 +160,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+
             return;
         }
+        Toast.makeText(getContext(), "Probando", Toast.LENGTH_SHORT).show();
         map.setMyLocationEnabled(true);
+        map.getUiSettings().setMyLocationButtonEnabled(true);
+        LatLng sydney = new LatLng(0, 0);
+        map.addMarker(new MarkerOptions()
+                .position(sydney)
+                .title("Marker in Sydney"));
+
     }
 
     @Override

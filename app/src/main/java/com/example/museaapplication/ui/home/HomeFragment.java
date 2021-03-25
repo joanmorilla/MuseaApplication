@@ -73,7 +73,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(Museo[] museos) {
                 GenerarBotones(museos);
+                pb.setVisibility(View.GONE);
             }
+
         });
         setHasOptionsMenu(true);
         return root;
