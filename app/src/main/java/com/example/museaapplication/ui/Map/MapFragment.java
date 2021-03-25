@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.MainActivity;
+import com.example.museaapplication.ui.MuseuActivity;
 import com.example.museaapplication.ui.home.HomeViewModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -34,10 +36,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
@@ -67,6 +71,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mHomeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
             @Override
             public void onChanged(Museo[] museos) {
+                museums = museos;
                 for (Museo m : museos) {
                     Picasso.get().load(m.getImage()).into(new Target() {
                         @Override
@@ -159,12 +164,33 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             map.setMyLocationEnabled(true);
             map.getUiSettings().setMyLocationButtonEnabled(true);
             LatLng sydney = new LatLng(0, 0);
-            map.addMarker(new MarkerOptions()
+            MarkerOptions marker = new MarkerOptions()
                     .position(sydney)
-                    .title("Marker in Sydney"));
+                    .title("Marker in Sydney");
+            map.addMarker(marker);
+            map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    int position = getMPosition(marker.getTitle());
+                    if (position >= 0) {
+                        Intent i = new Intent(getContext(), MuseuActivity.class);
+                        i.putExtra("Museu", (Serializable) museums[position]);
+                        startActivity(i);
+                    }
+                    //Toast.makeText(getContext(), marker.getTitle(), Toast.LENGTH_SHORT).show();
+                }
+            });
         } else requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
     }
 
+    private int getMPosition(String title){
+        int i = 0;
+        for(Museo m : museums){
+            if (m.getName().equals(title)) return i;
+            i++;
+        }
+        return -1;
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

@@ -118,12 +118,12 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
             layout.addView(imageButton);
             Picasso.get().load(url).fit().centerCrop().into(imageButton);
         }
-        txtV.setText(museum.getCountry() + "\n"
+        /*txtV.setText(museum.getCountry() + "\n"
                 +    museum.getCity() + "\n"
                 +    museum.getAddress() + "\n"
-                +    museum.getDescriptions().getEn());
+                +    museum.getDescriptions().getEn());*/
 
-        /*txtV.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas mattis velit felis, lobortis euismod sem iaculis in. Aenean imperdiet congue consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eleifend ipsum a enim porta, et mattis metus bibendum. Quisque eu ullamcorper ligula. Nunc dictum velit sit amet nunc suscipit, id sagittis dolor mattis. Proin in eros sodales, tincidunt justo vitae, consectetur ante. In quis libero leo. Cras consectetur sit amet eros eu sagittis. Duis metus sem, tempus id nulla vitae, convallis pretium tortor. Quisque varius tincidunt nisi, vel pulvinar nisl posuere sit amet. Quisque tortor neque, pretium ut varius quis, volutpat nec ipsum. Nam ultrices commodo ultricies. Aliquam rutrum id tellus eu placerat. Cras vehicula orci in facilisis condimentum.\n" +
+        txtV.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas mattis velit felis, lobortis euismod sem iaculis in. Aenean imperdiet congue consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eleifend ipsum a enim porta, et mattis metus bibendum. Quisque eu ullamcorper ligula. Nunc dictum velit sit amet nunc suscipit, id sagittis dolor mattis. Proin in eros sodales, tincidunt justo vitae, consectetur ante. In quis libero leo. Cras consectetur sit amet eros eu sagittis. Duis metus sem, tempus id nulla vitae, convallis pretium tortor. Quisque varius tincidunt nisi, vel pulvinar nisl posuere sit amet. Quisque tortor neque, pretium ut varius quis, volutpat nec ipsum. Nam ultrices commodo ultricies. Aliquam rutrum id tellus eu placerat. Cras vehicula orci in facilisis condimentum.\n" +
                 "\n" +
                 "Proin ultrices augue molestie velit tincidunt, vitae bibendum metus vestibulum. Nullam ac odio congue, eleifend ex quis, ultricies purus. Vivamus ornare libero vitae facilisis sagittis. Sed gravida maximus libero, ut eleifend ante iaculis et. Phasellus accumsan id augue ac rhoncus. Integer non porttitor odio. Praesent rhoncus et sapien sed mollis.\n" +
                 "\n" +
@@ -132,7 +132,7 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
                 "Cras dictum nulla sed dui mattis, eu interdum nisi ultrices. Pellentesque a purus nibh. Nunc ultricies erat at nibh eleifend placerat. Maecenas laoreet sodales arcu quis sagittis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum eu mauris vitae dui euismod hendrerit sed eu orci. Cras libero libero, pharetra vitae imperdiet id, iaculis sit amet odio. Pellentesque ornare convallis leo. Morbi hendrerit dolor non diam euismod, vel facilisis nisl euismod. Curabitur viverra dolor at cursus efficitur. Cras et maximus risus. Praesent eu felis nisi. In ligula nisi, mollis in nunc ut, scelerisque volutpat arcu. Vivamus malesuada molestie dui, eu commodo est.\n" +
                 "\n" +
                 "Maecenas bibendum diam et tellus facilisis semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam ut vulputate lorem. Mauris eu massa at elit consequat pellentesque. Ut sit amet faucibus dolor. Phasellus faucibus finibus diam, vel porttitor justo. Proin in justo sagittis dolor ullamcorper dictum in sit amet elit. Nulla justo nibh, dapibus id commodo vel, accumsan non nisl. Donec sollicitudin sapien justo, eu facilisis velit bibendum nec.");
-*/
+
         return root;
     }
 
