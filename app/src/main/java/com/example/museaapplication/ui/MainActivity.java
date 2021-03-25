@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMapView = findViewById(R.id.map_view);
 
 
-
-
         SingletonDataHolder.getInstance().backStack.push(R.id.navigation_home);
         for (Fragment f: fm.getFragments()) {   
             fm.beginTransaction().remove(f).commit();

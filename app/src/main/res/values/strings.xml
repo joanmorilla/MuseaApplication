@@ -8,6 +8,7 @@
     <string name="tab_propers">Propers</string>
     <string name="tab_pais">Pais</string>
     <string name="tab_favorits">Favorits</string>
+    <string name="perm_denegado">Permis denegat, algunes funcions estaràn limitades </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

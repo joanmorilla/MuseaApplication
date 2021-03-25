@@ -1,10 +1,12 @@
 package com.example.museaapplication.ui.Map;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.R;
+import com.example.museaapplication.ui.MainActivity;
 import com.example.museaapplication.ui.home.HomeViewModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -49,6 +52,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public static MapFragment newInstance() {
         return new MapFragment();
     }
+
     Bitmap d = null;
 
     Museo[] museums;
@@ -63,7 +67,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mHomeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
             @Override
             public void onChanged(Museo[] museos) {
-                for(Museo m: museos){
+                for (Museo m : museos) {
                     Picasso.get().load(m.getImage()).into(new Target() {
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -151,25 +155,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            map.setMyLocationEnabled(true);
+            map.getUiSettings().setMyLocationButtonEnabled(true);
+            LatLng sydney = new LatLng(0, 0);
+            map.addMarker(new MarkerOptions()
+                    .position(sydney)
+                    .title("Marker in Sydney"));
+        } else requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+    }
 
-            return;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    onMapReady(mMap);
+                }else Toast.makeText(getContext(), R.string.perm_denegado, Toast.LENGTH_LONG).show();
+                break;
+            default:
+                break;
         }
-        Toast.makeText(getContext(), "Probando", Toast.LENGTH_SHORT).show();
-        map.setMyLocationEnabled(true);
-        map.getUiSettings().setMyLocationButtonEnabled(true);
-        LatLng sydney = new LatLng(0, 0);
-        map.addMarker(new MarkerOptions()
-                .position(sydney)
-                .title("Marker in Sydney"));
-
     }
 
     @Override
