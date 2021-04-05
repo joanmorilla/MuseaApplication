@@ -11,4 +11,34 @@
     <string name="perm_denegado">Permis denegat, algunes funcions estaràn limitades </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- textos para las activities login y signup -->
+    <string name="enter_username">Username</string>
+    <string name="enter_email">Email</string>
+    <string name="enter_password">Password</string>
+    <string name="enter_password_twice">Repeat password</string>
+
+    <string name="checkbox_remember_password">Remember password</string>
+
+    <string name="button_login">Login</string>
+    <string name="button_signup">Sign up</string>
+
+    <string name="signup_suggestion">Not logged in? Sign up</string>
+    <string name="welcome_message">WELCOME TO MUSEA</string>
+
+    <!-- signup warnings -->
+    <string name="warning_used_username">This username is already being used!</string>
+    <string name="warning_short_username">The username must have at least 6 characters</string>
+    <string name="warning_used_email">This email is already being used!</string>
+    <string name="warning_user_exists">This user already exists!</string>
+    <string name="warning_not_email">The email address must be a correct address</string>
+    <string name="warning_password">Password must contain minimum 8 characters, at least 1 Upercase, 1 Lowercase and 1 Number</string>
+    <string name="warning_not_match_password">Passwords do not match!</string>
+
+    <!-- login warnings -->
+    <string name="warning_login">Wrong email or password</string>
+    <string name="warning_attempts_exceeded">You have exceeded the number of attempts allowed!</string>
+    <string name="remaining_time">seconds left</string>
+    <string name="warning_login2">Please enter valid username and password</string>
 </resources>

@@ -95,6 +95,7 @@ public class HomeFragment extends Fragment {
     int pixToDp(int value){
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, root.getResources().getDisplayMetrics()));
     }
+
     String imageToString(int id){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),id);
