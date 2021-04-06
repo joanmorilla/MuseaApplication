@@ -25,6 +25,8 @@ import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 
@@ -130,7 +132,7 @@ public class PropersFragment extends Fragment {
         Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseums();
         call.enqueue(new Callback<MuseoValue>() {
             @Override
-            public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
+            public void onResponse(@NotNull Call<MuseoValue> call, @NotNull Response<MuseoValue> response) {
                 MuseoValue mymuseumList = response.body();
                 Museo[] museums = mymuseumList.getMuseums();
                 strings = new String[museums.length];

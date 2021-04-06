@@ -18,8 +18,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,13 +59,23 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
-        super.getActivity().setTitle(R.string.title_home);
-        final TextView textView = root.findViewById(R.id.text_home);
+        TextView txt = super.getActivity().findViewById(R.id.title_test);
+        txt.setText(R.string.title_home);
+        txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Funca", Toast.LENGTH_SHORT).show();
+            }
+        });
+        ProgressBar pb = (ProgressBar) root.findViewById(R.id.progress_bar);
+        pb.setVisibility(View.VISIBLE);
         homeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
             @Override
             public void onChanged(Museo[] museos) {
                 GenerarBotones(museos);
+                pb.setVisibility(View.GONE);
             }
+
         });
         setHasOptionsMenu(true);
         return root;
@@ -83,6 +95,7 @@ public class HomeFragment extends Fragment {
     int pixToDp(int value){
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, root.getResources().getDisplayMetrics()));
     }
+
     String imageToString(int id){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),id);

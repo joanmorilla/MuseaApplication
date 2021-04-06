@@ -46,9 +46,9 @@ public class DashboardFragment extends Fragment {
 // and NOT a FragmentPagerAdapter.
 class PagerAdapter extends FragmentPagerAdapter {
 
-    private Fragment f1 = new PropersFragment();;
-    private Fragment f2 = new PropersFragment();
-    private Fragment f3 = new UserFragment();
+    private final Fragment f1 = new PropersFragment();;
+    private final Fragment f2 = new PropersFragment();
+    private final Fragment f3 = new UserFragment();
 
     FragmentManager fragmentManager;
 
