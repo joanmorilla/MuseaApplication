@@ -1,5 +1,6 @@
 package com.example.museaapplication.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -47,6 +48,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.google.android.material.resources.MaterialResources.getDrawable;
+
 
 public class HomeFragment extends Fragment {
 
@@ -70,6 +73,7 @@ public class HomeFragment extends Fragment {
         ProgressBar pb = (ProgressBar) root.findViewById(R.id.progress_bar);
         pb.setVisibility(View.VISIBLE);
         homeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onChanged(Museo[] museos) {
                 GenerarBotones(museos);
@@ -108,6 +112,8 @@ public class HomeFragment extends Fragment {
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     void GenerarBotones(Museo[] m) {
         LinearLayout scrollPais = root.findViewById(R.id.layout_pais);
         Museo[] museums = m;
@@ -115,10 +121,12 @@ public class HomeFragment extends Fragment {
             // Generamos boton
             ImageButton b = new ImageButton(scrollPais.getContext());
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(pixToDp(225), pixToDp(175));
-            param.setMargins(pixToDp(10), 0, 0, 0);
+            param.setMargins(pixToDp(5), 0, pixToDp(5), 0);
             b.setLayoutParams(param);
+            b.setBackground(getContext().getResources().getDrawable(R.drawable.drawable_button));
             // Le asignams la imagen del museo en cuestion
             Picasso.get().load(m[i].getImage()).fit().centerCrop().into(b);
+
             // Asignamos un comportamiento para cuando se presione
             b.setOnClickListener(clickFunc(m[i]));
             // Finalmente lo añadimos a la vista desplazable

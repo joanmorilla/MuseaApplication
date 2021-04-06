@@ -41,4 +41,6 @@
     <string name="warning_attempts_exceeded">You have exceeded the number of attempts allowed!</string>
     <string name="remaining_time">seconds left</string>
     <string name="warning_login2">Please enter valid username and password</string>
+    <string name="button_eu">Editar</string>
+    <string name="vis_mus">Visitats</string>
 </resources>

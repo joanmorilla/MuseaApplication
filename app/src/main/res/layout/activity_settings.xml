@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_margin="4dp"
-            android:backgroundTint="@color/red"
+            android:backgroundTint="@color/red_alert"
             android:drawablePadding="7dp"
             android:hint="Tancar Sessió"
             android:paddingLeft="10dp"
