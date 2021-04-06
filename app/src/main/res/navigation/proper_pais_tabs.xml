@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/proper_pais_tabs"
+    app:startDestination="@id/proper_tab">
+
+    <fragment android:id="@+id/proper_tab"
+        android:name="com.example.museaapplication.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home">
+    </fragment>
+    <fragment android:id="@+id/pais_tab"
+        android:name="com.example.museaapplication.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home">
+    </fragment>
+
+</navigation>

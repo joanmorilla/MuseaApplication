@@ -4,19 +4,181 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.home.HomeFragment"
+    android:fitsSystemWindows="false"
+    android:paddingTop="0dp">
 
-    <TextView
-        android:id="@+id/text_home"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints"
+        android:paddingTop="-20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/text_home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/tab_propers"
+                android:fontFamily="sans-serif-black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/button1"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="1" />
+
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="2" />
+
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="3" />
+
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="4" />
+
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="5" />
+
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="6" />
+
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="7" />
+
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="8" />
+
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="9" />
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"></Space>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/text_pais"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/tab_pais"
+                android:fontFamily="sans-serif-black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <ScrollView
+            android:id="@+id/scroll_pais"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/layout_pais"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                </LinearLayout>
+            </HorizontalScrollView>
+        </ScrollView>
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

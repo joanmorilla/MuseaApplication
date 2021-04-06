@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".ui.SettingsActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+
+
+        <Button
+            android:id="@+id/et_bio_up"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:backgroundTint="@color/red_alert"
+            android:drawablePadding="7dp"
+            android:hint="Tancar Sessió"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.851" />
+
+        <Button
+            android:id="@+id/btn_idioma"
+            android:layout_width="351dp"
+            android:layout_height="86dp"
+            android:layout_margin="4dp"
+            android:layout_marginBottom="42dp"
+            android:drawableLeft="@drawable/ic_stat_flag"
+            android:drawablePadding="7dp"
+            android:hint="Llenguatge"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.54" />
+
+        <Button
+            android:id="@+id/btn_theme"
+            android:layout_width="351dp"
+            android:layout_height="86dp"
+            android:layout_margin="4dp"
+            android:layout_marginBottom="241dp"
+            android:drawableLeft="@drawable/ic_stat_palette"
+            android:drawablePadding="7dp"
+            android:hint="Tema"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.371" />
+
+        <Button
+            android:id="@+id/btn_security"
+            android:layout_width="351dp"
+            android:layout_height="86dp"
+            android:layout_margin="4dp"
+            android:drawableLeft="@drawable/ic_stat_security"
+            android:drawablePadding="7dp"
+            android:hint="Privacitat i Seguretat"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.207" />
+
+        <Button
+            android:id="@+id/btn_ajuda"
+            android:layout_width="351dp"
+            android:layout_height="86dp"
+            android:layout_margin="4dp"
+            android:drawableLeft="@drawable/ic_stat_help"
+            android:drawablePadding="7dp"
+            android:hint="Ajuda i Política de privacitat"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.708" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>
+

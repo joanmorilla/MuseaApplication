@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_default">
+
+    <LinearLayout
+        android:id="@+id/vertical_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/text_username"
+                android:layout_width="@dimen/text_width_small"
+                android:layout_height="@dimen/text_height"
+                android:text="@string/enter_username" />
+
+            <EditText
+                android:id="@+id/enter_username"
+                android:layout_width="@dimen/enter_text_width"
+                android:layout_height="@dimen/enter_text_height"
+                android:background="@drawable/rounded_corner"
+                android:hint="@string/enter_username"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="10dp" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_linear_layout" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/text_email"
+                android:layout_width="@dimen/text_width_small"
+                android:layout_height="@dimen/text_height"
+                android:text="@string/enter_email" />
+
+            <EditText
+                android:id="@+id/enter_email"
+                android:layout_width="@dimen/enter_text_width"
+                android:layout_height="@dimen/enter_text_height"
+                android:background="@drawable/rounded_corner"
+                android:hint="@string/enter_email"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="10dp" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_linear_layout" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/text_password"
+                android:layout_width="@dimen/text_width_small"
+                android:layout_height="@dimen/text_height"
+                android:text="@string/enter_password" />
+
+            <EditText
+                android:id="@+id/enter_password"
+                android:layout_width="@dimen/enter_text_width"
+                android:layout_height="@dimen/enter_text_height"
+                android:background="@drawable/rounded_corner"
+                android:hint="@string/enter_password"
+                android:inputType="textPassword"
+                android:paddingHorizontal="10dp" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_linear_layout" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/text_password2"
+                android:layout_width="@dimen/text_width_small"
+                android:layout_height="@dimen/text_height"
+                android:text="@string/enter_password_twice" />
+
+            <EditText
+                android:id="@+id/enter_password2"
+                android:layout_width="@dimen/enter_text_width"
+                android:layout_height="@dimen/enter_text_height"
+                android:background="@drawable/rounded_corner"
+                android:hint="@string/enter_password_twice"
+                android:inputType="textPassword"
+                android:paddingHorizontal="10dp" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_warnigs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:textColor="@color/red_alert"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vertical_layout"
+        app:layout_constraintVertical_bias="@dimen/vertical_bias_m" />
+
+    <Button
+        android:id="@+id/button_signup"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        android:text="@string/button_signup"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_warnigs"
+        app:layout_constraintVertical_bias="@dimen/vertical_bias_s"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_message"
+        android:textSize="@dimen/text_size_m"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/vertical_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/loadingPanelSignup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
