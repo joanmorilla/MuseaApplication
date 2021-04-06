@@ -23,7 +23,7 @@
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/navigation_user"
-        android:name="com.example.museaapplication.ui.UserFragment"
+        android:name="com.example.museaapplication.ui.user.UserFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_user" />
 

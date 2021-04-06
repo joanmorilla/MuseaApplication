@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -15,7 +14,7 @@ import android.widget.Toast;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.Map.MapFragment;
-import com.example.museaapplication.ui.UserFragment;
+import com.example.museaapplication.ui.user.UserFragment;
 import com.example.museaapplication.ui.dashboard.DashboardFragment;
 import com.example.museaapplication.ui.home.HomeFragment;
 import com.example.museaapplication.ui.notifications.NotificationsFragment;
@@ -28,17 +27,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     // Fragmentos del hub de navegación inferior
