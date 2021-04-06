@@ -22,12 +22,70 @@
                 android:layout_height="300dp">
 
             </ImageView>
-            <TextView
-                android:id="@+id/text_view"
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/museum_title"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    android:textColor="@android:color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="75dp"
+                    android:text="Un museo cualquiera con un nombre largo" />
+                <ImageView
+                    android:id="@+id/info_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/ic_baseline_info_24"
+                    android:layout_alignParentRight="true"
+                    android:clickable="true"/>
 
-            </TextView>
+                <TextView
+                    android:id="@+id/covid_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="COVID-19"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_alignParentRight="true"
+                    android:clickable="true"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/museum_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                android:paddingRight="85dp"
+                android:paddingLeft="10dp"
+                android:textSize="15sp"
+                android:text="Aquesta es una descripció de proba i per tant no s'ha de tomar en serioooooooooooooooooooooooooooooooooooooooooooooooooooooo"/>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="10dp"
+                android:background="@color/grey_700"/>
+
+            <TextView
+                android:id="@+id/text_view"
+                android:text="@string/titol_exhibitions"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:textAlignment="center"
+                android:paddingTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <Space
                 android:layout_width="match_parent"

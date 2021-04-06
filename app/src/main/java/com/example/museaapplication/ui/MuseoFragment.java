@@ -1,8 +1,14 @@
 package com.example.museaapplication.ui;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,10 +21,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Museo;
@@ -26,6 +35,8 @@ import com.example.museaapplication.Classes.OnBackPressed;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,6 +90,8 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -99,39 +112,72 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
 
         LinearLayout layout = root.findViewById(R.id.layout_view);
 
+        // Generating the exposition buttons
         for (Exhibition e : museum.getExhibitionObjects()){
+            // Layout for the whole button image
+            RelativeLayout exhibitionLayout = new RelativeLayout(getContext());
             ImageButton imageButton = new ImageButton(getContext());
-            url = validateUrl(e.getImage());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, pixToDp(300));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, pixToDp(180));
+            // Defining margins and the click listener
             params.setMargins(pixToDp(10), 0, pixToDp(10), pixToDp(10));
             imageButton.setLayoutParams(params);
             imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("Expo", "" + e);
                     sharedViewModel.setCurExposition(e);
                     sharedViewModel.setActive(sharedViewModel.getmExpositionFragment());
                     FragmentManager fm = getParentFragmentManager();
                     fm.beginTransaction().hide(sharedViewModel.getmMuseoFragment()).show(sharedViewModel.getmExpositionFragment()).commit();
                 }
             });
-            layout.addView(imageButton);
+            // Setting the background image to that of the museum
+            url = validateUrl(e.getImage());
             Picasso.get().load(url).fit().centerCrop().into(imageButton);
-        }
-        /*txtV.setText(museum.getCountry() + "\n"
-                +    museum.getCity() + "\n"
-                +    museum.getAddress() + "\n"
-                +    museum.getDescriptions().getEn());*/
+            // Bottom whit rectangle
+            Button whiteRectangle = new Button(getContext());
+            whiteRectangle.setText(e.getName());
+            whiteRectangle.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            whiteRectangle.setTextColor(Color.BLACK);
+            whiteRectangle.setClickable(false);
+            whiteRectangle.setBackground(getResources().getDrawable(R.drawable.rounded_corner));
+            whiteRectangle.setBackgroundColor(Color.WHITE);
+            whiteRectangle.setElevation(4);
+            whiteRectangle.setPadding(0,0,0,0);
+            RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, pixToDp(45));
+            p.setMargins(pixToDp(10), 0, pixToDp(10), pixToDp(20));
+            p.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, imageButton.getId());
+            whiteRectangle.setLayoutParams(p);
+            // Adding all the views to the relative layout
+            exhibitionLayout.addView(imageButton);
+            exhibitionLayout.addView(whiteRectangle);
+            // Setting margins of end result
+            RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, pixToDp(225));
+            newParams.setMargins(0,0,0,pixToDp(10));
+            exhibitionLayout.setLayoutParams(newParams);
 
-        txtV.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas mattis velit felis, lobortis euismod sem iaculis in. Aenean imperdiet congue consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eleifend ipsum a enim porta, et mattis metus bibendum. Quisque eu ullamcorper ligula. Nunc dictum velit sit amet nunc suscipit, id sagittis dolor mattis. Proin in eros sodales, tincidunt justo vitae, consectetur ante. In quis libero leo. Cras consectetur sit amet eros eu sagittis. Duis metus sem, tempus id nulla vitae, convallis pretium tortor. Quisque varius tincidunt nisi, vel pulvinar nisl posuere sit amet. Quisque tortor neque, pretium ut varius quis, volutpat nec ipsum. Nam ultrices commodo ultricies. Aliquam rutrum id tellus eu placerat. Cras vehicula orci in facilisis condimentum.\n" +
-                "\n" +
-                "Proin ultrices augue molestie velit tincidunt, vitae bibendum metus vestibulum. Nullam ac odio congue, eleifend ex quis, ultricies purus. Vivamus ornare libero vitae facilisis sagittis. Sed gravida maximus libero, ut eleifend ante iaculis et. Phasellus accumsan id augue ac rhoncus. Integer non porttitor odio. Praesent rhoncus et sapien sed mollis.\n" +
-                "\n" +
-                "Vestibulum diam massa, dictum nec vehicula sit amet, tincidunt ut purus. Suspendisse vestibulum arcu velit, vel mattis velit cursus vitae. Donec varius viverra risus, congue dictum diam iaculis sed. Nulla tempus rhoncus ex, eget venenatis justo accumsan vestibulum. Donec tristique mi elit, nec mattis elit ultrices quis. Integer tempor tellus nec justo congue, in sollicitudin neque viverra. Duis blandit dui arcu, in rhoncus mauris maximus vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.\n" +
-                "\n" +
-                "Cras dictum nulla sed dui mattis, eu interdum nisi ultrices. Pellentesque a purus nibh. Nunc ultricies erat at nibh eleifend placerat. Maecenas laoreet sodales arcu quis sagittis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum eu mauris vitae dui euismod hendrerit sed eu orci. Cras libero libero, pharetra vitae imperdiet id, iaculis sit amet odio. Pellentesque ornare convallis leo. Morbi hendrerit dolor non diam euismod, vel facilisis nisl euismod. Curabitur viverra dolor at cursus efficitur. Cras et maximus risus. Praesent eu felis nisi. In ligula nisi, mollis in nunc ut, scelerisque volutpat arcu. Vivamus malesuada molestie dui, eu commodo est.\n" +
-                "\n" +
-                "Maecenas bibendum diam et tellus facilisis semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam ut vulputate lorem. Mauris eu massa at elit consequat pellentesque. Ut sit amet faucibus dolor. Phasellus faucibus finibus diam, vel porttitor justo. Proin in justo sagittis dolor ullamcorper dictum in sit amet elit. Nulla justo nibh, dapibus id commodo vel, accumsan non nisl. Donec sollicitudin sapien justo, eu facilisis velit bibendum nec.");
+            layout.addView(exhibitionLayout);
+        }
+
+        TextView title = root.findViewById(R.id.museum_title);
+        title.setText(museum.getName());
+        TextView desc = root.findViewById(R.id.museum_description);
+        desc.setText(museum.getDescriptions().getEn() + " " + museum.getDescriptions().getCa());
+        // COVID 19 information
+        ImageView img = root.findViewById(R.id.info_image);
+        TextView covidText = root.findViewById(R.id.covid_text);
+
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(root.getContext(), "La covid 19 es una merda", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        img.setOnClickListener(clickListener);
+        covidText.setOnClickListener(clickListener);
+
+
+
 
         return root;
     }
@@ -180,4 +226,5 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         super.getActivity().finish();
         return false;
     }
+
 }
