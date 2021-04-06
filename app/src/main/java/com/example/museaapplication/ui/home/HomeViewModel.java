@@ -1,6 +1,8 @@
 package com.example.museaapplication.ui.home;
 
+import android.os.CountDownTimer;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -43,6 +45,7 @@ public class HomeViewModel extends ViewModel {
                 Museo[] museums = mymuseumList.getMuseums();
                 Museums.postValue(museums);
                 cacheExpositions(museums);
+
             }
 
             @Override
@@ -50,7 +53,17 @@ public class HomeViewModel extends ViewModel {
                 Log.e("TAG1", t.getLocalizedMessage());
                 Log.e("TAG2", t.getMessage());
                 t.printStackTrace();
-                SingletonDataHolder.getInstance().setMuseums(null);
+                /*new CountDownTimer(1000, 100){
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        loadUsers();
+                    }
+                };*/
             }
         });
     }

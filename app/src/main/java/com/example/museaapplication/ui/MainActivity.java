@@ -1,11 +1,16 @@
 package com.example.museaapplication.ui;
 
+import android.Manifest;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
@@ -14,12 +19,18 @@ import com.example.museaapplication.ui.UserFragment;
 import com.example.museaapplication.ui.dashboard.DashboardFragment;
 import com.example.museaapplication.ui.home.HomeFragment;
 import com.example.museaapplication.ui.notifications.NotificationsFragment;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
@@ -29,7 +40,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import java.util.Stack;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     // Fragmentos del hub de navegación inferior
     final Fragment mHomeFragment = new HomeFragment();
     final Fragment mDashboardFragment = new DashboardFragment();
@@ -41,13 +52,17 @@ public class MainActivity extends AppCompatActivity {
     Fragment active = mHomeFragment;
 
     BottomNavigationView navView;
-    // Pila de ventanas para volver en orden adecuado
+    private MapView mMapView;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mMapView = findViewById(R.id.map_view);
+
+
         SingletonDataHolder.getInstance().backStack.push(R.id.navigation_home);
         for (Fragment f: fm.getFragments()) {   
             fm.beginTransaction().remove(f).commit();
@@ -78,42 +93,56 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (!SingletonDataHolder.getInstance().backStack.lastElement().equals(item.getItemId())) SingletonDataHolder.getInstance().backStack.push(item.getItemId());
                 }
-
+                TextView txt = findViewById(R.id.title_test);
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
                         fm.beginTransaction().hide(active).show(mHomeFragment).commit();
                         active = mHomeFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 0;
-                        setTitle(R.string.title_home);
+                        txt.setText(R.string.title_home);
+                        txt.setClickable(true);
+                        txt.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getApplicationContext(), "Funca", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         return true;
                     case R.id.navigation_dashboard:
                         fm.beginTransaction().hide(active).show(mDashboardFragment).commit();
                         active = mDashboardFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 1;
-                        setTitle(R.string.title_dashboard);
+                        txt.setText(R.string.title_dashboard);
+                        txt.setClickable(false);
                         return true;
                     case R.id.navigation_maps:
                         fm.beginTransaction().hide(active).show(mMapFragment).commit();
                         active = mMapFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 4;
-                        setTitle(R.string.title_maps);
+                        txt.setText(R.string.title_maps);
+                        txt.setClickable(false);
                         return true;
                     case R.id.navigation_notifications:
                         fm.beginTransaction().hide(active).show(mNotificationsFragment).commit();
                         active = mNotificationsFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 2;
-                        setTitle(R.string.title_notifications);
+                        txt.setText(R.string.title_notifications);
+                        txt.setClickable(false);
                         return true;
                     case R.id.navigation_user:
                         fm.beginTransaction().hide(active).show(mUserFragment).commit();
                         active = mUserFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 3;
-                        setTitle(R.string.title_user);
+                        txt.setText(R.string.title_user);
+                        txt.setClickable(false);
                         return true;
                 }
                 return false;
             }
         });
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(R.layout.appbar_layout_test);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
@@ -149,5 +178,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         fm.beginTransaction().show(active).commit();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 }
