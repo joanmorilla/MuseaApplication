@@ -19,7 +19,7 @@
     <string name="enter_password">Password</string>
     <string name="enter_password_twice">Repeat password</string>
 
-    <string name="checkbox_remember_password">Remember password</string>
+    <string name="checkbox_remember_password">Remember me</string>
 
     <string name="button_login">Login</string>
     <string name="button_signup">Sign up</string>
@@ -43,4 +43,6 @@
     <string name="warning_login2">Please enter valid username and password</string>
     <string name="button_eu">Editar</string>
     <string name="vis_mus">Visitats</string>
+    <string name="auto_login_key" />
+    <string name="auto_signin_key" />
 </resources>
