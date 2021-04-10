@@ -37,15 +37,16 @@ public class HomeViewModel extends ViewModel {
     }
 
     public void loadUsers(){
+        //APIRequests.getInstance().getInfo("Museo del Prado", "Madrid");
         Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseums();
         call.enqueue(new Callback<MuseoValue>() {
             @Override
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
                 MuseoValue mymuseumList = response.body();
-                Museo[] museums = mymuseumList.getMuseums();
+                Log.d("Logazo2", mymuseumList + "");
+                 Museo[] museums = mymuseumList.getMuseums();
                 Museums.postValue(museums);
                 cacheExpositions(museums);
-
             }
 
             @Override
@@ -69,7 +70,7 @@ public class HomeViewModel extends ViewModel {
     }
     private void cacheExpositions(Museo[] museums) {
         for(Museo m: museums){
-            APIRequests.getInstance().getExpositionsOfMuseums(m);
+            APIRequests.getInstance().getExpositionsOfMuseum(m);
         }
     }
 

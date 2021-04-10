@@ -50,4 +50,5 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.mikhaellopez:circularimageview:4.2.0'
     implementation 'org.greenrobot:eventbus:3.2.0'
+    compile 'com.jaeger.statusbarutil:library:1.4.0'
 }

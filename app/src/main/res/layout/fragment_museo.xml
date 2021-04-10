@@ -1,97 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MuseoFragment">
 
+    <RelativeLayout
+        android:id="@+id/toolbar_layout"
+        android:elevation="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/back_arrow"
+            android:layout_width="35dp"
+            android:tooltipText="Back"
+            android:layout_height="35dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:fitsSystemWindows="false"
+            android:background="@drawable/back_arrow"/>
+        <ImageButton
+            android:id="@+id/heart_bttn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:tooltipText="Save To Favorites"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/share_bttn"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ic_baseline_favorite_border_24"/>
+        <ImageButton
+            android:id="@+id/share_bttn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:tooltipText="Share"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_baseline_ios_share_24"/>
+
+    </RelativeLayout>
+
+
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/layout_view"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/image_holder"
+            <LinearLayout
+                android:id="@+id/layout_view"
                 android:layout_width="match_parent"
-                android:scaleType="centerCrop"
-                android:layout_height="300dp">
+                android:orientation="vertical"
+                android:layout_height="match_parent">
 
-            </ImageView>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/museum_title"
-                    android:textStyle="bold"
-                    android:textSize="25sp"
-                    android:textColor="@android:color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="75dp"
-                    android:text="Un museo cualquiera con un nombre largo" />
                 <ImageView
-                    android:id="@+id/info_image"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/ic_baseline_info_24"
-                    android:layout_alignParentRight="true"
-                    android:clickable="true"/>
+                    android:id="@+id/image_holder"
+                    android:layout_width="match_parent"
+                    android:scaleType="centerCrop"
+                    android:layout_height="300dp"
+                    android:elevation="-1dp">
+
+                </ImageView>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/museum_title"
+                        android:textStyle="bold"
+                        android:textSize="25sp"
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="75dp"
+                        android:text="Un museo cualquiera con un nombre largo" />
+                    <ImageView
+                        android:id="@+id/info_image"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/ic_outline_info_24"
+                        android:layout_alignParentRight="true"
+                        android:clickable="true"/>
+
+                    <TextView
+                        android:id="@+id/covid_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="COVID-19"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_alignParentRight="true"
+                        android:clickable="true"/>
+                </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/covid_text"
+                    android:id="@+id/museum_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="COVID-19"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:paddingRight="85dp"
+                    android:paddingLeft="10dp"
                     android:textSize="15sp"
-                    android:textColor="@android:color/black"
+                    android:text="Aquesta es una descripció de proba i per tant no s'ha de tomar en serioooooooooooooooooooooooooooooooooooooooooooooooooooooo"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp"
+                    android:background="@color/grey_700"/>
+
+                <TextView
+                    android:id="@+id/text_view"
+                    android:text="@string/titol_exhibitions"
                     android:textStyle="bold"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="50dp"
-                    android:layout_alignParentRight="true"
-                    android:clickable="true"/>
-            </RelativeLayout>
+                    android:textSize="17sp"
+                    android:textAlignment="center"
+                    android:paddingTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/museum_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="20dp"
-                android:paddingRight="85dp"
-                android:paddingLeft="10dp"
-                android:textSize="15sp"
-                android:text="Aquesta es una descripció de proba i per tant no s'ha de tomar en serioooooooooooooooooooooooooooooooooooooooooooooooooooooo"/>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"></Space>
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="10dp"
-                android:background="@color/grey_700"/>
-
-            <TextView
-                android:id="@+id/text_view"
-                android:text="@string/titol_exhibitions"
-                android:textStyle="bold"
-                android:textSize="17sp"
-                android:textAlignment="center"
-                android:paddingTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp"></Space>
-
-        </LinearLayout>
+            </LinearLayout>
     </ScrollView>
 
-</FrameLayout>
+</RelativeLayout>

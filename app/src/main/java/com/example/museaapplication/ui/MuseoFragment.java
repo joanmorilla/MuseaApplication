@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -97,13 +98,44 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_museo, container, false);
-
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+
+        ImageButton backArrow = root.findViewById(R.id.back_arrow);
+        ImageButton heartButton = root.findViewById(R.id.heart_bttn);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+        heartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                love();
+                if (!loved) {
+                    heartButton.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
+                }else {
+                    heartButton.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
+                }
+            }
+        });
+        View.OnApplyWindowInsetsListener Listener = new View.OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
+                ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).topMargin = insets.getSystemWindowInsetTop();
+                return insets.consumeSystemWindowInsets();
+            }
+        };
+
+        View view = root.findViewById(R.id.toolbar_layout);
+        view.setOnApplyWindowInsetsListener(Listener);
+
+
 
         TextView txtV = root.findViewById(R.id.text_view);
         Museo museum = sharedViewModel.getCurMuseo();
-        super.getActivity().setTitle(museum.getName());
-        setHasOptionsMenu(true);
+        //super.getActivity().setTitle(museum.getName());
+        //setHasOptionsMenu(true);
 
         // Set the image we get from previous activity
         ImageView imageView = root.findViewById(R.id.image_holder);
@@ -120,8 +152,7 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, pixToDp(180));
             // Defining margins and the click listener
             params.setMargins(pixToDp(10), 0, pixToDp(10), pixToDp(10));
-            imageButton.setLayoutParams(params);
-            imageButton.setOnClickListener(new View.OnClickListener() {
+            View.OnClickListener clickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     sharedViewModel.setCurExposition(e);
@@ -129,19 +160,23 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
                     FragmentManager fm = getParentFragmentManager();
                     fm.beginTransaction().hide(sharedViewModel.getmMuseoFragment()).show(sharedViewModel.getmExpositionFragment()).commit();
                 }
-            });
+            };
+            imageButton.setLayoutParams(params);
+            imageButton.setOnClickListener(clickListener);
             // Setting the background image to that of the museum
             url = validateUrl(e.getImage());
             Picasso.get().load(url).fit().centerCrop().into(imageButton);
-            // Bottom whit rectangle
+            // Bottom white rectangle
             Button whiteRectangle = new Button(getContext());
             whiteRectangle.setText(e.getName());
+            whiteRectangle.setAllCaps(false);
             whiteRectangle.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             whiteRectangle.setTextColor(Color.BLACK);
-            whiteRectangle.setClickable(false);
+            whiteRectangle.setClickable(true);
+            whiteRectangle.setOnClickListener(clickListener);
             whiteRectangle.setBackground(getResources().getDrawable(R.drawable.rounded_corner));
             whiteRectangle.setBackgroundColor(Color.WHITE);
-            whiteRectangle.setElevation(4);
+            whiteRectangle.setElevation(8);
             whiteRectangle.setPadding(0,0,0,0);
             RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, pixToDp(45));
             p.setMargins(pixToDp(10), 0, pixToDp(10), pixToDp(20));

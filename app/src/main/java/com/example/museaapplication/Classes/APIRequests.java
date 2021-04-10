@@ -3,11 +3,13 @@ package com.example.museaapplication.Classes;
 import android.util.Log;
 
 import com.example.museaapplication.Classes.Dominio.Exhibition;
+import com.example.museaapplication.Classes.Dominio.Info;
 import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.Json.ExhibitionValue;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Json.ExpositionListValue;
 import com.example.museaapplication.Classes.Json.ExpositionsList;
+import com.example.museaapplication.Classes.Json.InfoValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
 
@@ -112,16 +114,17 @@ public class APIRequests {
         });
     }
 
-    public void getExpositionsOfMuseums(Museo m){
+    public void getExpositionsOfMuseum(Museo m){
         Call<ExpositionListValue> call = RetrofitClient.getInstance().getMyApi().getExpositions(m.get_id());
         call.enqueue(new Callback<ExpositionListValue>() {
             @Override
             public void onResponse(Call<ExpositionListValue> call, Response<ExpositionListValue> response) {
                 ExpositionListValue expoListVal = response.body();
-                for(Exhibition e : expoListVal.getMuseum().getExhibitions()) {
-                    if (e != null){
-                        Log.d("Mus", m.getName());
-                        m.addExhibition(e);
+                if (expoListVal != null) {
+                    for (Exhibition e : expoListVal.getMuseum().getExhibitions()) {
+                        if (e != null) {
+                            m.addExhibition(e);
+                        }
                     }
                 }
             }
@@ -132,6 +135,23 @@ public class APIRequests {
                 Log.e("TAG2", t.getMessage());
 
                 t.printStackTrace();
+            }
+        });
+    }
+
+    public void getInfo(String nameM, String cityM){
+        Call<InfoValue> call = RetrofitClient.getInstance().getMyApi().getInfo(nameM, cityM);
+        call.enqueue(new Callback<InfoValue>() {
+            @Override
+            public void onResponse(Call<InfoValue> call, Response<InfoValue> response) {
+                InfoValue info = response.body();
+                Log.d("Info", "" + info.getInfo().getName());
+                Log.d("Info", info.getInfo().getAfluence()[0].getDayName());
+            }
+
+            @Override
+            public void onFailure(Call<InfoValue> call, Throwable t) {
+
             }
         });
     }

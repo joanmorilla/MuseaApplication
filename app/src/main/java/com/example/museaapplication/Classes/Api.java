@@ -4,6 +4,7 @@ import com.example.museaapplication.Classes.Dominio.User;
 import com.example.museaapplication.Classes.Json.ExhibitionValue;
 import com.example.museaapplication.Classes.Json.ExpositionListValue;
 import com.example.museaapplication.Classes.Json.ExpositionsList;
+import com.example.museaapplication.Classes.Json.InfoValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.UserValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
@@ -36,6 +37,9 @@ public interface Api {
 
     @GET("museums/{idMuseo}/{idExpo}/{idObra}")
     Call<WorkValue> getWork(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId, @Path("idObra") String idObra);
+
+    @GET("https://musea-api.herokuapp.com/info?")
+    Call<InfoValue> getInfo(@Query("name") String nameMuseo, @Query("city") String cityMuseo);
 
     // User authentication
     @POST("https://musea-authorization-server.herokuapp.com/signup")

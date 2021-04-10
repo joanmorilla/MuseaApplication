@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -18,8 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -112,25 +115,31 @@ public class HomeFragment extends Fragment {
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint({"UseCompatLoadingForDrawables", "ResourceType"})
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     void GenerarBotones(Museo[] m) {
         LinearLayout scrollPais = root.findViewById(R.id.layout_pais);
         Museo[] museums = m;
+        // We go through the museums
         for(int i = museums.length - 1; i >= 0; i--){
-            // Generamos boton
-            ImageButton b = new ImageButton(scrollPais.getContext());
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(pixToDp(225), pixToDp(175));
-            param.setMargins(pixToDp(5), 0, pixToDp(5), 0);
-            b.setLayoutParams(param);
-            b.setBackground(getContext().getResources().getDrawable(R.drawable.drawable_button));
-            // Le asignams la imagen del museo en cuestion
-            Picasso.get().load(m[i].getImage()).fit().centerCrop().into(b);
-
-            // Asignamos un comportamiento para cuando se presione
-            b.setOnClickListener(clickFunc(m[i]));
-            // Finalmente lo añadimos a la vista desplazable
-            scrollPais.addView(b);
+            // For the complex button we use relative layout
+            RelativeLayout holder = new RelativeLayout(getContext());
+            View v = View.inflate(getContext() ,R.layout.custom_button_layout, holder);
+            TextView txt  = v.findViewById(R.id.white_rectangle);
+            txt.setText(museums[i].getName());
+            txt = v.findViewById(R.id.text_horari);
+            txt.setText("08:00 - 20:30");
+            txt = v.findViewById(R.id.text_pais);
+            txt.setText(museums[i].getCity());
+            ImageButton ib = v.findViewById(R.id.image_view);
+            ib.setOnClickListener(clickFunc(m[i]));
+            Picasso.get().load(m[i].getImage()).fit().centerCrop().into(ib);
+            // Size the relative layout
+            RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, pixToDp(155));
+            newParams.setMargins(pixToDp(5),0,pixToDp(5),pixToDp(0));
+            holder.setLayoutParams(newParams);
+            // Finally add it to the scroll layout
+            scrollPais.addView(holder);
         }
     }
     View.OnClickListener clickFunc(Museo m) {

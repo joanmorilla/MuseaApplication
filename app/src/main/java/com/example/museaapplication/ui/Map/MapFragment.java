@@ -89,9 +89,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         }
                     });
-                    LatLng pos = new LatLng(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal());
-                    mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.getDescriptions().getEn()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                    );
+                    if (m.getLocation() != null && m.getLocation().length != 0){
+                        LatLng pos = new LatLng(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal());
+                        mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.getDescriptions().getEn()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        );
+                    }
                 }
             }
         });
