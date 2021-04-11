@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 
@@ -18,12 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.SettingsActivity;
-import com.example.museaapplication.ui.edit_user;
+import com.example.museaapplication.ui.edit.edit_user;
+import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,6 +68,10 @@ public class UserFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_user, container, false);
         Button btn = root.findViewById(R.id.button_eu);
         TextView user_name = root.findViewById(R.id.user_name);
+
+        CircularImageView circularImageView = root.findViewById(R.id.circularImageView);
+        String url = getContext().getResources().getString(R.string.url_logo);
+        Picasso.get().load(url).fit().into(circularImageView);
 
 
 

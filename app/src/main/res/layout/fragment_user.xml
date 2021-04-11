@@ -14,52 +14,76 @@
             android:id="@+id/button_eu"
             android:layout_width="211dp"
             android:layout_height="36dp"
-            android:layout_marginTop="140dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="130dp"
             android:layout_marginRight="16dp"
+            android:backgroundTint="@color/gray"
             android:text="@string/button_eu"
+            android:gravity="center"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/circularImageView"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/mnac_default"
-            app:civ_border_color="#3f51b5"
-            app:civ_border_width="4dp"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
+            android:layout_marginLeft="0dp"
+            app:civ_border_color="@color/grey_700"
+            app:civ_border_width="2dp"
             app:civ_shadow="true"
             app:civ_shadow_color="#3f51b5"
             app:civ_shadow_radius="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView"
-            app:layout_constraintHorizontal_bias="0.29"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.086"
             tools:ignore="MissingClass" />
 
         <TextView
             android:id="@+id/textView"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="96dp"
-            android:layout_marginEnd="164dp"
-            android:layout_marginRight="164dp"
-            android:text="@string/tab_favorits"
+            android:layout_marginTop="70dp"
+            android:layout_marginRight="160dp"
+            android:text="@string/user_pref"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/favourties"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginRight="175dp"
+            android:gravity="center"
+            android:text="15"
+            android:textColor="@color/black"
+            android:clickable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView2"
-            android:textStyle="bold"
             android:layout_width="117dp"
             android:layout_height="21dp"
-            android:layout_marginTop="96dp"
-            android:layout_marginEnd="28dp"
-            android:layout_marginRight="28dp"
-            android:text="@string/vis_mus"
+            android:layout_marginTop="70dp"
+            android:layout_marginRight="20dp"
+            android:gravity="right"
+            android:text="@string/mus_vis"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/visited_mus"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginRight="57dp"
+            android:gravity="center"
+            android:text="32"
+            android:textColor="@color/black"
+            android:clickable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,10 +91,11 @@
             android:id="@+id/user_name"
             android:layout_width="152dp"
             android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="192dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="170dp"
+            android:gravity="left"
             android:text="Omar Montes"
+            android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -79,13 +104,133 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="258dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="220dp"
+            android:layout_width="370dp"
+            android:layout_height="63dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="204dp"
             android:text="El amor es el mayor refrigerio de la vida Picasso"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/button_gold"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="328dp"
+            android:layout_marginRight="286dp"
+            android:background="@null"
+            android:src="@drawable/gold_button"
+            android:text="@string/button_eu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/button_silver"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="328dp"
+            android:layout_marginEnd="164dp"
+            android:layout_marginRight="164dp"
+            android:background="@null"
+            android:src="@drawable/silver_button"
+            android:text="@string/button_eu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/button_bronce"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="328dp"
+            android:layout_marginRight="42dp"
+            android:background="@null"
+            android:src="@drawable/bronce_button"
+            android:text="@string/button_eu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="280dp"
+            android:text="@string/quiz_usu"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:layout_width="350dp"
+            android:layout_height="1dp"
+            android:backgroundTint="@color/gray"
+            android:clickable="false"
+            android:layout_marginTop="308dp"
+            android:layout_marginRight="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/gold_num"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="328dp"
+            android:layout_marginRight="286dp"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/white"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/silver_num"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="328dp"
+            android:layout_marginEnd="164dp"
+            android:layout_marginRight="164dp"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/white"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/bronce_num"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="328dp"
+            android:layout_marginRight="42dp"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/white"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="435dp"
+            android:text="@string/most_visited"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:layout_width="350dp"
+            android:layout_height="1dp"
+            android:backgroundTint="@color/gray"
+            android:clickable="false"
+            android:layout_marginTop="460dp"
+            android:layout_marginRight="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
