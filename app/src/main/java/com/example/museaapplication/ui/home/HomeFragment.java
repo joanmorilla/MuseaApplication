@@ -1,5 +1,6 @@
 package com.example.museaapplication.ui.home;
 
+import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -34,6 +35,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.museaapplication.Classes.APIRequests;
 import com.example.museaapplication.Classes.Delegate;
 import com.example.museaapplication.Classes.Dominio.Museo;
@@ -124,8 +127,11 @@ public class HomeFragment extends Fragment {
         for(int i = museums.length - 1; i >= 0; i--){
             // For the complex button we use relative layout
             RelativeLayout holder = new RelativeLayout(getContext());
-            View v = View.inflate(getContext() ,R.layout.custom_button_layout, holder);
+            View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
+            // Adding enter animation
+            YoYo.with(Techniques.ZoomIn)/*.delay((museums.length - i) * 200)*/.duration(700).playOn(v);
             TextView txt  = v.findViewById(R.id.white_rectangle);
+            // Setting the texts in custom button
             txt.setText(museums[i].getName());
             txt = v.findViewById(R.id.text_horari);
             txt.setText("08:00 - 20:30");

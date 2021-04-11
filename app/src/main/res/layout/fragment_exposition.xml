@@ -4,12 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.ExpositionFragment">
-+
+
+    <ImageView
+        android:id="@+id/image_holder_expo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/mnac_default"
+        android:elevation="1dp"
+        />
+
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/expo_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
+        android:textAlignment="center"
         android:fitsSystemWindows="true"
-        android:text="@string/hello_blank_fragment" />
+        android:text="@string/hello_blank_fragment"
+        android:background="#88B5B2B2"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:elevation="2dp"/>
 
 </RelativeLayout>

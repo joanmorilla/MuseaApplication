@@ -1,5 +1,6 @@
 package com.example.museaapplication.ui;
 
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,12 +14,15 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.OnBackPressed;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +30,9 @@ import com.example.museaapplication.R;
  * create an instance of this fragment.
  */
 public class ExpositionFragment extends Fragment implements OnBackPressed {
+
+    Exhibition curExpo;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,19 +78,27 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_exposition, container, false);
         setHasOptionsMenu(true);
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         sharedViewModel.getCurExposition().observe(getViewLifecycleOwner(), new Observer<Exhibition>() {
             @Override
             public void onChanged(Exhibition exhibition) {
-                getActivity().setTitle(exhibition.getName());
+                //curExpo = exhibition;
+                ImageView imageView = root.findViewById(R.id.image_holder_expo);
+                Picasso.get().load(validateUrl(exhibition.getImage())).centerCrop().fit().into(imageView);
+                TextView txt = root.findViewById(R.id.expo_title);
+                txt.setText(exhibition.getName());
+                //getActivity().setTitle(exhibition.getName());
             }
         });
 
+
+
         /*if (sharedViewModel.getCurExposition() != null)
             super.getActivity().setTitle(sharedViewModel.getCurExposition().getName());*/
-        View root = inflater.inflate(R.layout.fragment_exposition, container, false);
+
         return root;
     }
 
@@ -112,5 +127,9 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
         getActivity().setTitle(sharedViewModel.getCurMuseo().getName());
         sharedViewModel.setActive(sharedViewModel.getmMuseoFragment());
         return true;
+    }
+    private String validateUrl(String url){
+        if (!url.contains("https")) url = url.replace("http", "https");
+        return url;
     }
 }
