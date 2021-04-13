@@ -14,13 +14,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
+import com.example.museaapplication.Classes.Adapters.RecentSearchMuseosAdapter;
 import com.example.museaapplication.Classes.Adapters.SearchMuseosAdapter;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.R;
@@ -30,15 +30,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements SearchMuseosAdapter.RecyclerItemClick {
 
     private SearchViewModel searchViewModel;
     View root;
     Museo[] museoArr;
-    boolean interactable;
 
     List<Museo> museoList;
     RecyclerView recyclerMuseos;
+
+    List<Museo> museoListRecent;
+    RecyclerView recyclerMuseosRecent;
+    int numberOfRecent = 4;
 
 
     public static SearchFragment newInstance() {
@@ -53,6 +56,11 @@ public class SearchFragment extends Fragment {
         searchViewModel = new SearchViewModel();
 
         museoList = new ArrayList<>();
+        museoListRecent = new ArrayList<>();
+
+        recyclerMuseosRecent= (RecyclerView) root.findViewById(R.id.recyclerRecentId);
+        recyclerMuseosRecent.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+
         recyclerMuseos= (RecyclerView) root.findViewById(R.id.recyclerId);
         recyclerMuseos.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -66,11 +74,13 @@ public class SearchFragment extends Fragment {
                 museoArr = new Museo[museos.length];
                 museoArr = museos;
                 rellenarLista("");
+                rellenarListaRecientes();
                 pb.setVisibility(View.GONE);
             }
         });
         museoArr = new Museo[0];
         rellenarLista("");
+        rellenarListaRecientes();
 
         final SearchView searchView = root.findViewById(R.id.svSearch);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -93,7 +103,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        interactable = true;
+        rellenarListaRecientes();
     }
 
     @Override
@@ -116,27 +126,28 @@ public class SearchFragment extends Fragment {
                 museoList.add(m);
             }
         }
-
-        SearchMuseosAdapter adapter = new SearchMuseosAdapter(museoList);
+        SearchMuseosAdapter adapter = new SearchMuseosAdapter(museoList, this);
         recyclerMuseos.setAdapter(adapter);
-
-
-    }
-    View.OnClickListener clickFunc(Museo m) {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (interactable) {
-                    Intent i = new Intent(getContext(), MuseuActivity.class);
-                    i.putExtra("Museu", (Serializable) m);
-                    startActivity(i);
-                    interactable = false;
-                }
-            }
-        };
-    }
-    int pixToDp(int value){
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, root.getResources().getDisplayMetrics()));
     }
 
+    private void rellenarListaRecientes() {
+        RecentSearchMuseosAdapter adapter = new RecentSearchMuseosAdapter(museoListRecent);
+        recyclerMuseosRecent.setAdapter(adapter);
+    }
+
+    @Override
+    public void itemClick(Museo museo) {
+
+        // TODO: guardar esta lista en memoria para cuando se cierre la app
+
+        museoListRecent.remove(museo);
+        museoListRecent.add(0,museo);
+
+        if (museoListRecent.size() >= numberOfRecent + 1)
+            museoListRecent.remove(numberOfRecent);
+
+        Intent i = new Intent(getContext(), MuseuActivity.class);
+        i.putExtra("Museu", (Serializable) museo);
+        getContext().startActivity(i);
+    }
 }

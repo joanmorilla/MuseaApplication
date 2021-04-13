@@ -20,34 +20,44 @@ import java.util.List;
 
 public class SearchMuseosAdapter extends RecyclerView.Adapter<SearchMuseosAdapter.MuseoViewHolder>{
     List<Museo> listaMuseos;
+    RecyclerItemClick itemClick;
 
-    public SearchMuseosAdapter(List<Museo> listaMuseos) {
+    public SearchMuseosAdapter(List<Museo> listaMuseos, RecyclerItemClick itemClick) {
         this.listaMuseos =listaMuseos;
+        this.itemClick = itemClick;
     }
 
     @NonNull
     @Override
     public MuseoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list,parent,false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_search_museos,parent,false);
         return new MuseoViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(MuseoViewHolder holder, int position) {
         if (!listaMuseos.isEmpty()) {
-            holder.txtName.setText(listaMuseos.get(position).getName());
-            holder.txtCountry.setText(listaMuseos.get(position).getCountry());
-            holder.txtCity.setText(listaMuseos.get(position).getCity());
-            Picasso.get().load(listaMuseos.get(position).getImage()).fit().centerCrop().into(holder.img);
+            final Museo museo = listaMuseos.get(position);
+            holder.txtName.setText(museo.getName());
+            holder.txtCountry.setText(museo.getCountry());
+            holder.txtCity.setText(museo.getCity());
+            Picasso.get().load(museo.getImage()).fit().centerCrop().into(holder.img);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClick.itemClick(museo);
+                }
+            });
+
+            /*holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(holder.itemView.getContext(), MuseuActivity.class);
                     i.putExtra("Museu", (Serializable) listaMuseos.get(position));
                     holder.itemView.getContext().startActivity(i);
                 }
-            });
+            }); */
         }
     }
 
@@ -67,5 +77,9 @@ public class SearchMuseosAdapter extends RecyclerView.Adapter<SearchMuseosAdapte
             txtCity = (TextView) itemView.findViewById(R.id.idCiudad);
             img = (ImageView) itemView.findViewById(R.id.idImagen);
         }
+    }
+
+    public interface RecyclerItemClick {
+        void itemClick(Museo museo);
     }
 }
