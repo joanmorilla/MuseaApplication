@@ -50,4 +50,5 @@
     <string name="warning_login2">Please enter valid username and password</string>
     <string name="button_eu">Editar</string>
     <string name="vis_mus">Visitats</string>
+    <string name="title_covid">Informació Actual</string>
 </resources>

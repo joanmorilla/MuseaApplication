@@ -68,14 +68,14 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
-        TextView txt = super.getActivity().findViewById(R.id.title_test);
-        txt.setText(R.string.title_home);
-        txt.setOnClickListener(new View.OnClickListener() {
+        TextView txt = root.findViewById(R.id.title_test);
+        //txt.setText(R.string.title_home);
+        /*txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Funca", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
         ProgressBar pb = (ProgressBar) root.findViewById(R.id.progress_bar);
         pb.setVisibility(View.VISIBLE);
         homeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {

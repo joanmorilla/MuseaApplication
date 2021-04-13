@@ -8,6 +8,8 @@ import com.example.museaapplication.Classes.Json.InfoValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.UserValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
+import com.example.museaapplication.Classes.Json.WorksArray;
+import com.example.museaapplication.Classes.Json.WorksValue;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -27,7 +29,7 @@ public interface Api {
     Call<MuseoValue> getMuseums();
 
     @GET("museums/{idMuseo}/{idExpo}")
-    Call<ExhibitionValue> getExhibition(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId);
+    Call<WorksValue> getExhibition(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId);
 
     @GET("museums/{idMuseo}")
     Call<ExpositionListValue> getExpositions(@Path("idMuseo") String idMuseo);

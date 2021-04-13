@@ -12,6 +12,8 @@ import com.example.museaapplication.Classes.Json.ExpositionsList;
 import com.example.museaapplication.Classes.Json.InfoValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
+import com.example.museaapplication.Classes.Json.WorksArray;
+import com.example.museaapplication.Classes.Json.WorksValue;
 
 import java.util.ArrayList;
 
@@ -53,18 +55,21 @@ public class APIRequests {
         });
     }
 
-    public void getExhibitions(Museo m, String id_exh) {
-        Call<ExhibitionValue> call = RetrofitClient.getInstance().getMyApi().getExhibition(m.get_id(), id_exh);
-        call.enqueue(new Callback<ExhibitionValue>() {
+    public void getWorksOfExhibition(Museo m, Exhibition e) {
+        Call<WorksValue> call = RetrofitClient.getInstance().getMyApi().getExhibition(m.get_id(), e.get_id());
+        call.enqueue(new Callback<WorksValue>() {
             @Override
-            public void onResponse(Call<ExhibitionValue> call, Response<ExhibitionValue> response) {
-                ExhibitionValue exh = response.body();
-                m.addExhibition(exh.getExhibition());
-                //CacheWorks(m, exh.getExhibition());
+            public void onResponse(Call<WorksValue> call, Response<WorksValue> response) {
+                WorksValue exh = response.body();
+                for (Work w : exh.getExposition().getWorks()){
+                    Log.d("Author", w.getTitle());
+                    e.addWork(w);
+                }
+                //e.addWorks(exh.getExposition().getWorks());
             }
 
             @Override
-            public void onFailure(Call<ExhibitionValue> call, Throwable t) {
+            public void onFailure(Call<WorksValue> call, Throwable t) {
                 Log.e("TAG1", t.getLocalizedMessage());
                 Log.e("TAG2", t.getMessage());
                 t.printStackTrace();
@@ -123,8 +128,10 @@ public class APIRequests {
                 if (expoListVal != null) {
                     for (Exhibition e : expoListVal.getMuseum().getExhibitions()) {
                         if (e != null) {
+                            CacheWorks(m, e);
                             m.addExhibition(e);
                         }
+
                     }
                 }
             }
@@ -162,15 +169,13 @@ public class APIRequests {
             m.setExhibitionObjects(new ArrayList<>());
             for(String s : m.getExhibitions()){
                 if (!s.equals("")) {
-                    getExhibitions(m, s);
+                    //getExhibitions(m, s);
                 }
             }
 
         }
     }
     private void CacheWorks(Museo m, Exhibition e){
-        for (String s : e.getWorks()){
-            getWork(e, m.get_id(), s);
-        }
+        getWorksOfExhibition(m, e);
     }
 }

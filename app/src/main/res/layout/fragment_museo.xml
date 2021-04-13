@@ -24,7 +24,7 @@
             android:id="@+id/heart_bttn"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:tooltipText="Save To Favorites"
+            android:tooltipText="Favorite"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/share_bttn"
             android:layout_marginRight="10dp"

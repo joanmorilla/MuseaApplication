@@ -1,11 +1,13 @@
 package com.example.museaapplication.ui;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -56,10 +58,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMapView = findViewById(R.id.map_view);
 
 
-        SingletonDataHolder.getInstance().backStack.push(R.id.navigation_home);
+        //SingletonDataHolder.getInstance().backStack.push(R.id.navigation_home);
         for (Fragment f: fm.getFragments()) {   
             fm.beginTransaction().remove(f).commit();
         }
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(R.layout.appbar_layout_test);
 
         // Inicialización del fragment manager
         setContentView(R.layout.activity_main);
@@ -73,10 +79,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         navView = findViewById(R.id.nav_view);
         // Definimos comportamiento de la barra de navegación
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 // Por cada click añadimos el elemento solo si la pila esta vacía o el ultimo elemento no es el item seleccionado
-                if (SingletonDataHolder.getInstance().backStack.isEmpty()) SingletonDataHolder.getInstance().backStack.push(item.getItemId());
+                if (SingletonDataHolder.getInstance().backStack.isEmpty()) {
+                    SingletonDataHolder.getInstance().backStack.push(item.getItemId());
+                }
                 else {
                     // Elimina el elemento de la pila si ya esta dentro antes de insertarlo de nuevo
                     // Asi limitamos el tamaño de la pila a la cantidad de ventanas
@@ -84,7 +93,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         int index = SingletonDataHolder.getInstance().backStack.indexOf(item.getItemId());
                         SingletonDataHolder.getInstance().backStack.remove(index);
                     }
-                    if (!SingletonDataHolder.getInstance().backStack.lastElement().equals(item.getItemId())) SingletonDataHolder.getInstance().backStack.push(item.getItemId());
+                    if (!SingletonDataHolder.getInstance().backStack.isEmpty() && !SingletonDataHolder.getInstance().backStack.lastElement().equals(item.getItemId())) SingletonDataHolder.getInstance().backStack.push(item.getItemId());
+                    else if (SingletonDataHolder.getInstance().backStack.isEmpty()) SingletonDataHolder.getInstance().backStack.push(item.getItemId());
                 }
                 TextView txt = findViewById(R.id.title_test);
                 switch (item.getItemId()) {
@@ -133,9 +143,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return false;
             }
         });
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        actionBar.setCustomView(R.layout.appbar_layout_test);
+        navView.setSelectedItemId(R.id.navigation_home);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)

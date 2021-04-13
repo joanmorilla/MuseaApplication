@@ -10,6 +10,7 @@ public class Work implements Serializable {
     private String author;
     private float score;
     private String type;
+    private String image;
     private Descriptions descriptions;
 
 
@@ -59,5 +60,13 @@ public class Work implements Serializable {
 
     public void setDescriptions(Descriptions descriptions) {
         this.descriptions = descriptions;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

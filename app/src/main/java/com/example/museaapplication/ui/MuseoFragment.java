@@ -1,7 +1,9 @@
 package com.example.museaapplication.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +32,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.example.museaapplication.Classes.CustomDialog;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.OnBackPressed;
@@ -111,6 +116,7 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         heartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                YoYo.with(Techniques.BounceInUp).duration(700).playOn(v);
                 love();
                 if (!loved) {
                     heartButton.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
@@ -123,7 +129,7 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
             @Override
             public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
                 ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).topMargin = insets.getSystemWindowInsetTop();
-                return insets.consumeSystemWindowInsets();
+                return insets;
             }
         };
 
@@ -204,17 +210,22 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(root.getContext(), "La covid 19 es una merda", Toast.LENGTH_SHORT).show();
+                openDialog();
             }
         };
 
         img.setOnClickListener(clickListener);
         covidText.setOnClickListener(clickListener);
-
-
-
-
         return root;
+    }
+
+    private void openDialog() {
+        CustomDialog dialog = new CustomDialog();
+        dialog.show(getChildFragmentManager(), "Informacio");
+        Dialog dialog2 = new Dialog(getContext());
+        dialog2.setContentView(R.layout.covid_info_dialog);
+        dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //dialog2.show();
     }
 
     @Override
@@ -224,29 +235,6 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
     }
     void love() {
         loved = !loved;
-    }
-
-    // handle button activities
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case android.R.id.home:
-                super.getActivity().finish();
-                return true;
-            case R.id.mybutton:
-                love();
-                if (loved) {
-                    item.setIcon(R.drawable.filled_heart);
-                }else {
-                    item.setIcon(R.drawable.heart_empty);
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
     }
     private String validateUrl(String url){
         if (!url.contains("https")) url = url.replace("http", "https");
