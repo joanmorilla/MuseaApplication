@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.Map.MapFragment;
+import com.example.museaapplication.ui.search.SearchFragment;
 import com.example.museaapplication.ui.user.UserFragment;
 import com.example.museaapplication.ui.dashboard.DashboardFragment;
 import com.example.museaapplication.ui.home.HomeFragment;
@@ -36,7 +37,8 @@ import androidx.fragment.app.FragmentManager;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     // Fragmentos del hub de navegación inferior
     final Fragment mHomeFragment = new HomeFragment();
-    final Fragment mDashboardFragment = new DashboardFragment();
+    //final Fragment mDashboardFragment = new DashboardFragment();
+    final Fragment mSearchFragment = new SearchFragment();
     final Fragment mMapFragment = new MapFragment();
     final Fragment mNotificationsFragment = new NotificationsFragment();
     final Fragment mUserFragment = new UserFragment();
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Inicialización del fragment manager
         setContentView(R.layout.activity_main);
         fm.beginTransaction().add(R.id.nav_host_fragment, mHomeFragment, "0").hide(mHomeFragment).commit();
-        fm.beginTransaction().add(R.id.nav_host_fragment, mDashboardFragment, "1").hide(mDashboardFragment).commit();
+        fm.beginTransaction().add(R.id.nav_host_fragment, mSearchFragment, "1").hide(mSearchFragment).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, mMapFragment, "4").hide(mMapFragment).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, mNotificationsFragment, "2").hide(mNotificationsFragment).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, mUserFragment, "3").hide(mUserFragment).commit();
@@ -102,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         });
                         return true;
                     case R.id.navigation_dashboard:
-                        fm.beginTransaction().hide(active).show(mDashboardFragment).commit();
-                        active = mDashboardFragment;
+                        fm.beginTransaction().hide(active).show(mSearchFragment).commit();
+                        active = mSearchFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 1;
                         txt.setText(R.string.title_dashboard);
                         txt.setClickable(false);
@@ -155,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     void selectIniFrag(){
         switch (SingletonDataHolder.getInstance().main_initial_frag){
             case 1:
-                active = mDashboardFragment;
+                active = mSearchFragment;
                 break;
             case 2:
                 active = mNotificationsFragment;
