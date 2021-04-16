@@ -153,13 +153,13 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
                 Picasso.get().load(validateUrl(exhibition.getImage())).centerCrop().fit().into(imageView);
                 txt.setText(exhibition.getName());
                 ArrayList<Work> works = exhibition.getWorkObjects();
-                works.add(exhibition.getWorkObjects().get(0));
+                if (exhibition.getWorkObjects() != null) {
+                    works.add(exhibition.getWorkObjects().get(0));
 
-                MyViewPagerAdapter adapter = new MyViewPagerAdapter(getContext(), works);
-                viewPager2.setPageTransformer(true, new DepthPageTransformer());
-                viewPager2.setAdapter(adapter);
-
-
+                    MyViewPagerAdapter adapter = new MyViewPagerAdapter(getContext(), works);
+                    viewPager2.setPageTransformer(true, new DepthPageTransformer());
+                    viewPager2.setAdapter(adapter);
+                }
                 /*LinearLayout rl = root.findViewById(R.id.linear_layout_expo);
                 View v = getLayoutInflater().inflate(R.layout.work_card_layout, rl);
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(pixToDp(450), pixToDp(600));

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class AfluenceDay implements Serializable {
     private String dayName;
-    private int[] Hours;
+    private int[] hours;
 
     public String getDayName() {
         return dayName;
@@ -15,10 +15,10 @@ public class AfluenceDay implements Serializable {
     }
 
     public int[] getHours() {
-        return Hours;
+        return hours;
     }
 
-    public void setHours(int[] hours) {
-        Hours = hours;
+    public void setHours(int[] Hours) {
+        hours = hours;
     }
 }

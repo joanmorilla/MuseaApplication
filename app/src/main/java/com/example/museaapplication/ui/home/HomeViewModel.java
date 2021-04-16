@@ -14,6 +14,8 @@ import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 
+import java.util.Stack;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,6 +24,8 @@ public class HomeViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
     private MutableLiveData<Museo[]> Museums;
+    private Stack<Integer> order = new Stack<>();
+    //private MutableLiveData<String[]> horaris;
 
     public HomeViewModel() {
         mText = new MutableLiveData<>();
@@ -30,7 +34,7 @@ public class HomeViewModel extends ViewModel {
 
     public LiveData<Museo[]> getMuseums() {
         if (Museums == null){
-            Museums = new MutableLiveData<Museo[]>();
+            Museums = new MutableLiveData<>();
             loadUsers();
         }
         return Museums;
@@ -43,16 +47,14 @@ public class HomeViewModel extends ViewModel {
             @Override
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
                 MuseoValue mymuseumList = response.body();
-                Log.d("Logazo2", mymuseumList + "");
-                 Museo[] museums = mymuseumList.getMuseums();
-                Museums.postValue(museums);
-                cacheExpositions(museums);
+                Museo[] museums = mymuseumList.getMuseums();
+                cacheExpositionsAndInfo(museums);
             }
 
             @Override
             public void onFailure(Call<MuseoValue> call, Throwable t) {
-                Log.e("TAG1", t.getLocalizedMessage());
-                Log.e("TAG2", t.getMessage());
+                Log.e("TAG1Museo", t.getLocalizedMessage());
+                Log.e("TAG2Museo", t.getMessage());
                 t.printStackTrace();
                 /*new CountDownTimer(1000, 100){
                     @Override
@@ -68,10 +70,15 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
-    private void cacheExpositions(Museo[] museums) {
+    private void cacheExpositionsAndInfo(Museo[] museums) {
+        int i = 0;
         for(Museo m: museums){
+            order.add(i);
             APIRequests.getInstance().getExpositionsOfMuseum(m);
+            APIRequests.getInstance().getInfo(museums, i, order, Museums);
+            i++;
         }
+
     }
 
     public LiveData<String> getText() {

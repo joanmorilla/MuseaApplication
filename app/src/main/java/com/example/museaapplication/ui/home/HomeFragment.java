@@ -43,12 +43,16 @@ import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
+import com.example.museaapplication.Classes.TimeClass;
 import com.example.museaapplication.ui.MuseuActivity;
 import com.example.museaapplication.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -134,12 +138,16 @@ public class HomeFragment extends Fragment {
             // Setting the texts in custom button
             txt.setText(museums[i].getName());
             txt = v.findViewById(R.id.text_horari);
-            txt.setText("08:00 - 20:30");
+            if (museums[i].getCovidInformation() != null){
+                txt.setText(timeStringValidation(museums[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+                museums[i].setOpeningHour(parseOpeningHour(museums[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+            }
             txt = v.findViewById(R.id.text_pais);
             txt.setText(museums[i].getCity());
             ImageButton ib = v.findViewById(R.id.image_view);
             ib.setOnClickListener(clickFunc(m[i]));
-            Picasso.get().load(m[i].getImage()).fit().centerCrop().into(ib);
+            if (!m[i].getImage().equals(""))
+                Picasso.get().load(m[i].getImage()).fit().centerCrop().into(ib);
             // Size the relative layout
             RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, pixToDp(155));
             newParams.setMargins(pixToDp(5),0,pixToDp(5),pixToDp(0));
@@ -153,6 +161,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (interactable) {
+                    String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(TimeClass.getNow());
+                    Log.d("Hour","" + time);
                     Intent i = new Intent(getContext(), MuseuActivity.class);
                     i.putExtra("Museu", (Serializable) m);
                     startActivity(i);
@@ -160,5 +170,37 @@ public class HomeFragment extends Fragment {
                 }
             }
         };
+    }
+    private String timeStringValidation(String time){
+        if (time.contains("Closed")) return "Closed";
+        String myOpeningHour="", myClosingHour="", result;
+        int index = time.indexOf(':');
+        String myTime = time.substring(index).replace(": ", "").replace(" ", ""); // Now we have 10:30AM-8:00PM
+        // We need to separate them into the two different hours
+        String[] hours = myTime.split("–");
+        // Validating both of them
+        for (String hour : hours){
+            if (hour.contains("PM")) {
+                // We get the PM one and subdivide it in hours and minutes
+                myClosingHour = hour.replace("PM", "");
+                String[] h = myClosingHour.split(":");
+                // We now have the numeric value of our hours
+                int hs = Integer.parseInt(h[0].trim());
+                hs+=12;
+                myClosingHour = String.valueOf(hs) + ":" + h[1];
+            }else myOpeningHour = hour.replace("AM", "");
+        }
+        // We then combine them
+        result = myOpeningHour+"-"+myClosingHour;
+        return result;
+    }
+    private int parseOpeningHour(String time){
+        if (time.contains("Closed")) return -1;
+        int index = time.indexOf(':');
+        String myTime = time.substring(index).replace(": ", "").replace(" ", ""); // Now we have 10:30AM-8:00PM
+        String[] hours = myTime.split("–");
+        String temp = hours[0].replace("AM", ""); // 10:30
+        String[] h = temp.split(":"); // [10, 30]
+        return Integer.parseInt(h[0]);
     }
 }

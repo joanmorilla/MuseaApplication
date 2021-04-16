@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.util.Calendar;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,6 +42,7 @@ import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.OnBackPressed;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
+import com.github.mikephil.charting.charts.BarChart;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -51,15 +54,7 @@ import org.w3c.dom.Text;
  */
 public class MuseoFragment extends Fragment implements OnBackPressed {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    Museo museum;
 
     View root;
     boolean loved = false;
@@ -81,8 +76,6 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
     public static MuseoFragment newInstance(String param1, String param2) {
         MuseoFragment fragment = new MuseoFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -90,10 +83,6 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -139,14 +128,15 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
 
 
         TextView txtV = root.findViewById(R.id.text_view);
-        Museo museum = sharedViewModel.getCurMuseo();
+        museum = sharedViewModel.getCurMuseo();
         //super.getActivity().setTitle(museum.getName());
         //setHasOptionsMenu(true);
 
         // Set the image we get from previous activity
         ImageView imageView = root.findViewById(R.id.image_holder);
         String url = museum.getImage();
-        Picasso.get().load(url).fit().into(imageView);
+        if (!url.equals(""))
+            Picasso.get().load(url).placeholder(R.drawable.catalonia).fit().into(imageView);
 
         LinearLayout layout = root.findViewById(R.id.layout_view);
 
@@ -208,6 +198,7 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         TextView covidText = root.findViewById(R.id.covid_text);
 
         View.OnClickListener clickListener = new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 openDialog();
@@ -219,13 +210,13 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         return root;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void openDialog() {
-        CustomDialog dialog = new CustomDialog();
+        //CustomDialog dialog = new CustomDialog(museum.getCovidInformation().getAfluence(), museum.getOpeningHour());
+        //CustomDialog dialog = new CustomDialog(museum.getCovidInformation().getAfluence(), museum.getOpeningHour());
+        CustomDialog dialog = new CustomDialog(null, 0, getContext()); // For testing
         dialog.show(getChildFragmentManager(), "Informacio");
-        Dialog dialog2 = new Dialog(getContext());
-        dialog2.setContentView(R.layout.covid_info_dialog);
-        dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //dialog2.show();
+        Calendar calendar = Calendar.getInstance();
     }
 
     @Override

@@ -12,4 +12,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey_700">#B8B8B8</color>
     <color name="red_alert">#FFc54334</color>
+    <color name="bar_char">#042BBC</color>
+    <color name="yellow">#FFEB3B</color>
 </resources>
