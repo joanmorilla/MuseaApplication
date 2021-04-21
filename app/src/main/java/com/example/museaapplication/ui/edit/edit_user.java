@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ public class edit_user extends AppCompatActivity {
 
     CircularImageView image_perfil;
     TextView insert_image;
+    Button save_result;
     int SELECT_PICTURE = 200;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,15 @@ public class edit_user extends AppCompatActivity {
         Picasso.get().load(url).fit().into(image_perfil);
 
         insert_image = findViewById(R.id.select_image);
+
+        save_result = findViewById(R.id.save_res);
+
+        save_result.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"S'han guardat els canvis", Toast.LENGTH_LONG).show();
+            }
+        });
 
         insert_image.setOnClickListener(new View.OnClickListener() {
             @Override

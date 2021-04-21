@@ -4,7 +4,10 @@ import com.example.museaapplication.Classes.Dominio.User;
 import com.example.museaapplication.Classes.Json.ExhibitionValue;
 import com.example.museaapplication.Classes.Json.ExpositionListValue;
 import com.example.museaapplication.Classes.Json.ExpositionsList;
+import com.example.museaapplication.Classes.Json.FavouritesValue;
+import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
+import com.example.museaapplication.Classes.Json.UserInfoValue;
 import com.example.museaapplication.Classes.Json.UserValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
 
@@ -36,6 +39,19 @@ public interface Api {
 
     @GET("museums/{idMuseo}/{idExpo}/{idObra}")
     Call<WorkValue> getWork(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId, @Path("idObra") String idObra);
+
+    @GET("https://musea-api.herokuapp.com/users/admin")
+    Call<UserInfoValue> getUserInfo();
+
+    @GET("https://musea-api.herokuapp.com/users/admin/favourites")
+    Call<FavouritesValue> getFavourites();
+
+    @GET("https://musea-api.herokuapp.com/users/admin/likes")
+    Call<LikesValue> getLikes();
+
+
+    @POST("https://musea-authorization-server.herokuapp.com/users/{iduser}")
+    Call<Void> addVisitedMuseum(@Body String id_mus, @Path("iduser") String iduser);
 
     // User authentication
     @POST("https://musea-authorization-server.herokuapp.com/signup")

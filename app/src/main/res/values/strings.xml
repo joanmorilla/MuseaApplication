@@ -48,6 +48,9 @@
     <string name="user_pref">Preferits</string>
     <string name="mus_vis">Museus Visitats</string>
     <string name="quiz_usu">Quizzes</string>
-    <string name="most_visited">Obres més visitades</string>
+    <string name="most_visited">Obres Favorites</string>
     <string name="change_photo">Canviar foto de perfil</string>
+    <string name="bio">Biografía</string>
+    <string name="name">Name</string>
+    <string name="change_val">Guardar canvis</string>
 </resources>
