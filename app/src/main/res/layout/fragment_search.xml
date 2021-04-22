@@ -26,21 +26,35 @@
             android:id="@+id/text_recent_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Recent"
+            android:text="@string/recent_text"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
             android:textSize="20dp"
             android:textStyle="bold"
-            android:layout_marginLeft="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/svSearch"/>
+            app:layout_constraintTop_toBottomOf="@+id/svSearch"
+             />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerRecentId"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+        <LinearLayout
+            android:id="@+id/linear_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_recent_search" />
+            app:layout_constraintTop_toBottomOf="@+id/text_recent_search">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerRecentId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/separation_bar2"
@@ -54,7 +68,7 @@
             android:layout_marginRight="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerRecentId"/>
+            app:layout_constraintTop_toBottomOf="@+id/linear_search"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerId"

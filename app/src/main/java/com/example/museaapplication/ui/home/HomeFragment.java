@@ -125,7 +125,8 @@ public class HomeFragment extends Fragment {
             b.setLayoutParams(param);
             b.setBackground(getContext().getResources().getDrawable(R.drawable.drawable_button));
             // Le asignams la imagen del museo en cuestion
-            Picasso.get().load(m[i].getImage()).fit().centerCrop().into(b);
+            if (!m[i].getImage().equals(""))
+                Picasso.get().load(m[i].getImage()).fit().centerCrop().into(b);
 
             // Asignamos un comportamiento para cuando se presione
             b.setOnClickListener(clickFunc(m[i]));

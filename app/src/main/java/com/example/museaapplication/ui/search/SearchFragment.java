@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.museaapplication.Classes.Adapters.RecentSearchMuseosAdapter;
 import com.example.museaapplication.Classes.Adapters.SearchMuseosAdapter;
@@ -52,7 +53,7 @@ public class SearchFragment extends Fragment implements SearchMuseosAdapter.Recy
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        root = inflater.inflate(R.layout.search_fragment, container, false);
+        root = inflater.inflate(R.layout.fragment_search, container, false);
         searchViewModel = new SearchViewModel();
 
         museoList = new ArrayList<>();
@@ -131,8 +132,16 @@ public class SearchFragment extends Fragment implements SearchMuseosAdapter.Recy
     }
 
     private void rellenarListaRecientes() {
-        RecentSearchMuseosAdapter adapter = new RecentSearchMuseosAdapter(museoListRecent);
-        recyclerMuseosRecent.setAdapter(adapter);
+        if (museoListRecent.isEmpty()) {
+            root.findViewById(R.id.text_recent_search).setVisibility(View.GONE);
+            root.findViewById(R.id.separation_bar2).setVisibility(View.GONE);
+        }
+        else {
+            root.findViewById(R.id.text_recent_search).setVisibility(View.VISIBLE);
+            root.findViewById(R.id.separation_bar2).setVisibility(View.VISIBLE);
+            RecentSearchMuseosAdapter adapter = new RecentSearchMuseosAdapter(museoListRecent);
+            recyclerMuseosRecent.setAdapter(adapter);
+        }
     }
 
     @Override

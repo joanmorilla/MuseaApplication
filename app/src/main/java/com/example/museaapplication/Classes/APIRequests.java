@@ -118,10 +118,12 @@ public class APIRequests {
             @Override
             public void onResponse(Call<ExpositionListValue> call, Response<ExpositionListValue> response) {
                 ExpositionListValue expoListVal = response.body();
-                for(Exhibition e : expoListVal.getMuseum().getExhibitions()) {
-                    if (e != null){
-                        Log.d("Mus", m.getName());
-                        m.addExhibition(e);
+                if (expoListVal != null) {
+                    for (Exhibition e : expoListVal.getMuseum().getExhibitions()) {
+                        if (e != null) {
+                            Log.d("Mus", m.getName());
+                            m.addExhibition(e);
+                        }
                     }
                 }
             }

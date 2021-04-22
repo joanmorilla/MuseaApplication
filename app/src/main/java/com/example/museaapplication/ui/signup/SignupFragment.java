@@ -96,6 +96,10 @@ public class SignupFragment extends Fragment {
                     warningMessage = getContext().getResources().getString(R.string.warning_short_username);
                     b = false;
                 }
+                if (username.getText().toString().length() > 22) {
+                    warningMessage = getContext().getResources().getString(R.string.warning_short_username);
+                    b = false;
+                }
 
                 if (!signupViewModel.isEmail(email.getText().toString())) {
                     if (!warningMessage.isEmpty())

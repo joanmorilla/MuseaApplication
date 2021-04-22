@@ -43,6 +43,7 @@ public class HomeViewModel extends ViewModel {
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
                 MuseoValue mymuseumList = response.body();
                 Museo[] museums = mymuseumList.getMuseums();
+                //Museo[] museums = new Museo[0];
                 Museums.postValue(museums);
                 cacheExpositions(museums);
 
