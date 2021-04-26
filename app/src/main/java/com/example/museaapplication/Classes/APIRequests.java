@@ -138,7 +138,6 @@ public class APIRequests {
                         }
                     }
                 }
-                }
             }
 
             @Override
@@ -150,6 +149,7 @@ public class APIRequests {
             }
         });
     }
+
 
     public void getInfo(Museo[] m, int index, Stack<Integer> order, MutableLiveData<Museo[]> museums){
         String nameM = m[index].getName();
