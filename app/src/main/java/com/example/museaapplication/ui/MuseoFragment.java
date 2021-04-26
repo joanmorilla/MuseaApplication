@@ -1,8 +1,17 @@
 package com.example.museaapplication.ui;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.icu.util.Calendar;
+import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,17 +24,28 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
+import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.example.museaapplication.Classes.CustomDialog;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.OnBackPressed;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
+import com.github.mikephil.charting.charts.BarChart;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,15 +54,7 @@ import com.squareup.picasso.Picasso;
  */
 public class MuseoFragment extends Fragment implements OnBackPressed {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    Museo museum;
 
     View root;
     boolean loved = false;
@@ -64,8 +76,6 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
     public static MuseoFragment newInstance(String param1, String param2) {
         MuseoFragment fragment = new MuseoFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,67 +83,140 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_museo, container, false);
-
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
+        ImageButton backArrow = root.findViewById(R.id.back_arrow);
+        ImageButton heartButton = root.findViewById(R.id.heart_bttn);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+        heartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YoYo.with(Techniques.BounceInUp).duration(700).playOn(v);
+                love();
+                if (!loved) {
+                    heartButton.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
+                }else {
+                    heartButton.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
+                }
+            }
+        });
+        View.OnApplyWindowInsetsListener Listener = new View.OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
+                ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).topMargin = insets.getSystemWindowInsetTop();
+                return insets;
+            }
+        };
+
+        View view = root.findViewById(R.id.toolbar_layout);
+        view.setOnApplyWindowInsetsListener(Listener);
+
+
+
         TextView txtV = root.findViewById(R.id.text_view);
-        Museo museum = sharedViewModel.getCurMuseo();
-        super.getActivity().setTitle(museum.getName());
-        setHasOptionsMenu(true);
+        museum = sharedViewModel.getCurMuseo();
+        //super.getActivity().setTitle(museum.getName());
+        //setHasOptionsMenu(true);
 
         // Set the image we get from previous activity
         ImageView imageView = root.findViewById(R.id.image_holder);
         String url = museum.getImage();
-        Picasso.get().load(url).fit().into(imageView);
+        if (!url.equals(""))
+            Picasso.get().load(url).placeholder(R.drawable.catalonia).fit().into(imageView);
 
         LinearLayout layout = root.findViewById(R.id.layout_view);
 
+        // Generating the exposition buttons
         for (Exhibition e : museum.getExhibitionObjects()){
+            // Layout for the whole button image
+            RelativeLayout exhibitionLayout = new RelativeLayout(getContext());
             ImageButton imageButton = new ImageButton(getContext());
-            url = validateUrl(e.getImage());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, pixToDp(300));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, pixToDp(180));
+            // Defining margins and the click listener
             params.setMargins(pixToDp(10), 0, pixToDp(10), pixToDp(10));
-            imageButton.setLayoutParams(params);
-            imageButton.setOnClickListener(new View.OnClickListener() {
+            View.OnClickListener clickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("Expo", "" + e);
                     sharedViewModel.setCurExposition(e);
                     sharedViewModel.setActive(sharedViewModel.getmExpositionFragment());
                     FragmentManager fm = getParentFragmentManager();
                     fm.beginTransaction().hide(sharedViewModel.getmMuseoFragment()).show(sharedViewModel.getmExpositionFragment()).commit();
                 }
-            });
-            layout.addView(imageButton);
+            };
+            imageButton.setLayoutParams(params);
+            imageButton.setOnClickListener(clickListener);
+            // Setting the background image to that of the museum
+            url = validateUrl(e.getImage());
             Picasso.get().load(url).fit().centerCrop().into(imageButton);
+            // Bottom white rectangle
+            Button whiteRectangle = new Button(getContext());
+            whiteRectangle.setText(e.getName());
+            whiteRectangle.setAllCaps(false);
+            whiteRectangle.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            whiteRectangle.setTextColor(Color.BLACK);
+            whiteRectangle.setClickable(true);
+            whiteRectangle.setOnClickListener(clickListener);
+            whiteRectangle.setBackground(getResources().getDrawable(R.drawable.rounded_corner));
+            whiteRectangle.setBackgroundColor(Color.WHITE);
+            whiteRectangle.setElevation(8);
+            whiteRectangle.setPadding(0,0,0,0);
+            RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, pixToDp(45));
+            p.setMargins(pixToDp(10), 0, pixToDp(10), pixToDp(20));
+            p.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, imageButton.getId());
+            whiteRectangle.setLayoutParams(p);
+            // Adding all the views to the relative layout
+            exhibitionLayout.addView(imageButton);
+            exhibitionLayout.addView(whiteRectangle);
+            // Setting margins of end result
+            RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, pixToDp(225));
+            newParams.setMargins(0,0,0,pixToDp(10));
+            exhibitionLayout.setLayoutParams(newParams);
+
+            layout.addView(exhibitionLayout);
         }
-        /*txtV.setText(museum.getCountry() + "\n"
-                +    museum.getCity() + "\n"
-                +    museum.getAddress() + "\n"
-                +    museum.getDescriptions().getEn());*/
 
-        txtV.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas mattis velit felis, lobortis euismod sem iaculis in. Aenean imperdiet congue consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eleifend ipsum a enim porta, et mattis metus bibendum. Quisque eu ullamcorper ligula. Nunc dictum velit sit amet nunc suscipit, id sagittis dolor mattis. Proin in eros sodales, tincidunt justo vitae, consectetur ante. In quis libero leo. Cras consectetur sit amet eros eu sagittis. Duis metus sem, tempus id nulla vitae, convallis pretium tortor. Quisque varius tincidunt nisi, vel pulvinar nisl posuere sit amet. Quisque tortor neque, pretium ut varius quis, volutpat nec ipsum. Nam ultrices commodo ultricies. Aliquam rutrum id tellus eu placerat. Cras vehicula orci in facilisis condimentum.\n" +
-                "\n" +
-                "Proin ultrices augue molestie velit tincidunt, vitae bibendum metus vestibulum. Nullam ac odio congue, eleifend ex quis, ultricies purus. Vivamus ornare libero vitae facilisis sagittis. Sed gravida maximus libero, ut eleifend ante iaculis et. Phasellus accumsan id augue ac rhoncus. Integer non porttitor odio. Praesent rhoncus et sapien sed mollis.\n" +
-                "\n" +
-                "Vestibulum diam massa, dictum nec vehicula sit amet, tincidunt ut purus. Suspendisse vestibulum arcu velit, vel mattis velit cursus vitae. Donec varius viverra risus, congue dictum diam iaculis sed. Nulla tempus rhoncus ex, eget venenatis justo accumsan vestibulum. Donec tristique mi elit, nec mattis elit ultrices quis. Integer tempor tellus nec justo congue, in sollicitudin neque viverra. Duis blandit dui arcu, in rhoncus mauris maximus vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.\n" +
-                "\n" +
-                "Cras dictum nulla sed dui mattis, eu interdum nisi ultrices. Pellentesque a purus nibh. Nunc ultricies erat at nibh eleifend placerat. Maecenas laoreet sodales arcu quis sagittis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum eu mauris vitae dui euismod hendrerit sed eu orci. Cras libero libero, pharetra vitae imperdiet id, iaculis sit amet odio. Pellentesque ornare convallis leo. Morbi hendrerit dolor non diam euismod, vel facilisis nisl euismod. Curabitur viverra dolor at cursus efficitur. Cras et maximus risus. Praesent eu felis nisi. In ligula nisi, mollis in nunc ut, scelerisque volutpat arcu. Vivamus malesuada molestie dui, eu commodo est.\n" +
-                "\n" +
-                "Maecenas bibendum diam et tellus facilisis semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam ut vulputate lorem. Mauris eu massa at elit consequat pellentesque. Ut sit amet faucibus dolor. Phasellus faucibus finibus diam, vel porttitor justo. Proin in justo sagittis dolor ullamcorper dictum in sit amet elit. Nulla justo nibh, dapibus id commodo vel, accumsan non nisl. Donec sollicitudin sapien justo, eu facilisis velit bibendum nec.");
+        TextView title = root.findViewById(R.id.museum_title);
+        title.setText(museum.getName());
+        TextView desc = root.findViewById(R.id.museum_description);
+        desc.setText(museum.getDescriptions().getEn() + " " + museum.getDescriptions().getCa());
+        // COVID 19 information
+        ImageView img = root.findViewById(R.id.info_image);
+        TextView covidText = root.findViewById(R.id.covid_text);
 
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+        };
+
+        img.setOnClickListener(clickListener);
+        covidText.setOnClickListener(clickListener);
         return root;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void openDialog() {
+        //CustomDialog dialog = new CustomDialog(museum.getCovidInformation().getAfluence(), museum.getOpeningHour());
+        //CustomDialog dialog = new CustomDialog(museum.getCovidInformation().getAfluence(), museum.getOpeningHour());
+        CustomDialog dialog = new CustomDialog(null, 0, getContext()); // For testing
+        dialog.show(getChildFragmentManager(), "Informacio");
+        Calendar calendar = Calendar.getInstance();
     }
 
     @Override
@@ -143,29 +226,6 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
     }
     void love() {
         loved = !loved;
-    }
-
-    // handle button activities
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case android.R.id.home:
-                super.getActivity().finish();
-                return true;
-            case R.id.mybutton:
-                love();
-                if (loved) {
-                    item.setIcon(R.drawable.filled_heart);
-                }else {
-                    item.setIcon(R.drawable.heart_empty);
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
     }
     private String validateUrl(String url){
         if (!url.contains("https")) url = url.replace("http", "https");
@@ -180,4 +240,5 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         super.getActivity().finish();
         return false;
     }
+
 }
