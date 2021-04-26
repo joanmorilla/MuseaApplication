@@ -108,13 +108,6 @@ public class UserFragment extends Fragment {
 
 
 
-
-
-
-
-
-
-
         uvm.getinfoUser().observe(getViewLifecycleOwner(), new Observer<UserInfo>() {
             @Override
             public void onChanged(UserInfo userInfo) {

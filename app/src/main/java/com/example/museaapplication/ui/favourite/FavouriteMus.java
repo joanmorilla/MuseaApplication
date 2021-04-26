@@ -47,22 +47,13 @@ public class FavouriteMus extends AppCompatActivity {
         setContentView(R.layout.activity_favourite_mus);
         fvm = new ViewModelProvider(this).get(FavouriteMusViewModel.class);
 
-        //id = findViewById(R.id.te_id);
-        //image = findViewById(R.id.te_ima);
-/*
-        fvm.getFavourites().observe(this,favourites ->  {
-            favarr = new Favourites[favourites.length];
-            favarr = favourites;
-            id.setText(favourites[0].museumId());
-            image.setText(favourites[0].image());
-        });*/
+        listids = getIntent().getStringArrayListExtra("image");
 
-        listids = getIntent().getStringArrayListExtra("id");
-
-        LinearLayout llimages = findViewById(R.id.layout_fav);
+       /* LinearLayout llimages = findViewById(R.id.layout_fav);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT );
-
+                LinearLayout.LayoutParams.WRAP_CONTENT );*/
+        generar_likes();
+/*
         for (int i=0; i<listids.size(); i++){
             Button button = new Button(this);
             ImageView iv = new ImageView(this);
@@ -70,41 +61,40 @@ public class FavouriteMus extends AppCompatActivity {
             button.setLayoutParams(lp);
             //Asignamos Texto al botón
             button.setText(listids.get(i));
+            Picasso.get().load(listids.get(i)).fit().centerCrop().into(iv);
             //Añadimos el botón a la botonera
-            llimages.addView(button);
-        }
+            llimages.addView(iv);
+        }*/
+
 
 
     }
+
+    private void generar_likes(){
+
+        LinearLayout scrollPais = findViewById(R.id.layout_fav);
+        for(int i = listids.size() -1; i >= 0; i--){
+            // Generamos boton
+            ImageButton b = new ImageButton(scrollPais.getContext());
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(pixToDp(383), pixToDp(200));
+            param.setMargins(pixToDp(5), 30, pixToDp(5), 0);
+            b.setLayoutParams(param);
+            b.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.drawable_button));
+            // Le asignams la imagen del museo en cuestion
+            Picasso.get().load(listids.get(i)).fit().centerCrop().into(b);
+            // Asignamos un comportamiento para cuando se presione
+            // Finalmente lo añadimos a la vista desplazable
+            scrollPais.addView(b);
+        }
+    }
+
+
+
 
 
 
     int pixToDp(int value){
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics()));
     }
-    /*
-    private void fill_list(String s) {
-        String lowerText = s.toLowerCase();
-        favList = new ArrayList<>();
-        for (Favourites f : favarr) {
-            favList.add(f);
 
-        }
-        Favourite_museosAdapter adapter = new Favourite_museosAdapter(favList);
-        recyclerMuseos.setAdapter(adapter);
-
-
-    }*/
-
-    /*
-    private void initViews(){
-        favList = findViewById(R.id.recyclerIdfav);
-    }
-
-    private void initValues(){
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        recyclerMuseos.setLayoutManager(manager);
-
-
-    }*/
 }
