@@ -6,10 +6,13 @@ import com.example.museaapplication.Classes.Json.ExpositionListValue;
 import com.example.museaapplication.Classes.Json.ExpositionsList;
 import com.example.museaapplication.Classes.Json.FavouritesValue;
 import com.example.museaapplication.Classes.Json.LikesValue;
+import com.example.museaapplication.Classes.Json.InfoValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.UserInfoValue;
 import com.example.museaapplication.Classes.Json.UserValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
+import com.example.museaapplication.Classes.Json.WorksArray;
+import com.example.museaapplication.Classes.Json.WorksValue;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -25,11 +28,13 @@ import retrofit2.http.Query;
 
 public interface Api {
     String BASE_URL = "https://aplication-api.herokuapp.com/";
+
+    // Museums, exhibitions and works
     @GET("museums")
     Call<MuseoValue> getMuseums();
 
     @GET("museums/{idMuseo}/{idExpo}")
-    Call<ExhibitionValue> getExhibition(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId);
+    Call<WorksValue> getExhibition(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId);
 
     @GET("museums/{idMuseo}")
     Call<ExpositionListValue> getExpositions(@Path("idMuseo") String idMuseo);
@@ -52,6 +57,15 @@ public interface Api {
 
     @POST("https://musea-authorization-server.herokuapp.com/users/{iduser}")
     Call<Void> addVisitedMuseum(@Body String id_mus, @Path("iduser") String iduser);
+
+    // User favorites
+    @POST("https://musea-api.herokuapp.com/users/{userId}/likes?")
+    Call<Void> likeWork(@Path("userId") String userId, @Query("artwork") String artworkId);
+
+    // Info of schedules
+    @GET("https://musea-api.herokuapp.com/info?")
+    Call<InfoValue> getInfo(@Query("name") String nameMuseo, @Query("city") String cityMuseo);
+
 
     // User authentication
     @POST("https://musea-authorization-server.herokuapp.com/signup")

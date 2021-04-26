@@ -73,7 +73,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onChanged(Museo[] museos) {
                 museums = museos;
                 for (Museo m : museos) {
-                    Picasso.get().load(m.getImage()).into(new Target() {
+                    /*Picasso.get().load(m.getImage()).into(new Target() {
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                             d = bitmap;
@@ -88,10 +88,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         public void onPrepareLoad(Drawable placeHolderDrawable) {
 
                         }
-                    });
-                    //LatLng pos = new LatLng(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal());
-                    //mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.getDescriptions().getEn()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                    //);
+                    });*/
+                    if (m.getLocation() != null && m.getLocation().length != 0){
+                        LatLng pos = new LatLng(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal());
+                        mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.getDescriptions().getEn()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        );
+                    }
                 }
             }
         });

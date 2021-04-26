@@ -20,6 +20,9 @@ public class Museo implements Serializable {
     @SerializedName("image")
     private String image;
 
+    private Info covidInformation;
+    private int openingHour;
+
     private List<Exhibition> exhibitionObjects = new ArrayList<>();
 
     public Museo(String n, String address, String c, String count) {
@@ -116,5 +119,21 @@ public class Museo implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Info getCovidInformation() {
+        return covidInformation;
+    }
+
+    public void setCovidInformation(Info covidInformation) {
+        this.covidInformation = covidInformation;
+    }
+
+    public int getOpeningHour() {
+        return openingHour;
+    }
+
+    public void setOpeningHour(int openingHour) {
+        this.openingHour = openingHour;
     }
 }

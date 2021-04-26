@@ -1,14 +1,21 @@
 <resources>
     <string name="app_name">Musea</string>
+
     <string name="title_home">Menu Principal</string>
     <string name="title_dashboard">Cercar</string>
     <string name="title_notifications">Xats</string>
     <string name="title_user">Usuari</string>
     <string name="title_maps">Mapa</string>
+
     <string name="tab_propers">Propers</string>
     <string name="tab_pais">Pais</string>
     <string name="tab_favorits">Favorits</string>
+    <string name="titol_exhibitions"><u>Exposicions</u></string>
+
+    <!-- textos de permisos -->
     <string name="perm_denegado">Permis denegat, algunes funcions estaràn limitades </string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -53,4 +60,10 @@
     <string name="bio">Biografía</string>
     <string name="name">Name</string>
     <string name="change_val">Guardar canvis</string>
+
+    <!--Dialog Covid Info-->
+    <string name="title_covid">Current Information</string>
+    <string name="horari_dialog_covid">Schedule</string>
+    <string name="ocupation_text_covid_dialog">Ocupation</string>
+    <string name="restriccions_text_dialog_covid">Restrictions</string>
 </resources>
