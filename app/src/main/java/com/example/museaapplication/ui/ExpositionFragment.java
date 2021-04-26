@@ -154,8 +154,6 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
                 txt.setText(exhibition.getName());
                 ArrayList<Work> works = exhibition.getWorkObjects();
                 if (exhibition.getWorkObjects() != null) {
-                    works.add(exhibition.getWorkObjects().get(0));
-
                     MyViewPagerAdapter adapter = new MyViewPagerAdapter(getContext(), works);
                     viewPager2.setPageTransformer(true, new DepthPageTransformer());
                     viewPager2.setAdapter(adapter);
@@ -249,8 +247,7 @@ class MyViewPagerAdapter extends PagerAdapter {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
-                love = !love;
-                if (love) v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_24));
+                if (works.get(position).likeWork()) v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_24));
                 else
                     v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_border_24));
                 YoYo.with(Techniques.ZoomIn).duration(300).playOn(ib);

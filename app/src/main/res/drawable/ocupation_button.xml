@@ -3,7 +3,7 @@
     <solid
         android:color="?attr/colorOnPrimary" />
     <size
-        android:width="30dp"
+        android:width="10dp"
         android:height="10dp" />
 
     <padding

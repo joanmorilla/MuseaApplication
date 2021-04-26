@@ -7,18 +7,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.example.museaapplication.Classes.Dominio.AfluenceDay;
 import com.example.museaapplication.R;
@@ -30,6 +34,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 
 import static android.graphics.Color.TRANSPARENT;
 import static android.graphics.Color.argb;
@@ -41,12 +46,16 @@ public class CustomDialog extends AppCompatDialogFragment {
     AfluenceDay[] afluenceWeek;
     Context context;
     int openingHour;
+    Random random = new Random();
+    int[] colors = {R.color.red_alert, R.color.yellow, R.color.green};
+    int curColor = 0;
 
     public CustomDialog(AfluenceDay[] ad, int openHour, Context c){
         afluenceWeek = ad;
         openingHour = openHour;
         context = c;
         createNotificationChannel();
+        curColor = colors[random.nextInt(3)];
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -68,12 +77,15 @@ public class CustomDialog extends AppCompatDialogFragment {
         notificationManager.notify(1, notBuilder.build());
 
 
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.covid_info_dialog, null);
+
+        TextView icon = view.findViewById(R.id.color_indicator_dialog_covid);
+        Drawable wrappedDrawable = DrawableCompat.wrap(icon.getBackground());
+        DrawableCompat.setTint(wrappedDrawable, getResources().getColor(curColor));
+        icon.setBackgroundDrawable(wrappedDrawable);
 
         if (afluenceWeek != null) {
             barChart = view.findViewById(R.id.bar_graph_dialog);

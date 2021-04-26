@@ -25,6 +25,8 @@ import retrofit2.http.Query;
 
 public interface Api {
     String BASE_URL = "https://aplication-api.herokuapp.com/";
+
+    // Museums, exhibitions and works
     @GET("museums")
     Call<MuseoValue> getMuseums();
 
@@ -40,8 +42,14 @@ public interface Api {
     @GET("museums/{idMuseo}/{idExpo}/{idObra}")
     Call<WorkValue> getWork(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId, @Path("idObra") String idObra);
 
+    // User favorites
+    @POST("https://musea-api.herokuapp.com/users/{userId}/likes?")
+    Call<Void> likeWork(@Path("userId") String userId, @Query("artwork") String artworkId);
+
+    // Info of schedules
     @GET("https://musea-api.herokuapp.com/info?")
     Call<InfoValue> getInfo(@Query("name") String nameMuseo, @Query("city") String cityMuseo);
+
 
     // User authentication
     @POST("https://musea-authorization-server.herokuapp.com/signup")

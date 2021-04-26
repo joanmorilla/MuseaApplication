@@ -58,7 +58,7 @@
         android:paddingRight="10dp"
         android:layout_alignRight="@+id/white_rectangle"
         android:layout_above="@+id/text_pais"
-        android:text="Horari"
+        android:text="08:00-20:00"
         android:textSize="11sp"
         android:textColor="@android:color/black"/>
     <ImageView

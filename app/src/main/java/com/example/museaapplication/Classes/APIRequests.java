@@ -66,11 +66,10 @@ public class APIRequests {
             @Override
             public void onResponse(Call<WorksValue> call, Response<WorksValue> response) {
                 WorksValue exh = response.body();
-                for (Work w : exh.getExposition().getWorks()){
-                    e.addWork(w);
-                }
-
-
+                if(exh != null)
+                    for (Work w : exh.getExposition().getWorks()){
+                        e.addWork(w);
+                    }
                 //e.addWorks(exh.getExposition().getWorks());
             }
 
@@ -175,6 +174,7 @@ public class APIRequests {
             }
         });
     }
+
 
     private void CacheExhibitions() {
         Museo[] museums = SingletonDataHolder.getInstance().getMuseums();
