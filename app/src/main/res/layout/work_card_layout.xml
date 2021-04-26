@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="10dp"
+    android:background="#00000000">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:shadowColor="@android:color/transparent"
+        android:elevation="10dp"
+        android:background="@drawable/rounded_corner" />
+
+    <ImageView
+        android:id="@+id/image_holder_work"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:elevation="11dp"
+        android:background="@drawable/mnac_default"/>
+
+    <TextView
+        android:id="@+id/title_text_work"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:elevation="11dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_holder_work"
+        android:text="Un titulo super largo"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:gravity="center_vertical"
+        />
+
+    <TextView
+        android:id="@+id/desc_text_work"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:elevation="11dp"
+        android:text="Una descripcion de prueba"
+        android:textSize="15sp"
+        android:layout_below="@+id/title_text_work"/>
+
+    <ImageButton
+        android:id="@+id/sound_button_work"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:elevation="11dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/ic_baseline_volume_up_24"/>
+    <ImageButton
+        android:id="@+id/heart_button_work"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:elevation="11dp"
+        android:layout_toLeftOf="@+id/sound_button_work"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/ic_baseline_favorite_border_24"/>
+    <ImageButton
+        android:id="@+id/comments_button_work"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:elevation="11dp"
+        android:layout_toLeftOf="@+id/heart_button_work"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/black"
+        android:background="@drawable/ic_chats"/>
+
+</RelativeLayout>

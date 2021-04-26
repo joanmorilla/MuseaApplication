@@ -14,6 +14,7 @@ public class RetrofitClient {
         myApi = retrofit.create(Api.class);
     }
 
+
     public static synchronized RetrofitClient getInstance() {
         if (instance == null) {
             instance = new RetrofitClient();
