@@ -48,9 +48,18 @@
     <string name="warning_attempts_exceeded">You have exceeded the number of attempts allowed!</string>
     <string name="remaining_time">seconds left</string>
     <string name="warning_login2">Please enter valid username and password</string>
-    <string name="button_eu">Editar</string>
+    <string name="button_eu">Editar Perfil</string>
     <string name="vis_mus">Visitats</string>
 
+    <!-- user -->
+    <string name="user_pref">Preferits</string>
+    <string name="mus_vis">Museus Visitats</string>
+    <string name="quiz_usu">Quizzes</string>
+    <string name="most_visited">Obres Favorites</string>
+    <string name="change_photo">Canviar foto de perfil</string>
+    <string name="bio">Biografía</string>
+    <string name="name">Name</string>
+    <string name="change_val">Guardar canvis</string>
 
     <!--Dialog Covid Info-->
     <string name="title_covid">Current Information</string>
