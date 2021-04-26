@@ -10,6 +10,11 @@
     <color name="skyblue_700">#FF044676</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="grey_700">#FF464444</color>
+    <color name="grey_700">#B8B8B8</color>
     <color name="red_alert">#FFc54334</color>
+    <color name="gray">#808080</color>
+    <color name="blue">#0000FF</color>
+    <color name="bar_char">#042BBC</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="green">#52FD08</color>
 </resources>

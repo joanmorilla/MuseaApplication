@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="165dp">
+
+    <ImageButton
+        android:id="@+id/image_view"
+        android:layout_width="225dp"
+        android:layout_height="140dp"
+        android:elevation="1dp"
+        android:background="@drawable/mnac_default" />
+
+    <TextView
+        android:id="@+id/white_rectangle"
+        android:layout_width="225dp"
+        android:layout_height="35dp"
+        android:text="Prueba"
+        android:textStyle="bold"
+        android:textColor="#F2151515"
+        android:textSize="13sp"
+        android:paddingLeft="5dp"
+        android:gravity="center_vertical"
+        android:elevation="5dp"
+        android:shadowRadius="@android:integer/config_longAnimTime"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/two_sided_border"/>
+
+    <TextView
+        android:id="@+id/text_pais"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:elevation="6dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="2dp"
+        android:layout_alignRight="@+id/white_rectangle"
+        android:text="Pais"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"/>
+
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:background="@drawable/ic_outline_location_on_24"
+        android:elevation="6dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/text_pais"
+        android:layout_marginBottom="3dp"
+        android:layout_marginRight="5dp"
+        />
+    <TextView
+        android:id="@+id/text_horari"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="7dp"
+        android:paddingRight="10dp"
+        android:layout_alignRight="@+id/white_rectangle"
+        android:layout_above="@+id/text_pais"
+        android:text="08:00-20:00"
+        android:textSize="11sp"
+        android:textColor="@android:color/black"/>
+    <ImageView
+        android:layout_width="11dp"
+        android:layout_height="11dp"
+        android:background="@drawable/ic_outline_watch_later_24"
+        android:elevation="6dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/text_horari"
+        android:layout_marginBottom="21dp"
+        android:layout_marginRight="5dp"
+        />
+</RelativeLayout>
