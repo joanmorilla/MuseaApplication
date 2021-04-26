@@ -136,7 +136,6 @@ public class APIRequests {
                             CacheWorks(m, e);
                             m.addExhibition(e);
                         }
-
                     }
                 }
             }
@@ -150,7 +149,9 @@ public class APIRequests {
             }
         });
     }
+
     // Comentario para commit
+
     public void getInfo(Museo[] m, int index, Stack<Integer> order, MutableLiveData<Museo[]> museums){
         String nameM = m[index].getName();
         String cityM = m[index].getCity();

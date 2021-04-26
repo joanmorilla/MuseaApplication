@@ -1,5 +1,7 @@
 package com.example.museaapplication.ui.signup;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -91,6 +93,10 @@ public class SignupFragment extends Fragment {
                 String warningMessage = new String();
 
                 if (username.getText().toString().length() < 6) {
+                    warningMessage = getContext().getResources().getString(R.string.warning_short_username);
+                    b = false;
+                }
+                if (username.getText().toString().length() > 22) {
                     warningMessage = getContext().getResources().getString(R.string.warning_short_username);
                     b = false;
                 }
