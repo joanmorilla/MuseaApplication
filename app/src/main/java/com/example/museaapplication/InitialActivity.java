@@ -2,6 +2,7 @@ package com.example.museaapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;

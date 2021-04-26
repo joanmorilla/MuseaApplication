@@ -4,13 +4,12 @@ import androidx.annotation.NonNull;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,20 +20,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.ui.MainActivity;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.signup.SignupFragment;
 import com.squareup.picasso.Picasso;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Iterator;
+import java.util.Set;
 
 public class LoginFragment extends Fragment {
 
@@ -51,6 +50,9 @@ public class LoginFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_login, container, false);
         fm = getParentFragmentManager();
 
+        // Carga de preferencias compartidas
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+
         // Imagen de portada
         ImageView imageView = root.findViewById(R.id.image_holder);
         String url = getContext().getResources().getString(R.string.url_logo);
@@ -59,6 +61,8 @@ public class LoginFragment extends Fragment {
         // Get text del username y de la password
         final EditText username = root.findViewById(R.id.enter_username);
         final EditText password = root.findViewById(R.id.enter_password);
+
+        final CheckBox checkBoxRememberMe = root.findViewById(R.id.checkbox_remember_me);
 
         final TextView textWarnings = root.findViewById(R.id.text_warnigs);
 
@@ -72,6 +76,18 @@ public class LoginFragment extends Fragment {
                 loadingPanel.setVisibility(View.GONE);
                 if (r.equals(1)) {
                     Log.d("Response state","Succesfuly Login");
+
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    if (checkBoxRememberMe.isChecked()) {
+                        String stringKey = username.getText().toString().concat("#").concat(password.getText().toString());
+                        editor.putString(getString(R.string.auto_signin_key), stringKey);
+                    }
+                    else {
+                        editor.putString(getString(R.string.auto_signin_key), "");
+                    }
+                    editor.apply();
+
+
                     Toast.makeText(getContext(), "Logged", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getContext(), MainActivity.class);
                     startActivity(intent);
@@ -90,6 +106,26 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
+
+        // Inicio de sesión automatico
+        String defaultValue = "";
+        String sharedValue = sharedPref.getString(getString(R.string.auto_signin_key), defaultValue);
+        if (!sharedValue.isEmpty()) {
+            int index = sharedValue.lastIndexOf('#');
+            Log.d("SharedPreferences","Login automatico: " + sharedValue);
+            Log.d("SharedPreferences",sharedValue.substring(0,index));
+            Log.d("SharedPreferences",sharedValue.substring(index + 1));
+            if (index != -1) {
+                username.setText(sharedValue.substring(0,index));
+                password.setText(sharedValue.substring(index + 1));
+                if (!loginViewModel.validUsernamePassword(username.getText().toString(),password.getText().toString())) {
+                    if (textWarnings.getText().toString().isEmpty()) textWarnings.setText(getContext().getResources().getString(R.string.warning_login2));
+                }
+            }
+        }
+        else {
+            Log.d("SharedPreferences","Logeate tu mismo crack " + sharedValue);
+        }
 
         // Implementación del botton 'login'
         final Button loginButton = root.findViewById(R.id.button_login);
@@ -142,12 +178,30 @@ public class LoginFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        final EditText username = root.findViewById(R.id.enter_username);
         final EditText password = root.findViewById(R.id.enter_password);
         final CheckBox checkBoxRememberMe = root.findViewById(R.id.checkbox_remember_me);
         final TextView textWarnings = root.findViewById(R.id.text_warnigs);
         textWarnings.setText("");
-        if (!checkBoxRememberMe.isChecked())
+        //password.setText("");
+        //username.setText("");
+
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String defaultValue = "";
+        String sharedValue = sharedPref.getString(getString(R.string.auto_signin_key), defaultValue);
+        if (checkBoxRememberMe.isChecked() || !sharedValue.isEmpty()) {
+            checkBoxRememberMe.setChecked(true);
+            int index = sharedValue.lastIndexOf('#');
+            Log.d("SharedPreferences2","Login automatico: " + sharedValue);
+            Log.d("SharedPreferences2",sharedValue.substring(0,index));
+            Log.d("SharedPreferences2",sharedValue.substring(index + 1));
+            username.setText(sharedValue.substring(0,index));
+            password.setText(sharedValue.substring(index+1));
+        }
+        else {
             password.setText("");
+            username.setText("");
+        }
 
         final View loadingPanel = root.findViewById(R.id.loadingPanel);
         loadingPanel.setVisibility(View.GONE);

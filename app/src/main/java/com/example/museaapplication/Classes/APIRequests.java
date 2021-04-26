@@ -130,7 +130,6 @@ public class APIRequests {
             @Override
             public void onResponse(@NotNull Call<ExpositionListValue> call, @NotNull Response<ExpositionListValue> response) {
                 ExpositionListValue expoListVal = response.body();
-
                 if (expoListVal != null) {
                     for (Exhibition e : expoListVal.getMuseum().getExhibitions()) {
                         if (e != null) {
