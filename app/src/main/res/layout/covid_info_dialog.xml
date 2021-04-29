@@ -80,12 +80,22 @@
         android:background="@drawable/ic_action_user"/>
 
     <TextView
+        android:id="@+id/rest_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_ocupacio_covid_dialog"
         android:paddingLeft="30dp"
         android:paddingTop="30dp"
         android:text="@string/restriccions_text_dialog_covid"/>
+
+    <TextView
+        android:id="@+id/restrictions_covid_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rest_title"
+        android:paddingLeft="30dp"
+        android:paddingTop="10dp"
+        />
 
 
     <com.github.mikephil.charting.charts.BarChart

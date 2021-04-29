@@ -1,0 +1,76 @@
+<resources>
+    <string name="app_name">Musea</string>
+
+    <string name="title_home">Menú Principal</string>
+    <string name="title_dashboard">Buscar</string>
+    <string name="title_notifications">Chats</string>
+    <string name="title_user">Usuario</string>
+    <string name="title_maps">Mapa</string>
+
+    <string name="tab_propers">Cerca de Ti</string>
+    <string name="tab_pais">País</string>
+    <string name="tab_favorits">Favoritos</string>
+    <string name="titol_exhibitions"><u>Exposiciones</u></string>
+
+    <!-- textos de permisos -->
+    <string name="perm_denegado">Permiso denegado, algunas funciones estarán limitadas </string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- textos para las activities login y signup -->
+    <string name="enter_username">Nombre de Usuario</string>
+    <string name="enter_email">Email</string>
+    <string name="enter_password">Contraseña</string>
+    <string name="enter_password_twice">Repetir Contraseña</string>
+
+    <string name="checkbox_remember_password">Recordarme</string>
+
+    <string name="button_login">Entrar</string>
+    <string name="button_signup">Registrarse</string>
+
+    <string name="signup_suggestion">¿No tienes cuenta? Regístrate</string>
+    <string name="welcome_message">BIENVENIDO A MUSEA</string>
+
+    <!-- Textos para la vista de busqueda de museos -->
+    <string name="recent_text">Reciente</string>
+
+    <!-- signup warnings -->
+    <string name="warning_used_username">¡Este usuario ya esta en uso!</string>
+    <string name="warning_short_username">El nombre de usuario debe tener al menos 6 caracteres y un máximo de 22</string>
+    <string name="warning_used_email">¡Este email ya esta en uso!</string>
+    <string name="warning_user_exists">¡Este usuario ya existe!</string>
+    <string name="warning_not_email">La dirección de email debe ser una dirección correcta</string>
+    <string name="warning_password">La contraseña debe contener al menos 8 caracteres, 1 mayúscula, 1 minúscula y 1 número</string>
+    <string name="warning_not_match_password">¡Las contraseñas no coinciden!</string>
+
+    <!-- login warnings -->
+    <string name="warning_login">¡Email o nombre de usuario erroneos!</string>
+    <string name="warning_attempts_exceeded">¡Has sobrepasado el número permitido de intentos!</string>
+    <string name="remaining_time">segundos faltantes</string>
+    <string name="warning_login2">Por favor inserte contraseña y nombre de usuario válidos</string>
+    <string name="button_eu">Editar Perfil</string>
+    <string name="vis_mus">Visitados</string>
+    <string name="auto_login_key" />
+    <string name="auto_signin_key" />
+
+    <!-- user -->
+    <string name="user_pref">Preferidos</string>
+    <string name="mus_vis">Museos Visitados</string>
+    <string name="quiz_usu">Quizzes</string>
+    <string name="most_visited">Obras Favoritas</string>
+    <string name="change_photo">Cambiar foto de perfil</string>
+    <string name="bio">Biografía</string>
+    <string name="name">Nombre</string>
+    <string name="change_val">Guardar cambios</string>
+
+    <!--Dialog Covid Info-->
+    <string name="title_covid">Información actual</string>
+    <string name="horari_dialog_covid">Horario</string>
+    <string name="ocupation_text_covid_dialog">Ocupación</string>
+    <string name="restriccions_text_dialog_covid">Restricciones</string>
+    <string name="points">Puntos:</string>
+
+</resources>

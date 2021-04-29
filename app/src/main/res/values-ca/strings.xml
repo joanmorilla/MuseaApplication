@@ -1,0 +1,76 @@
+<resources>
+    <string name="app_name">Musea</string>
+
+    <string name="title_home">Menú Principal</string>
+    <string name="title_dashboard">Cercar</string>
+    <string name="title_notifications">Xats</string>
+    <string name="title_user">Usuari</string>
+    <string name="title_maps">Mapa</string>
+
+    <string name="tab_propers">Propers</string>
+    <string name="tab_pais">País</string>
+    <string name="tab_favorits">Favorits</string>
+    <string name="titol_exhibitions"><u>Exposicions</u></string>
+
+    <!-- textos de permisos -->
+    <string name="perm_denegado">Permís denegat, algunes funcions estaràn limitades </string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- textos para las activities login y signup -->
+    <string name="enter_username">Nom d\'Usuari</string>
+    <string name="enter_email">Email</string>
+    <string name="enter_password">Contrasenya</string>
+    <string name="enter_password_twice">Repetir Contrasenya</string>
+
+    <string name="checkbox_remember_password">Recordar-me</string>
+
+    <string name="button_login">Entrar</string>
+    <string name="button_signup">Registrar-se</string>
+
+    <string name="signup_suggestion">No tens compte? Registra\'t</string>
+    <string name="welcome_message">BENVINGUT A MUSEA</string>
+
+    <!-- Textos para la vista de busqueda de museos -->
+    <string name="recent_text">Recent</string>
+
+    <!-- signup warnings -->
+    <string name="warning_used_username">Aquest usuari ja esta en ús!</string>
+    <string name="warning_short_username">El nom d\'usuari ha de tenir al menys 6 caràcters i un màxim de 22</string>
+    <string name="warning_used_email">Aquest email ja esta en ús!</string>
+    <string name="warning_user_exists">Aquest usuari ja existeix!</string>
+    <string name="warning_not_email">La direcció de email ha de ser una direcció correcta</string>
+    <string name="warning_password">La contrasenya ha de contenir al menys 8 caràcters, 1 majúscula, 1 minúscula i 1 nombre</string>
+    <string name="warning_not_match_password">Les contrasenyes no coincideixen!</string>
+
+    <!-- login warnings -->
+    <string name="warning_login">Email o nom de usuari incorrectes!</string>
+    <string name="warning_attempts_exceeded">Has sobrepasat el nombre permès d\'intents!</string>
+    <string name="remaining_time">segons faltants</string>
+    <string name="warning_login2">Siusplau insereix contrasenya i nom d\'usuari vàlids</string>
+    <string name="button_eu">Editar Perfil</string>
+    <string name="vis_mus">Visitats</string>
+    <string name="auto_login_key" />
+    <string name="auto_signin_key" />
+
+    <!-- user -->
+    <string name="user_pref">Preferits</string>
+    <string name="mus_vis">Museus Visitats</string>
+    <string name="quiz_usu">Quizzes</string>
+    <string name="most_visited">Obres Favorites</string>
+    <string name="change_photo">Canviar foto de perfil</string>
+    <string name="bio">Biografía</string>
+    <string name="name">Nom</string>
+    <string name="change_val">Guardar canvis</string>
+
+    <!--Dialog Covid Info-->
+    <string name="title_covid">Informació actual</string>
+    <string name="horari_dialog_covid">Horari</string>
+    <string name="ocupation_text_covid_dialog">Ocupació</string>
+    <string name="restriccions_text_dialog_covid">Restriccions</string>
+    <string name="points">Punts:</string>
+
+</resources>

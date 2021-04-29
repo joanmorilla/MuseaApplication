@@ -1,19 +1,19 @@
 <resources>
     <string name="app_name">Musea</string>
 
-    <string name="title_home">Menu Principal</string>
-    <string name="title_dashboard">Cercar</string>
-    <string name="title_notifications">Xats</string>
-    <string name="title_user">Usuari</string>
-    <string name="title_maps">Mapa</string>
+    <string name="title_home">Main Menu</string>
+    <string name="title_dashboard">Search</string>
+    <string name="title_notifications">Chats</string>
+    <string name="title_user">User</string>
+    <string name="title_maps">Map</string>
 
-    <string name="tab_propers">Propers</string>
-    <string name="tab_pais">Pais</string>
-    <string name="tab_favorits">Favorits</string>
-    <string name="titol_exhibitions"><u>Exposicions</u></string>
+    <string name="tab_propers">Close to You</string>
+    <string name="tab_pais">Country</string>
+    <string name="tab_favorits">Favourites</string>
+    <string name="titol_exhibitions"><u>Expositions</u></string>
 
     <!-- textos de permisos -->
-    <string name="perm_denegado">Permis denegat, algunes funcions estaràn limitades </string>
+    <string name="perm_denegado">Permission denied, some functionalities will be limited </string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -51,25 +51,26 @@
     <string name="warning_attempts_exceeded">You have exceeded the number of attempts allowed!</string>
     <string name="remaining_time">seconds left</string>
     <string name="warning_login2">Please enter valid username and password</string>
-    <string name="button_eu">Editar Perfil</string>
-    <string name="vis_mus">Visitats</string>
+    <string name="button_eu">Edit Profile</string>
+    <string name="vis_mus">Visited</string>
     <string name="auto_login_key" />
     <string name="auto_signin_key" />
 
     <!-- user -->
-    <string name="user_pref">Preferits</string>
-    <string name="mus_vis">Museus Visitats</string>
+    <string name="user_pref">Favourites</string>
+    <string name="mus_vis">Museums Visited</string>
     <string name="quiz_usu">Quizzes</string>
-    <string name="most_visited">Obres Favorites</string>
-    <string name="change_photo">Canviar foto de perfil</string>
-    <string name="bio">Biografía</string>
+    <string name="most_visited">Favourite Works</string>
+    <string name="change_photo">Change Profile Picture</string>
+    <string name="bio">Bio</string>
     <string name="name">Name</string>
-    <string name="change_val">Guardar canvis</string>
+    <string name="change_val">Save Changes</string>
 
     <!--Dialog Covid Info-->
     <string name="title_covid">Current Information</string>
     <string name="horari_dialog_covid">Schedule</string>
     <string name="ocupation_text_covid_dialog">Ocupation</string>
     <string name="restriccions_text_dialog_covid">Restrictions</string>
+    <string name="points">Points:</string>
 
 </resources>

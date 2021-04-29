@@ -248,7 +248,7 @@
                 android:layout_marginTop="102dp"
                 android:layout_marginBottom="26dp"
                 android:gravity="center"
-                android:text="Points: "
+                android:text="@string/points"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/textView7"
                 app:layout_constraintEnd_toEndOf="parent"

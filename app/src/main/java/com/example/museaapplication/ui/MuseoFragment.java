@@ -192,7 +192,7 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         TextView title = root.findViewById(R.id.museum_title);
         title.setText(museum.getName());
         TextView desc = root.findViewById(R.id.museum_description);
-        desc.setText(museum.getDescriptions().getEn() + " " + museum.getDescriptions().getCa());
+        desc.setText(museum.getDescriptions().getText());
         // COVID 19 information
         ImageView img = root.findViewById(R.id.info_image);
         TextView covidText = root.findViewById(R.id.covid_text);
@@ -214,7 +214,7 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
     private void openDialog() {
         //CustomDialog dialog = new CustomDialog(museum.getCovidInformation().getAfluence(), museum.getOpeningHour());
         //CustomDialog dialog = new CustomDialog(museum.getCovidInformation().getAfluence(), museum.getOpeningHour());
-        CustomDialog dialog = new CustomDialog(null, 0, getContext()); // For testing
+        CustomDialog dialog = new CustomDialog(null, 0, museum.getRestrictions(), getContext()); // For testing
         dialog.show(getChildFragmentManager(), "Informacio");
         Calendar calendar = Calendar.getInstance();
     }

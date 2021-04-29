@@ -1,6 +1,5 @@
 package com.example.museaapplication.Classes.Dominio;
 
-import com.example.museaapplication.Classes.Json.Descriptions;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -19,6 +18,8 @@ public class Museo implements Serializable {
     private Descriptions descriptions;
     @SerializedName("image")
     private String image;
+
+    private Restriction[] restrictionsObjects;
 
     private Info covidInformation;
     private int openingHour;
@@ -135,5 +136,13 @@ public class Museo implements Serializable {
 
     public void setOpeningHour(int openingHour) {
         this.openingHour = openingHour;
+    }
+
+    public Restriction[] getRestrictions() {
+        return restrictionsObjects;
+    }
+
+    public void setRestrictions(Restriction[] restrictions) {
+        this.restrictionsObjects = restrictions;
     }
 }

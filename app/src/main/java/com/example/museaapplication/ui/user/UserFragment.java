@@ -1,5 +1,6 @@
 package com.example.museaapplication.ui.user;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -89,7 +91,6 @@ public class UserFragment extends Fragment {
         //Toast toast = Toast.makeText(getContext(), name, Toast.LENGTH_SHORT);
         //toast.show();
 
-
         uvm = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         root = inflater.inflate(R.layout.fragment_user, container, false);
         Button btn = root.findViewById(R.id.button_eu);
@@ -109,6 +110,7 @@ public class UserFragment extends Fragment {
 
 
         uvm.getinfoUser().observe(getViewLifecycleOwner(), new Observer<UserInfo>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(UserInfo userInfo) {
                 user_name.setText(userInfo.getName());
@@ -117,7 +119,7 @@ public class UserFragment extends Fragment {
                 fav_n.setText(n);
                 String x = String.valueOf(userInfo.getVisited().length);
                 vis_n.setText(x);
-                points.setText("Points: " + String.valueOf(userInfo.getPoints()));
+                points.setText(root.getResources().getString(R.string.points) + " " + userInfo.getPoints());
                 String url = userInfo.getProfilePic();
                 Picasso.get().load(url).fit().into(circularImageView);
 
@@ -203,6 +205,7 @@ public class UserFragment extends Fragment {
             // Asignamos un comportamiento para cuando se presione
             // Finalmente lo añadimos a la vista desplazable
             scrollPais.addView(b);
+            Log.d("Obras", "En el bucle");
         }
     }
 

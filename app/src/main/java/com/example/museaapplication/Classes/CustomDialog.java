@@ -25,6 +25,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.example.museaapplication.Classes.Dominio.AfluenceDay;
+import com.example.museaapplication.Classes.Dominio.Restriction;
 import com.example.museaapplication.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -44,16 +45,18 @@ import static androidx.core.content.ContextCompat.getSystemService;
 public class CustomDialog extends AppCompatDialogFragment {
     BarChart barChart;
     AfluenceDay[] afluenceWeek;
+    Restriction[] restrictionsObj;
     Context context;
     int openingHour;
     Random random = new Random();
     int[] colors = {R.color.red_alert, R.color.yellow, R.color.green};
     int curColor = 0;
 
-    public CustomDialog(AfluenceDay[] ad, int openHour, Context c){
+    public CustomDialog(AfluenceDay[] ad, int openHour, Restriction[] res, Context c){
         afluenceWeek = ad;
         openingHour = openHour;
         context = c;
+        restrictionsObj = res;
         createNotificationChannel();
         curColor = colors[random.nextInt(3)];
     }
@@ -87,6 +90,15 @@ public class CustomDialog extends AppCompatDialogFragment {
         DrawableCompat.setTint(wrappedDrawable, getResources().getColor(curColor));
         icon.setBackgroundDrawable(wrappedDrawable);
 
+        // Restrictions
+        TextView restrictions = view.findViewById(R.id.restrictions_covid_dialog);
+        String text = "";
+        for (Restriction res : restrictionsObj){
+            text = text + "-" + res.getText().getText() + "\n\n";
+        }
+        restrictions.setText(text);
+
+        // Bar chart
         if (afluenceWeek != null) {
             barChart = view.findViewById(R.id.bar_graph_dialog);
             ArrayList<BarEntry> barEntries = new ArrayList<>();

@@ -1,14 +1,7 @@
 package com.example.museaapplication.Classes.Dominio;
 
-import android.util.Log;
-
-import com.example.museaapplication.Classes.Json.Descriptions;
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Exhibition implements Serializable {
     private String[] works;

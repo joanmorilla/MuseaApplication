@@ -1,8 +1,5 @@
 package com.example.museaapplication.Classes.Dominio;
 
-import android.util.Log;
-
-import com.example.museaapplication.Classes.Json.Descriptions;
 import com.example.museaapplication.Classes.RetrofitClient;
 
 import java.io.Serializable;

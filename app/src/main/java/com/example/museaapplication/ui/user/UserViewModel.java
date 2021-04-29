@@ -73,8 +73,8 @@ public class UserViewModel extends ViewModel {
             @Override
             public void onResponse(Call<FavouritesValue> call, Response<FavouritesValue> response) {
                 FavouritesValue myfavlist = response.body();
-                Favourites[] favourites = myfavlist.getFavouritesList();
-                Favourites.postValue(favourites);
+                /*Favourites[] favourites = myfavlist.getFavouritesList();
+                Favourites.postValue(favourites);*/
             }
 
             @Override

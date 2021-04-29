@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     final Fragment mSearchFragment = new SearchFragment();
     final Fragment mMapFragment = new MapFragment();
     final Fragment mNotificationsFragment = new NotificationsFragment();
-    final Fragment mUserFragment = new UserFragment();
+
+    Fragment mUserFragment = new UserFragment();
     // Cogemos el fragment manager e inicializamos estado activo
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = mHomeFragment;
@@ -135,7 +136,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         txt.setClickable(false);
                         return true;
                     case R.id.navigation_user:
-                        fm.beginTransaction().hide(active).show(mUserFragment).commit();
+                        mUserFragment = new UserFragment();
+                        fm.beginTransaction().add(R.id.nav_host_fragment, mUserFragment, "3").hide(active).show(mUserFragment).commit();
                         active = mUserFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 3;
                         txt.setText(R.string.title_user);
