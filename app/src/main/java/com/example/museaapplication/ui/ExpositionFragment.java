@@ -258,7 +258,7 @@ class MyViewPagerAdapter extends PagerAdapter {
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         title.setText(content);
         title = v.findViewById(R.id.desc_text_work);
-        title.setText(works.get(position).getAuthor());
+        title.setText(works.get(position).getDescriptions().getText());
         ImageView imageHolder = v.findViewById(R.id.image_holder_work);
         imageHolder.setOnClickListener(new View.OnClickListener() {
             @Override

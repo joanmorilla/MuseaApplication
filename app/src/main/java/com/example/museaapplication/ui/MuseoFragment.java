@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -46,6 +47,8 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
+
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
