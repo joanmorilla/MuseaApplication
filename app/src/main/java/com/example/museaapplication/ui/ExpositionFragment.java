@@ -5,41 +5,31 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
-
+import android.speech.tts.TextToSpeech;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
-import android.widget.Adapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -49,14 +39,11 @@ import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.OnBackPressed;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
-import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -221,19 +208,36 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
     }
 }
 
-class MyViewPagerAdapter extends PagerAdapter {
+class MyViewPagerAdapter extends PagerAdapter  {
     private Context context;
     private LayoutInflater inflater;
     private ArrayList<Work> works = new ArrayList<>();
     private boolean love = false;
-
+    private TextToSpeech mTTs;
 
     public MyViewPagerAdapter(Context c, ArrayList<Work> w) {
         context = c;
         works = w;
         inflater = LayoutInflater.from(context);
-    }
+        mTTs = new TextToSpeech(c, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result =  mTTs.setLanguage(getLanguage());
 
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS","Language not supported");
+                    } else {
+                        Log.e("TTS","Correct initialization");
+                    }
+                } else {
+                    Log.e("TTS","Status not OKAY");
+                    Log.e("TTS",String.valueOf(status));
+                }
+            }
+        });
+
+    }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
@@ -251,6 +255,16 @@ class MyViewPagerAdapter extends PagerAdapter {
                 else
                     v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_border_24));
                 YoYo.with(Techniques.ZoomIn).duration(300).playOn(ib);
+            }
+        });
+        ImageButton iwb = v.findViewById(R.id.sound_button_work);
+        iwb.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onClick(View v) {
+                String text = getDescription(works.get(position));
+                mTTs.speak(text, TextToSpeech.QUEUE_FLUSH, null);
             }
         });
         TextView title = v.findViewById(R.id.title_text_work);
@@ -329,5 +343,33 @@ class MyViewPagerAdapter extends PagerAdapter {
     }
     int pixToDp(int value){
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, context.getResources().getDisplayMetrics()));
+    }
+
+    public Locale getLanguage() {
+        String languagename = Locale.getDefault().getDisplayName();
+        Locale locale;
+        Log.e("Language",languagename);
+        switch (languagename) {
+            case "català (Espanya)":
+                locale = new Locale("ca", "ES");
+                return locale;
+            case "español (España)":
+                locale = new Locale("es", "ES");
+                return locale;
+            default:
+                return Locale.ENGLISH;
+        }
+    }
+
+    public String getDescription (Work w) {
+        String languagename = Locale.getDefault().getDisplayName();
+        switch (languagename) {
+            case "català (Espanya)":
+                return w.getDescriptions().getCa();
+            case "español (España)":
+                return w.getDescriptions().getEs();
+            default:
+                return w.getDescriptions().getEn();
+        }
     }
 }
