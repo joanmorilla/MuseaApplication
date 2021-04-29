@@ -1,24 +1,14 @@
 package com.example.museaapplication.ui.signup;
 
 
-import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.util.Log;
 import android.util.Patterns;
-import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Dominio.User;
-import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
-import com.example.museaapplication.Classes.SingletonDataHolder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.regex.Pattern;
 
@@ -54,7 +44,7 @@ public class SignupViewModel extends ViewModel {
 
     public void newSignup(String username, String password, String email) {
         User newUser = new User(username,password,email);
-        Call<Void> call = RetrofitClient.getInstance().getMyApi().createUser(newUser);
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().createUserAuth(newUser);
         res.setValue(0);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -64,8 +54,30 @@ public class SignupViewModel extends ViewModel {
                 Log.d("code","" + response.code());
 
                 if (response.code() == 200) {
-                    Log.d("Respuesta","Usuario creado!");
-                    res.setValue(1);
+                    Log.d("Respuesta","Auth Usuario creado!");
+                    Call<Void> call2 = RetrofitClient.getInstance().getMyApi().createNewUser(username, email);
+                    call2.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call2, Response<Void> response2) {
+                            if (response2.code() == 200) {
+                                Log.d("Respuesta 2 ","Usuario creado satisfactoriamente!");
+                                res.setValue(1);
+                            }
+                            else if (response2.code() == 500) {
+                                Log.d("Respuesta 2 ","No se ha podido crear el Usuario");
+                                res.setValue(2);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call2, Throwable t) {
+                            Log.e("TAG3", t.getLocalizedMessage());
+                            Log.e("TAG4", t.getMessage());
+                            t.printStackTrace();
+                            res.setValue(-1);
+                        }
+                    });
+
                 }
                 else if (response.code() == 400) {
                     Log.d("Respuesta","Usuario ya existe");

@@ -1,29 +1,21 @@
 package com.example.museaapplication.ui.login;
 
-import android.app.Application;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.museaapplication.Classes.Json.UserValue;
 import com.example.museaapplication.Classes.RetrofitClient;
-import com.example.museaapplication.R;
 
 import java.util.Calendar;
-import java.util.Date;
 
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.http.Multipart;
 
 public class LoginViewModel extends ViewModel {
 
@@ -70,7 +62,7 @@ public class LoginViewModel extends ViewModel {
                 .build();
 
         res.setValue(0);
-        Call<UserValue> call = RetrofitClient.getInstance().getMyApi().getUser(authHeader,requestBody);
+        Call<UserValue> call = RetrofitClient.getInstance().getMyApi().getUserAuth(authHeader,requestBody);
 
         call.enqueue(new Callback<UserValue>() {
             @Override
