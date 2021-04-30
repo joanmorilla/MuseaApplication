@@ -10,7 +10,7 @@
     <string name="tab_propers">Close to You</string>
     <string name="tab_pais">Country</string>
     <string name="tab_favorits">Favourites</string>
-    <string name="titol_exhibitions"><u>Expositions</u></string>
+    <string name="titol_exhibitions"><u>Exhibitions</u></string>
 
     <!-- textos de permisos -->
     <string name="perm_denegado">Permission denied, some functionalities will be limited </string>

@@ -9,7 +9,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.museaapplication.Classes.APIRequests;
+import com.example.museaapplication.Classes.Dominio.Likes;
 import com.example.museaapplication.Classes.Dominio.Museo;
+import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
@@ -71,14 +73,25 @@ public class HomeViewModel extends ViewModel {
         });
     }
     private void cacheExpositionsAndInfo(Museo[] museums) {
-        int i = 0;
-        for(Museo m: museums){
-            order.add(i);
-            APIRequests.getInstance().getExpositionsOfMuseum(m);
-            APIRequests.getInstance().getInfo(museums, i, order, Museums);
-            i++;
-        }
+        Call<LikesValue> call = RetrofitClient.getInstance().getMyApi().getLikes();
+        call.enqueue(new Callback<LikesValue>() {
+            @Override
+            public void onResponse(Call<LikesValue> call, Response<LikesValue> response) {
+                APIRequests.getInstance().likes = response.body() != null ? response.body().getLikesList() : new Likes[0];
+                int i = 0;
+                for(Museo m: museums){
+                    order.add(i);
+                    APIRequests.getInstance().getExpositionsOfMuseum(m);
+                    APIRequests.getInstance().getInfo(museums, i, order, Museums);
+                    i++;
+                }
+            }
 
+            @Override
+            public void onFailure(Call<LikesValue> call, Throwable t) {
+
+            }
+        });
     }
 
     public LiveData<String> getText() {

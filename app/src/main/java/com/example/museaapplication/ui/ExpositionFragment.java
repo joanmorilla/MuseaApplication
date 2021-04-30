@@ -235,6 +235,8 @@ class MyViewPagerAdapter extends PagerAdapter {
     }
 
 
+    @SuppressLint("UseCompatLoadingForDrawables")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         /*View v = views.get (position);
@@ -242,6 +244,10 @@ class MyViewPagerAdapter extends PagerAdapter {
         container.setBackground(new ColorDrawable(Color.TRANSPARENT));
         ViewGroup v = (ViewGroup) inflater.inflate(R.layout.work_card_layout, container, false);
         ImageButton ib = v.findViewById(R.id.heart_button_work);
+        // Is it liked already
+        if (works.get(position).isLoved()) ib.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_24));
+        else
+            ib.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_border_24));
         ib.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("UseCompatLoadingForDrawables")
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

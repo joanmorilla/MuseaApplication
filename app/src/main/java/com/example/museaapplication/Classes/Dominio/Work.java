@@ -36,6 +36,13 @@ public class Work implements Serializable {
         return loved;
     }
 
+    public void setLoved(boolean b) {
+        loved = b;
+    }
+    public boolean isLoved() {
+        return loved;
+    }
+
     public String get_id() {
         return _id;
     }

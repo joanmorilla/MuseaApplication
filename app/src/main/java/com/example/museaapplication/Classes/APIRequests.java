@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Info;
+import com.example.museaapplication.Classes.Dominio.Likes;
 import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.Json.ExhibitionValue;
 import com.example.museaapplication.Classes.Dominio.Museo;
@@ -35,7 +36,7 @@ public class APIRequests {
         return _instance;
     }
 
-
+    public Likes[] likes;
     public void getAllMuseums(Delegate function) {
         Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseums();
         call.enqueue(new Callback<MuseoValue>() {
@@ -60,6 +61,7 @@ public class APIRequests {
         });
     }
 
+
     public void getWorksOfExhibition(Museo m, Exhibition e) {
         Call<WorksValue> call = RetrofitClient.getInstance().getMyApi().getExhibition(m.get_id(), e.get_id());
         call.enqueue(new Callback<WorksValue>() {
@@ -68,6 +70,7 @@ public class APIRequests {
                 WorksValue exh = response.body();
                 if(exh != null)
                     for (Work w : exh.getExposition().getWorks()){
+                        w.setLoved(checkLikes(w.get_id()));
                         e.addWork(w);
                     }
                 //e.addWorks(exh.getExposition().getWorks());
@@ -192,5 +195,11 @@ public class APIRequests {
     }
     private void CacheWorks(Museo m, Exhibition e){
         getWorksOfExhibition(m, e);
+    }
+    private boolean checkLikes(String id) {
+        for (Likes l : likes){
+            if (l.getArtworkId().equals(id)) return true;
+        }
+        return false;
     }
 }
