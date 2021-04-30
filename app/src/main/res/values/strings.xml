@@ -72,5 +72,6 @@
     <string name="ocupation_text_covid_dialog">Ocupation</string>
     <string name="restriccions_text_dialog_covid">Restrictions</string>
     <string name="points">Points:</string>
+    <string name="search_museum">Search museum</string>
 
 </resources>
