@@ -40,29 +40,43 @@ public class SettingsActivity extends AppCompatActivity {
     void showChangeLanguageDialog() {
         String[] languages = {"Español", "Català", "English"};
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(SettingsActivity.this);
-        mBuilder.setTitle("Choose Language");
-        mBuilder.setSingleChoiceItems(languages, -1, new DialogInterface.OnClickListener() {
+        mBuilder.setTitle(R.string.language_dialog_title);
+        mBuilder.setSingleChoiceItems(languages, checkPos(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Intent intent = new Intent(getApplicationContext(), InitialActivity.class);
-                if (i == 0) {
-                    setLocale("es");
-                    finish();
-                    startActivity(intent);
-                }else if (i == 1){
-                    setLocale("ca");
-                    finish();
-                    startActivity(intent);
-                }else {
-                    setLocale("en");
-                    finish();
-                    startActivity(intent);
+                if (checkPos() != i) {
+                    if (i == 0) {
+                        setLocale("es");
+                        finish();
+                        startActivity(intent);
+                    } else if (i == 1) {
+                        setLocale("ca");
+                        finish();
+                        startActivity(intent);
+                    } else {
+                        setLocale("en");
+                        finish();
+                        startActivity(intent);
+                    }
                 }
                 dialogInterface.dismiss();
             }
         });
         AlertDialog dialog = mBuilder.create();
         dialog.show();
+    }
+
+    int checkPos(){
+        switch(InitialActivity.curLanguage){
+            case "en":
+                return 2;
+            case "es":
+                return 0;
+            case "ca":
+                return 1;
+        }
+        return -1;
     }
 
     void setLocale(String lName){

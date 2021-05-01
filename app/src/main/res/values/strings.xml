@@ -73,5 +73,6 @@
     <string name="restriccions_text_dialog_covid">Restrictions</string>
     <string name="points">Points:</string>
     <string name="search_museum">Search museum</string>
+    <string name="language_dialog_title">Choose Language</string>
 
 </resources>
