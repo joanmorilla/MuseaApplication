@@ -346,14 +346,14 @@ class MyViewPagerAdapter extends PagerAdapter  {
     }
 
     public Locale getLanguage() {
-        String languagename = Locale.getDefault().getDisplayName();
+        String languagename = Locale.getDefault().getLanguage();
         Locale locale;
         Log.e("Language",languagename);
         switch (languagename) {
-            case "català (Espanya)":
+            case "ca":
                 locale = new Locale("ca", "ES");
                 return locale;
-            case "español (España)":
+            case "es":
                 locale = new Locale("es", "ES");
                 return locale;
             default:
@@ -362,11 +362,11 @@ class MyViewPagerAdapter extends PagerAdapter  {
     }
 
     public String getDescription (Work w) {
-        String languagename = Locale.getDefault().getDisplayName();
+        String languagename = Locale.getDefault().getLanguage();
         switch (languagename) {
-            case "català (Espanya)":
+            case "ca":
                 return w.getDescriptions().getCa();
-            case "español (España)":
+            case "es":
                 return w.getDescriptions().getEs();
             default:
                 return w.getDescriptions().getEn();
