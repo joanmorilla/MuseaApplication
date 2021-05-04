@@ -192,6 +192,8 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
 
     @Override
     public boolean OnBack() {
+        MyViewPagerAdapter fa = (MyViewPagerAdapter)viewPager2.getAdapter();
+        fa.stopTextToSpeech();
         getParentFragmentManager().beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmMuseoFragment()).commit();
         getActivity().setTitle(sharedViewModel.getCurMuseo().getName());
         sharedViewModel.setActive(sharedViewModel.getmMuseoFragment());
@@ -213,7 +215,7 @@ class MyViewPagerAdapter extends PagerAdapter  {
     private LayoutInflater inflater;
     private ArrayList<Work> works = new ArrayList<>();
     private boolean love = false;
-    private TextToSpeech mTTs;
+    public TextToSpeech mTTs;
 
     public MyViewPagerAdapter(Context c, ArrayList<Work> w) {
         context = c;
@@ -324,6 +326,7 @@ class MyViewPagerAdapter extends PagerAdapter  {
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+        if(mTTs != null) mTTs.stop();
         return view == object;
     }
 
@@ -371,5 +374,9 @@ class MyViewPagerAdapter extends PagerAdapter  {
             default:
                 return w.getDescriptions().getEn();
         }
+    }
+
+    public void stopTextToSpeech() {
+        mTTs.stop();
     }
 }
