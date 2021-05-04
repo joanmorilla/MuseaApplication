@@ -16,7 +16,6 @@ public class Descriptions implements Serializable {
 
     public String getText() {
         String languagename = InitialActivity.curLanguage;
-        Log.d("Lenguaje", languagename);
         switch (languagename) {
             case "ca":
                 return ca;

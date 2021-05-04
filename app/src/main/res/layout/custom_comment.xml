@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dp">
+
+    <com.github.siyamed.shapeimageview.CircularImageView
+        android:id="@+id/user_image_comment"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/mnac_default"
+        />
+
+    <TextView
+        android:id="@+id/user_name_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Usuari"
+        android:paddingLeft="10dp"
+        android:paddingTop="2dp"
+        android:textStyle="bold"
+        android:layout_toRightOf="@+id/user_image_comment"/>
+
+    <TextView
+        android:id="@+id/comment_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Un contenido muy largooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_below="@+id/user_name_comment"
+        android:layout_toRightOf="@+id/user_image_comment"/>
+
+    <!--<View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/comment_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="65dp"
+        android:background="#68AFADAD"/>-->
+
+</RelativeLayout>

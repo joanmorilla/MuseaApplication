@@ -50,10 +50,12 @@ public class MuseuActivity extends AppCompatActivity {
         sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
         sharedViewModel.setmMuseoFragment(new MuseoFragment());
         sharedViewModel.setmExpositionFragment(new ExpositionFragment());
+        sharedViewModel.setmCommentsFragment(new Comentaris_Fragment());
 
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().add(R.id.fragment_container, sharedViewModel.getmExpositionFragment(), "1").hide(sharedViewModel.getmExpositionFragment()).commit();
         fm.beginTransaction().add(R.id.fragment_container, sharedViewModel.getmMuseoFragment(), "0").hide(sharedViewModel.getmMuseoFragment()).commit();
+        fm.beginTransaction().add(R.id.fragment_container, sharedViewModel.getmCommentsFragment(), "2").hide(sharedViewModel.getmCommentsFragment()).commit();
         fm.beginTransaction().show(sharedViewModel.getActive()).commit();
 
         Bundle b = getIntent().getExtras();

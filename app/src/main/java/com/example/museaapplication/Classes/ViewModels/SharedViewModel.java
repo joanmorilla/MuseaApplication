@@ -17,6 +17,7 @@ public class SharedViewModel extends ViewModel {
 
     private Fragment mMuseoFragment;
     private Fragment mExpositionFragment;
+    private Fragment mCommentsFragment;
 
     private Fragment active;
 
@@ -33,7 +34,7 @@ public class SharedViewModel extends ViewModel {
     }
 
     public void setCurExposition(Exhibition curExposition) {
-        this.curExposition .postValue(curExposition);
+        this.curExposition.postValue(curExposition);
     }
 
     public Fragment getmMuseoFragment() {
@@ -61,5 +62,14 @@ public class SharedViewModel extends ViewModel {
 
     public void setActive(Fragment active) {
         this.active = active;
+    }
+
+    public Fragment getmCommentsFragment() {
+        return mCommentsFragment;
+    }
+
+    public void setmCommentsFragment(Fragment mCommentsFragment) {
+        if (this.mCommentsFragment == null)
+            this.mCommentsFragment = mCommentsFragment;
     }
 }

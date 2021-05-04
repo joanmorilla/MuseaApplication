@@ -15,6 +15,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -154,7 +155,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
                 txt.setText(exhibition.getName());
                 ArrayList<Work> works = exhibition.getWorkObjects();
                 if (exhibition.getWorkObjects() != null) {
-                    MyViewPagerAdapter adapter = new MyViewPagerAdapter(getContext(), works);
+                    MyViewPagerAdapter adapter = new MyViewPagerAdapter(getContext(), works, sharedViewModel, getParentFragmentManager());
                     viewPager2.setPageTransformer(true, new DepthPageTransformer());
                     viewPager2.setAdapter(adapter);
                 }
@@ -224,14 +225,18 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
 class MyViewPagerAdapter extends PagerAdapter {
     private Context context;
     private LayoutInflater inflater;
+    private FragmentManager fm;
     private ArrayList<Work> works = new ArrayList<>();
     private boolean love = false;
+    private SharedViewModel sharedViewModel;
 
 
-    public MyViewPagerAdapter(Context c, ArrayList<Work> w) {
+    public MyViewPagerAdapter(Context c, ArrayList<Work> w, SharedViewModel svm, FragmentManager fragm) {
         context = c;
         works = w;
         inflater = LayoutInflater.from(context);
+        sharedViewModel = svm;
+        fm = fragm;
     }
 
 
@@ -244,6 +249,7 @@ class MyViewPagerAdapter extends PagerAdapter {
         container.setBackground(new ColorDrawable(Color.TRANSPARENT));
         ViewGroup v = (ViewGroup) inflater.inflate(R.layout.work_card_layout, container, false);
         ImageButton ib = v.findViewById(R.id.heart_button_work);
+        ImageButton ib2 = v.findViewById(R.id.comments_button_work);
         // Is it liked already
         if (works.get(position).isLoved()) ib.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_24));
         else
@@ -257,6 +263,13 @@ class MyViewPagerAdapter extends PagerAdapter {
                 else
                     v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_border_24));
                 YoYo.with(Techniques.ZoomIn).duration(300).playOn(ib);
+            }
+        });
+        ib2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sharedViewModel.setActive(sharedViewModel.getmCommentsFragment());
+                fm.beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmCommentsFragment()).commit();
             }
         });
         TextView title = v.findViewById(R.id.title_text_work);
@@ -273,22 +286,6 @@ class MyViewPagerAdapter extends PagerAdapter {
             }
         });
 
-        Target myTarget = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                imageHolder.setImageBitmap(bitmap);
-            }
-
-            @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
         Picasso.get().load(validateUrl(works.get(0).getImage())).fit().into(imageHolder);
         //imageHolder.setImageBitmap(draw);
 
