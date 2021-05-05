@@ -268,6 +268,7 @@ class MyViewPagerAdapter extends PagerAdapter {
         ib2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sharedViewModel.setCurWork(works.get(position));
                 sharedViewModel.setActive(sharedViewModel.getmCommentsFragment());
                 fm.beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmCommentsFragment()).commit();
             }

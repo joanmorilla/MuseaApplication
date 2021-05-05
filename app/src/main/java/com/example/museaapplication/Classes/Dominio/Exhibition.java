@@ -79,6 +79,7 @@ public class Exhibition implements Serializable {
         if (workObjects == null) workObjects = new ArrayList<>();
         workObjects.add(w);
     }
+
    /* public void setWorkObjects(List<Work> workObjects) {
         this.workObjects = workObjects;
     }

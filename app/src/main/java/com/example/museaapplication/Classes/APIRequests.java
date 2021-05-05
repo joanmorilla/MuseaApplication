@@ -4,10 +4,12 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Info;
 import com.example.museaapplication.Classes.Dominio.Likes;
 import com.example.museaapplication.Classes.Dominio.Work;
+import com.example.museaapplication.Classes.Json.CommentsValue;
 import com.example.museaapplication.Classes.Json.ExhibitionValue;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Json.ExpositionListValue;
@@ -72,6 +74,7 @@ public class APIRequests {
                     for (Work w : exh.getExposition().getWorks()){
                         w.setLoved(checkLikes(w.get_id()));
                         e.addWork(w);
+                        getCommentsOfWork(w);
                     }
                 //e.addWorks(exh.getExposition().getWorks());
             }
@@ -180,6 +183,34 @@ public class APIRequests {
         });
     }
 
+    public void postComment(){
+
+    }
+
+    private void getCommentsOfWork(Work w){
+        Call<CommentsValue> call = RetrofitClient.getInstance().getMyApi().getComments(w.get_id());
+        call.enqueue(new Callback<CommentsValue>() {
+            @Override
+            public void onResponse(Call<CommentsValue> call, Response<CommentsValue> response) {
+                if (response.body() != null) {
+                    Comment[] comments = response.body().getComments();
+                    for (Comment c : comments){
+                        Log.d("Comment", c.getContent() + " " + w.get_id());
+                        w.addComment(c);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommentsValue> call, Throwable t) {
+                Log.e("TAG1Comment", t.getLocalizedMessage());
+                Log.e("TAG2Comment", t.getMessage());
+
+                t.printStackTrace();
+            }
+        });
+    }
+
 
     private void CacheExhibitions() {
         Museo[] museums = SingletonDataHolder.getInstance().getMuseums();
@@ -195,6 +226,7 @@ public class APIRequests {
     }
     private void CacheWorks(Museo m, Exhibition e){
         getWorksOfExhibition(m, e);
+
     }
     private boolean checkLikes(String id) {
         for (Likes l : likes){

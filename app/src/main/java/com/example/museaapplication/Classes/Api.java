@@ -1,6 +1,8 @@
 package com.example.museaapplication.Classes;
 
+import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.User;
+import com.example.museaapplication.Classes.Json.CommentsValue;
 import com.example.museaapplication.Classes.Json.ExhibitionValue;
 import com.example.museaapplication.Classes.Json.ExpositionListValue;
 import com.example.museaapplication.Classes.Json.ExpositionsList;
@@ -44,6 +46,13 @@ public interface Api {
 
     @GET("museums/{idMuseo}/{idExpo}/{idObra}")
     Call<WorkValue> getWork(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId, @Path("idObra") String idObra);
+
+    // Comments
+    @GET("https://musea-api.herokuapp.com/comments?")
+    Call<CommentsValue> getComments(@Query("artworkId") String artworkId);
+
+    @POST("https://musea-api.herokuapp.com/comments?")
+    Call<Comment> postComment(@Query("artworkId") String artworkId, @Query("content") String content, @Query("author") String author);
 
     @GET("https://musea-api.herokuapp.com/users/admin")
     Call<UserInfoValue> getUserInfo();

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Museo;
+import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.ui.ExpositionFragment;
 import com.example.museaapplication.ui.MuseoFragment;
 
@@ -14,6 +15,7 @@ public class SharedViewModel extends ViewModel {
 
     private Museo curMuseum;
     private MutableLiveData<Exhibition> curExposition = new MutableLiveData<>();
+    private MutableLiveData<Work> curWork = new MutableLiveData<>();
 
     private Fragment mMuseoFragment;
     private Fragment mExpositionFragment;
@@ -35,6 +37,12 @@ public class SharedViewModel extends ViewModel {
 
     public void setCurExposition(Exhibition curExposition) {
         this.curExposition.postValue(curExposition);
+    }
+
+    public LiveData<Work> getCurWork() {return curWork; }
+
+    public void setCurWork(Work curWork) {
+        this.curWork.postValue(curWork);
     }
 
     public Fragment getmMuseoFragment() {

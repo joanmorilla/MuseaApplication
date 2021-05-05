@@ -3,6 +3,7 @@ package com.example.museaapplication.Classes.Dominio;
 import com.example.museaapplication.Classes.RetrofitClient;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,6 +20,7 @@ public class Work implements Serializable {
 
     private boolean loved = false;
 
+    private ArrayList<Comment> commentsObjects;
 
     public boolean likeWork(){
         Call<Void> call = RetrofitClient.getInstance().getMyApi().likeWork("admin", _id);
@@ -97,5 +99,14 @@ public class Work implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public void addComment(Comment c){
+        if (commentsObjects == null) commentsObjects = new ArrayList<>();
+        commentsObjects.add(c);
+    }
+    public ArrayList<Comment> getCommentsObjects() {
+        if (commentsObjects == null) commentsObjects = new ArrayList<>();
+        return commentsObjects;
     }
 }
