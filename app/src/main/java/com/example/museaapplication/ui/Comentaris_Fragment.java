@@ -181,7 +181,7 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                     seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                         @Override
                         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                            Drawable clone = getResources().getDrawable(R.drawable.ic_round_delete_outline_24).mutate();
+                            Drawable clone = getResources().getDrawable(R.drawable.custom_thumb).mutate();
                             //clone.setColorFilter(Color.RED, PorterDuff.Mode.CLEAR);
                             seekBar.setThumb(clone);
                             seekBar.getThumb().setAlpha(i);

@@ -40,33 +40,38 @@
             android:textColor="@color/black"
             android:layout_toEndOf="@+id/back_arrow_comments" />
     </RelativeLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout_comments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar_big">
+        android:layout_above="@+id/bottom_panel"
+        android:layout_below="@+id/toolbar_big"
+        android:layout_marginBottom="5dp">
+
         <ScrollView
             android:id="@+id/scrollView_Comments"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:layout_marginBottom="50dp">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:scrollbars="none">
 
 
-                <LinearLayout
-                    android:id="@+id/linearlayout_comments"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/linearlayout_comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                    <include layout="@layout/custom_comment" />
+                <include layout="@layout/custom_comment" />
 
-                </LinearLayout>
+            </LinearLayout>
 
 
-            </ScrollView>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         <RelativeLayout
+            android:id="@+id/bottom_panel"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -85,12 +90,17 @@
             <EditText
                 android:id="@+id/comment_input"
                 android:layout_toRightOf="@+id/user_image_bottom"
-                android:layout_marginRight="35dp"
+                android:layout_marginRight="42dp"
+                android:layout_marginLeft="7dp"
                 android:paddingLeft="10dp"
                 android:layout_centerVertical="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
+                android:inputType="textMultiLine|textCapSentences"
+                android:minLines="1"
+                android:lines="5"
+                android:maxLines="5"
+                android:background="@drawable/rounded_corner"
                 android:elegantTextHeight="true"
                 android:hint="Your comment here..." />
 
