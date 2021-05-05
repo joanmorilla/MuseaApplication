@@ -62,7 +62,9 @@
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:background="@color/design_default_color_on_primary">
+
 
             <com.github.siyamed.shapeimageview.CircularImageView
                 android:id="@+id/user_image_bottom"
