@@ -54,6 +54,8 @@
                 android:orientation="vertical">
 
                 <include layout="@layout/custom_comment" />
+
+
             </LinearLayout>
 
         </ScrollView>

@@ -20,6 +20,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -53,6 +54,9 @@ public interface Api {
 
     @POST("https://musea-api.herokuapp.com/comments?")
     Call<Comment> postComment(@Query("artworkId") String artworkId, @Query("content") String content, @Query("author") String author);
+
+    @DELETE("https://musea-api.herokuapp.com/comments/{commentId}")
+    Call<Void> deleteComment(@Path("commentId") String commentId);
 
     @GET("https://musea-api.herokuapp.com/users/admin")
     Call<UserInfoValue> getUserInfo();

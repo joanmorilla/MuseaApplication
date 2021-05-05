@@ -3,6 +3,7 @@ package com.example.museaapplication.Classes.Dominio;
 import java.io.Serializable;
 
 public class Comment implements Serializable {
+    private String _id;
     private String content;
     private String author;
     private String image;
@@ -38,5 +39,13 @@ public class Comment implements Serializable {
 
     public void setDatetime(String datetime) {
         this.datetime = datetime;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 }

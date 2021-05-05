@@ -1,7 +1,14 @@
 package com.example.museaapplication.ui;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -126,6 +134,67 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                     content.setText(c.getContent());
                     ImageView iv = v.findViewById(R.id.user_image_comment);
                     Picasso.get().load(c.getImage()).into(iv);
+                    SeekBar seekBar = v.findViewById(R.id.seek_bar_comment);
+                    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                        @Override
+                        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                            Drawable clone = getResources().getDrawable(R.drawable.ic_round_delete_outline_24).mutate();
+                            //clone.setColorFilter(Color.RED, PorterDuff.Mode.CLEAR);
+                            seekBar.setThumb(clone);
+                            seekBar.getThumb().setAlpha(seekBar.getProgress());
+                        }
+
+                        @Override
+                        public void onStartTrackingTouch(SeekBar seekBar) {
+
+                        }
+
+                        @Override
+                        public void onStopTrackingTouch(SeekBar seekBar) {
+                            if (seekBar.getProgress() <= 150) {
+                                seekBar.setProgress(0);
+                            }else{
+                                seekBar.setProgress(255);
+                                // Aqui borramos
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                builder.setCancelable(true);
+                                builder.setTitle("Delete");
+                                builder.setMessage("Are you sure you want to delete?");
+                                builder.setPositiveButton("Confirm",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Call<Void> call = RetrofitClient.getInstance().getMyApi().deleteComment(c.get_id());
+                                                call.enqueue(new Callback<Void>() {
+                                                    @Override
+                                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                                        if (response.code() == 200) {
+                                                            ll.removeView(v);
+                                                            sharedViewModel.getCurWork().getValue().removeComment(c);
+                                                        }
+                                                        else Log.d("Error", "" + c.get_id());
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<Void> call, Throwable t) {
+
+                                                    }
+                                                });
+                                            }
+                                        });
+                                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        seekBar.setProgress(0);
+                                    }
+                                });
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
+                        }
+                    });
                     ll.addView(v);
                     i++;
                 }
