@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.OnBackPressed;
@@ -81,20 +83,23 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
             @Override
             public void onClick(View view) {
 
-                Call<Comment> call = RetrofitClient.getInstance().getMyApi().postComment(sharedViewModel.getCurWork().getValue().get_id(), newCommentText.getText().toString(), "user1");
-                call.enqueue(new Callback<Comment>() {
-                    @Override
-                    public void onResponse(Call<Comment> call, Response<Comment> response) {
-                        sharedViewModel.getCurWork().getValue().addComment(response.body());
-                        sharedViewModel.setCurWork(sharedViewModel.getCurWork().getValue());
-                        newCommentText.setText("");
-                    }
+                if (!newCommentText.getText().toString().equals("")) {
+                    YoYo.with(Techniques.SlideInLeft).duration(500).playOn(view);
+                    Call<Comment> call = RetrofitClient.getInstance().getMyApi().postComment(sharedViewModel.getCurWork().getValue().get_id(), newCommentText.getText().toString(), "user1");
+                    call.enqueue(new Callback<Comment>() {
+                        @Override
+                        public void onResponse(Call<Comment> call, Response<Comment> response) {
+                            sharedViewModel.getCurWork().getValue().addComment(response.body());
+                            sharedViewModel.setCurWork(sharedViewModel.getCurWork().getValue());
+                            newCommentText.setText("");
+                        }
 
-                    @Override
-                    public void onFailure(Call<Comment> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<Comment> call, Throwable t) {
 
-                    }
-                });
+                        }
+                    });
+                } else YoYo.with(Techniques.Shake).duration(500).playOn(view);
             }
         });
 
