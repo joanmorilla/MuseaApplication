@@ -187,7 +187,7 @@ public class APIRequests {
 
     }
 
-    private void getCommentsOfWork(Work w){
+    public void getCommentsOfWork(Work w){
         Call<CommentsValue> call = RetrofitClient.getInstance().getMyApi().getComments(w.get_id());
         call.enqueue(new Callback<CommentsValue>() {
             @Override

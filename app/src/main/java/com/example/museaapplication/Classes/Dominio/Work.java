@@ -108,6 +108,9 @@ public class Work implements Serializable {
     public void removeComment(Comment c){
         commentsObjects.remove(c);
     }
+    public void setCommentsObjects(ArrayList<Comment> cs){
+        commentsObjects = cs;
+    }
     public ArrayList<Comment> getCommentsObjects() {
         if (commentsObjects == null) commentsObjects = new ArrayList<>();
         return commentsObjects;

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +28,10 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.museaapplication.Classes.APIRequests;
 import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.Work;
+import com.example.museaapplication.Classes.Json.CommentsValue;
 import com.example.museaapplication.Classes.OnBackPressed;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
@@ -36,6 +39,8 @@ import com.example.museaapplication.R;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,6 +56,8 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
 
     EditText newCommentText;
     ImageButton postButton;
+    SwipeRefreshLayout refresLayout;
+    int progress;
 
     public Comentaris_Fragment() {
         // Required empty public constructor
@@ -86,13 +93,48 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
 
         newCommentText = root.findViewById(R.id.comment_input);
         postButton = root.findViewById(R.id.post_comment_button);
+        refresLayout = root.findViewById(R.id.refresh_layout_comments);
+
+        refresLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Work w = sharedViewModel.getCurWork().getValue();
+                    sharedViewModel.getCurWork().getValue().setCommentsObjects(new ArrayList<>());
+                Call<CommentsValue> call = RetrofitClient.getInstance().getMyApi().getComments(w.get_id());
+                call.enqueue(new Callback<CommentsValue>() {
+                    @Override
+                    public void onResponse(Call<CommentsValue> call, Response<CommentsValue> response) {
+                        if (response.body() != null) {
+                            Comment[] comments = response.body().getComments();
+                            for (Comment c : comments){
+                                Log.d("Comment", c.getContent() + " " + w.get_id());
+                                w.addComment(c);
+                            }
+                        }
+                        sharedViewModel.setCurWork(w);
+                        refresLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onFailure(Call<CommentsValue> call, Throwable t) {
+                        Log.e("TAG1Comment", t.getLocalizedMessage());
+                        Log.e("TAG2Comment", t.getMessage());
+
+                        t.printStackTrace();
+                        refresLayout.setRefreshing(false);
+                    }
+                });
+                //sharedViewModel.setCurWork(null);
+
+            }
+        });
 
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (!newCommentText.getText().toString().equals("")) {
-                    YoYo.with(Techniques.SlideInLeft).duration(500).playOn(view);
+                    YoYo.with(Techniques.SlideInLeft).duration(200).playOn(view);
                     Call<Comment> call = RetrofitClient.getInstance().getMyApi().postComment(sharedViewModel.getCurWork().getValue().get_id(), newCommentText.getText().toString(), "user1");
                     call.enqueue(new Callback<Comment>() {
                         @Override
@@ -135,18 +177,19 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                     ImageView iv = v.findViewById(R.id.user_image_comment);
                     Picasso.get().load(c.getImage()).into(iv);
                     SeekBar seekBar = v.findViewById(R.id.seek_bar_comment);
+
                     seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                         @Override
                         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                             Drawable clone = getResources().getDrawable(R.drawable.ic_round_delete_outline_24).mutate();
                             //clone.setColorFilter(Color.RED, PorterDuff.Mode.CLEAR);
                             seekBar.setThumb(clone);
-                            seekBar.getThumb().setAlpha(seekBar.getProgress());
+                            seekBar.getThumb().setAlpha(i);
+                            seekBar.setProgress(i);
                         }
 
                         @Override
                         public void onStartTrackingTouch(SeekBar seekBar) {
-
                         }
 
                         @Override
@@ -172,7 +215,6 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                                                             ll.removeView(v);
                                                             sharedViewModel.getCurWork().getValue().removeComment(c);
                                                         }
-                                                        else Log.d("Error", "" + c.get_id());
                                                     }
 
                                                     @Override
@@ -186,6 +228,12 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
+                                        seekBar.setProgress(0);
+                                    }
+                                });
+                                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialogInterface) {
                                         seekBar.setProgress(0);
                                     }
                                 });
