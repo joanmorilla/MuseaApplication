@@ -1,7 +1,9 @@
 package com.example.museaapplication.ui.user;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -59,6 +61,8 @@ public class UserFragment extends Fragment {
     Likes[] work_likes;
     List<Favourites> m;
     View root;
+    String username;
+    String password;
 
 
 
@@ -106,6 +110,28 @@ public class UserFragment extends Fragment {
         CircularImageView circularImageView = root.findViewById(R.id.circularImageView);
         String url = "https://museaimages.s3.eu-west-3.amazonaws.com/logo.png";
         Picasso.get().load(url).fit().into(circularImageView);
+
+
+        /*SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String defaultValue = "";
+        String sharedValue = sharedPref.getString(getString(R.string.auto_signin_key), defaultValue);
+        int index = sharedValue.lastIndexOf('#');
+        username = (sharedValue.substring(0,index));
+        password = (sharedValue.substring(index + 1));*/
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("infouser",0);
+        String defaultValue = "";
+        String sharedValue = sharedPref.getString(getString(R.string.auto_signin_key), defaultValue);
+            //int index = sharedValue.lastIndexOf('#');
+            Log.d("SharedPreferences2","Login automatico: " + sharedValue);
+           /* Log.d("SharedPreferences2",sharedValue.substring(0,index));
+            Log.d("SharedPreferences2",sharedValue.substring(index + 1));
+            username = (sharedValue.substring(0,index));
+            password = (sharedValue.substring(index+1));*/
+
+
+
+
 
 
 
@@ -171,6 +197,8 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), edit_user.class);
+                intent.putExtra("username", user_name.getText().toString());
+                intent.putExtra("bio", user_bio.getText().toString());
                 startActivity(intent);
             }
         });
@@ -205,13 +233,7 @@ public class UserFragment extends Fragment {
             // Asignamos un comportamiento para cuando se presione
             // Finalmente lo añadimos a la vista desplazable
             scrollPais.addView(b);
-            Log.d("Obras", "En el bucle");
         }
-    }
-
-    private void setinfo(UserInfo userInfo) {
-
-
     }
 
 
@@ -242,5 +264,8 @@ public class UserFragment extends Fragment {
     int pixToDp(int value){
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, root.getResources().getDisplayMetrics()));
     }
-    }
+
+
+
+}
 

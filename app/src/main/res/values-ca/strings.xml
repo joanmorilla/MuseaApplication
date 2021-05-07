@@ -40,6 +40,8 @@
     <!-- signup warnings -->
     <string name="warning_used_username">Aquest usuari ja esta en ús!</string>
     <string name="warning_short_username">El nom d\'usuari ha de tenir al menys 6 caràcters i un màxim de 22</string>
+    <string name="warning_short_username_edit">El nom d\'usuari ha de tenir al menys 6 caràcters </string>
+    <string name="warning_short_bio">La bio ha de tenir al menys 6 caràcters </string>
     <string name="warning_used_email">Aquest email ja esta en ús!</string>
     <string name="warning_user_exists">Aquest usuari ja existeix!</string>
     <string name="warning_not_email">La direcció de email ha de ser una direcció correcta</string>

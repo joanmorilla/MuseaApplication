@@ -13,16 +13,14 @@ import retrofit2.Response;
 
 public class VisitedMusViewModel extends ViewModel {
 
-    public void addVisitedMuseum(String id_museum, String id_usuari) {
-        Call<Void> call = RetrofitClient.getInstance().getMyApi().addVisitedMuseum(id_museum,id_usuari);
+    public void addVisitedMuseum(String id_museum) {
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().addVisitedMuseum("RaulPes",id_museum);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
 
                 Log.d("toString",response.toString());
                 Log.d("code","" + response.code());
-
-
 
             }
             @Override
@@ -36,4 +34,5 @@ public class VisitedMusViewModel extends ViewModel {
 
         });
     }
+
 }

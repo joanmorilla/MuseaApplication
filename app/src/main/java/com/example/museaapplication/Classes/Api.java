@@ -22,6 +22,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -45,18 +46,20 @@ public interface Api {
     @GET("museums/{idMuseo}/{idExpo}/{idObra}")
     Call<WorkValue> getWork(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId, @Path("idObra") String idObra);
 
-    @GET("https://musea-api.herokuapp.com/users/admin")
+    @GET("https://musea-api.herokuapp.com/users/RaulPes")
     Call<UserInfoValue> getUserInfo();
 
-    @GET("https://musea-api.herokuapp.com/users/admin/favourites")
+    @GET("https://musea-api.herokuapp.com/users/luisitodescomunica/favourites")
     Call<FavouritesValue> getFavourites();
 
     @GET("https://musea-api.herokuapp.com/users/admin/likes")
     Call<LikesValue> getLikes();
 
+    @PUT("https://musea-api.herokuapp.com/users/{userId}?")
+    Call<Void> addInfoUser(@Path("userId") String userId, @Query("name") String nameuser, @Query("bio") String userbio);
 
-    @POST("https://musea-authorization-server.herokuapp.com/users/{iduser}")
-    Call<Void> addVisitedMuseum(@Body String id_mus, @Path("iduser") String iduser);
+    @POST("https://musea-api.herokuapp.com/users/{username}/visited?")
+    Call<Void> addVisitedMuseum(@Path("username") String username, @Query("museum") String museum);
 
     // User favorites
     @POST("https://musea-api.herokuapp.com/users/{userId}/likes?")

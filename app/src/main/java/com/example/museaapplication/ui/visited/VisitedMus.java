@@ -11,8 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.museaapplication.R;
-import com.example.museaapplication.scannerView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 

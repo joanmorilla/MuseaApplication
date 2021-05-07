@@ -40,6 +40,8 @@
     <!-- signup warnings -->
     <string name="warning_used_username">This username is already being used!</string>
     <string name="warning_short_username">The username must have at least 6 characters and a maximum of 22 characters</string>
+    <string name="warning_short_username_edit">The username must have at least 6 characters</string>
+    <string name="warning_short_bio">The bio must have at least 10 characters </string>
     <string name="warning_used_email">This email is already being used!</string>
     <string name="warning_user_exists">This user already exists!</string>
     <string name="warning_not_email">The email address must be a correct address</string>

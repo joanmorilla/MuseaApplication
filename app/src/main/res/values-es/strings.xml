@@ -40,6 +40,8 @@
     <!-- signup warnings -->
     <string name="warning_used_username">¡Este usuario ya esta en uso!</string>
     <string name="warning_short_username">El nombre de usuario debe tener al menos 6 caracteres y un máximo de 22</string>
+    <string name="warning_short_username_edit">El nombre de usuario debe tener al menos 6 caracteres </string>
+    <string name="warning_short_bio">La bio debe tener al menos 6 caracteres </string>
     <string name="warning_used_email">¡Este email ya esta en uso!</string>
     <string name="warning_user_exists">¡Este usuario ya existe!</string>
     <string name="warning_not_email">La dirección de email debe ser una dirección correcta</string>

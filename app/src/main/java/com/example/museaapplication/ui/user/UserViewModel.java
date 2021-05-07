@@ -37,6 +37,17 @@ public class UserViewModel extends ViewModel {
 
     }
 
+    public LiveData<Likes[]> UpdateLikes()
+    {
+        if (Likes == null) {
+            Likes = new MutableLiveData<Likes[]>();
+            loadlikes();
+        }
+        return Likes;
+
+    }
+
+
     public void loadlikes() {
         Call<LikesValue> call = RetrofitClient.getInstance().getMyApi().getLikes();
         call.enqueue(new Callback<LikesValue>() {

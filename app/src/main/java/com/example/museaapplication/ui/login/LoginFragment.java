@@ -51,7 +51,7 @@ public class LoginFragment extends Fragment {
         fm = getParentFragmentManager();
 
         // Carga de preferencias compartidas
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("infouser",0);
 
         // Imagen de portada
         ImageView imageView = root.findViewById(R.id.image_holder);

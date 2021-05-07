@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MuseaApplication">
         <activity android:name=".ui.favourite.FavouriteMus"></activity>
-        <activity android:name=".scannerView" />
+        <activity android:name=".ui.visited.scannerView" />
         <activity android:name=".ui.visited.VisitedMus" />
         <activity android:name=".ui.SettingsActivity" />
         <activity android:name=".ui.edit.edit_user" />
@@ -36,7 +36,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-          </activity>
+        </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBV6anl82OMdRRvr9TASOWv3DV5HFahDWs" />
