@@ -1,11 +1,14 @@
 package com.example.museaapplication.Classes;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.museaapplication.Classes.Dominio.Museo;
 
 import java.util.Stack;
 
 public class SingletonDataHolder {
     private static SingletonDataHolder _instance;
+    public static Fragment active;
 
 
     public static SingletonDataHolder getInstance() {

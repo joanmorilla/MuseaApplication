@@ -216,11 +216,11 @@ public class APIRequests {
         Museo[] museums = SingletonDataHolder.getInstance().getMuseums();
         for (Museo m: museums){
             m.setExhibitionObjects(new ArrayList<>());
-            for(String s : m.getExhibitions()){
+           /* for(String s : m.getExhibitions()){
                 if (!s.equals("")) {
                     //getExhibitions(m, s);
                 }
-            }
+            }*/
 
         }
     }
@@ -228,7 +228,7 @@ public class APIRequests {
         getWorksOfExhibition(m, e);
 
     }
-    private boolean checkLikes(String id) {
+    public boolean checkLikes(String id) {
         for (Likes l : likes){
             if (l.getArtworkId().equals(id)) return true;
         }

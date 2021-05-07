@@ -58,7 +58,7 @@
 
     <!-- user -->
     <string name="user_pref">Favourites</string>
-    <string name="mus_vis">Museums Visited</string>
+    <string name="mus_vis">Visited</string>
     <string name="quiz_usu">Quizzes</string>
     <string name="most_visited">Favourite Works</string>
     <string name="change_photo">Change Profile Picture</string>
@@ -72,7 +72,19 @@
     <string name="ocupation_text_covid_dialog">Ocupation</string>
     <string name="restriccions_text_dialog_covid">Restrictions</string>
     <string name="points">Points:</string>
+
+    <!--Misceláneo-->
     <string name="search_museum">Search museum</string>
     <string name="language_dialog_title">Choose Language</string>
+    <string name="your_comment_here">Your comment here…</string>
+    <string name="comments_title">Comments</string>
+
+    <!--Delete confirmation dialog-->
+    <string name="delete_dialog">Delete</string>
+    <string name="delete_confirmation">Are you sure you want to delete?</string>
+    <string name="confirm">Confirm</string>
+    <string name="dialog_cancel">Cancel</string>
+
+
 
 </resources>

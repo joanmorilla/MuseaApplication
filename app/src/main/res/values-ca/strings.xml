@@ -76,5 +76,15 @@
     <!--Misceláneo-->
     <string name="search_museum">Cercar museu</string>
     <string name="language_dialog_title">Escollir idioma</string>
+    <string name="your_comment_here">Escriu el teu comentari…</string>
+    <string name="comments_title">Comentaris</string>
+
+    <!--Delete confirmation dialog-->
+    <string name="delete_dialog">Esborrar</string>
+    <string name="delete_confirmation">Segur que vols esborrar el comentari?</string>
+    <string name="confirm">Confirmar</string>
+    <string name="dialog_cancel">Cancel·lar</string>
+
+
 
 </resources>

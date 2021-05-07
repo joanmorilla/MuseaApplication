@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
@@ -24,9 +25,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.museaapplication.Classes.APIRequests;
+import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Museo;
+import com.example.museaapplication.Classes.Dominio.Work;
+import com.example.museaapplication.Classes.Json.AuxMuseo;
 import com.example.museaapplication.Classes.Json.ExpositionsList;
+import com.example.museaapplication.Classes.Json.MuseoValue;
+import com.example.museaapplication.Classes.Json.WorksValue;
 import com.example.museaapplication.Classes.OnBackPressed;
+import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
@@ -35,9 +43,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MuseuActivity extends AppCompatActivity {
 
     SharedViewModel sharedViewModel;
+    FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +65,26 @@ public class MuseuActivity extends AppCompatActivity {
         sharedViewModel.setmExpositionFragment(new ExpositionFragment());
         sharedViewModel.setmCommentsFragment(new Comentaris_Fragment());
 
-        FragmentManager fm = getSupportFragmentManager();
+
+        fm = getSupportFragmentManager();
+
         fm.beginTransaction().add(R.id.fragment_container, sharedViewModel.getmExpositionFragment(), "1").hide(sharedViewModel.getmExpositionFragment()).commit();
         fm.beginTransaction().add(R.id.fragment_container, sharedViewModel.getmMuseoFragment(), "0").hide(sharedViewModel.getmMuseoFragment()).commit();
         fm.beginTransaction().add(R.id.fragment_container, sharedViewModel.getmCommentsFragment(), "2").hide(sharedViewModel.getmCommentsFragment()).commit();
         fm.beginTransaction().show(sharedViewModel.getActive()).commit();
 
-        Bundle b = getIntent().getExtras();
-        Museo museum = (Museo)b.getSerializable("Museu");
+        if (getIntent().getData() != null) {
+            Uri data = getIntent().getData();
+            Log.d("URIII", "" + data.getPath());
+            Log.d("ID", data.getPath().replace("/museums/", ""));
+            sharedViewModel.loadMuseum(data.getPath().replace("/museums/", ""));
+        }else {
+            Bundle b = getIntent().getExtras();
+            Museo museum = (Museo) b.getSerializable("Museu");
 
-        sharedViewModel.setCurMuseum(museum);
+            //sharedViewModel.setCurMuseum(museum);
+            sharedViewModel.setMyMuseum(museum);
+        }
     }
 
     // create an action bar button
@@ -72,6 +95,28 @@ public class MuseuActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }*/
+
+    @Override
+    protected void onStop() {
+        fm.beginTransaction().hide(sharedViewModel.getmExpositionFragment()).commit();
+        fm.beginTransaction().hide(sharedViewModel.getmMuseoFragment()).commit();
+        fm.beginTransaction().hide(sharedViewModel.getmCommentsFragment()).commit();
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        fm.beginTransaction().show(sharedViewModel.getActive()).commit();
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        /*fm.beginTransaction().hide(sharedViewModel.getmExpositionFragment()).commit();
+        fm.beginTransaction().hide(sharedViewModel.getmMuseoFragment()).commit();
+        fm.beginTransaction().hide(sharedViewModel.getmCommentsFragment()).commit();*/
+        super.onDestroy();
+    }
 
     @Override
     public void onBackPressed() {

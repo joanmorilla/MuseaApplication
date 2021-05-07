@@ -24,7 +24,8 @@
             android:layout_height="35dp"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="5dp"
-            android:background="@drawable/back_arrow"/>
+            android:background="@drawable/back_arrow"
+            android:backgroundTint="?android:textColorPrimary"/>
 
         <TextView
             android:layout_toRightOf="@+id/back_arrow_comments"
@@ -34,10 +35,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Comments"
+            android:text="@string/comments_title"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="?android:textColorPrimary"
             android:layout_toEndOf="@+id/back_arrow_comments" />
     </RelativeLayout>
 
@@ -47,7 +48,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_panel"
         android:layout_below="@+id/toolbar_big"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp"
+        android:hapticFeedbackEnabled="true"
+        >
 
         <ScrollView
             android:id="@+id/scrollView_Comments"
@@ -76,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/design_default_color_on_primary">
+            android:background="?attr/colorSurface">
 
 
             <com.github.siyamed.shapeimageview.CircularImageView
@@ -99,10 +102,10 @@
                 android:inputType="textMultiLine|textCapSentences"
                 android:minLines="1"
                 android:lines="5"
-                android:maxLines="5"
+                android:maxLength="250"
                 android:background="@drawable/rounded_corner"
                 android:elegantTextHeight="true"
-                android:hint="Your comment here..." />
+                android:hint="@string/your_comment_here" />
 
             <ImageButton
                 android:id="@+id/post_comment_button"

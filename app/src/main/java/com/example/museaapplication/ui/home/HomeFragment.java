@@ -162,10 +162,10 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 if (interactable) {
                     String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(TimeClass.getNow());
-                    Log.d("Hour","" + time);
                     Intent i = new Intent(getContext(), MuseuActivity.class);
                     i.putExtra("Museu", (Serializable) m);
                     startActivity(i);
+                    getActivity().overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
                     interactable = false;
                 }
             }

@@ -2,6 +2,7 @@ package com.example.museaapplication.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.util.Calendar;
@@ -14,6 +15,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.speech.tts.TextToSpeech;
@@ -49,6 +51,7 @@ import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
 
 import java.util.Locale;
+import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -96,9 +99,25 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_museo, container, false);
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        //museum = sharedViewModel.getCurMuseo();
 
         ImageButton backArrow = root.findViewById(R.id.back_arrow);
         ImageButton heartButton = root.findViewById(R.id.heart_bttn);
+        ImageButton shareButton = root.findViewById(R.id.share_bttn);
+
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(Intent.ACTION_SEND);
+                myIntent.setType("text/plain");
+                String shareBody = "http://www.musea.com/museums/"+ museum.get_id();
+                String shareSub = "Your subject";
+                myIntent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
+                myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(myIntent, "Share using"));
+            }
+        });
+
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,93 +150,78 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
 
 
         TextView txtV = root.findViewById(R.id.text_view);
-        museum = sharedViewModel.getCurMuseo();
-        //super.getActivity().setTitle(museum.getName());
-        //setHasOptionsMenu(true);
 
         // Set the image we get from previous activity
         ImageView imageView = root.findViewById(R.id.image_holder);
-        String url = museum.getImage();
-        if (!url.equals(""))
-            Picasso.get().load(url).placeholder(R.drawable.catalonia).fit().into(imageView);
 
-        LinearLayout layout = root.findViewById(R.id.layout_view);
-
-        // Generating the exposition buttons
-        for (Exhibition e : museum.getExhibitionObjects()){
-            // Layout for the whole button image
-            RelativeLayout exhibitionLayout = new RelativeLayout(getContext());
-            ImageButton imageButton = new ImageButton(getContext());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, pixToDp(180));
-            // Defining margins and the click listener
-            params.setMargins(pixToDp(10), 0, pixToDp(10), pixToDp(10));
-            View.OnClickListener clickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sharedViewModel.setCurExposition(e);
-                    sharedViewModel.setActive(sharedViewModel.getmExpositionFragment());
-                    FragmentManager fm = getParentFragmentManager();
-                    fm.beginTransaction().hide(sharedViewModel.getmMuseoFragment()).show(sharedViewModel.getmExpositionFragment()).commit();
-                }
-            };
-            imageButton.setLayoutParams(params);
-            imageButton.setOnClickListener(clickListener);
-            // Setting the background image to that of the museum
-            url = validateUrl(e.getImage());
-            Picasso.get().load(url).fit().centerCrop().into(imageButton);
-            // Bottom white rectangle
-            Button whiteRectangle = new Button(getContext());
-            whiteRectangle.setText(e.getName());
-            whiteRectangle.setAllCaps(false);
-            whiteRectangle.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            whiteRectangle.setTextColor(Color.BLACK);
-            whiteRectangle.setClickable(true);
-            whiteRectangle.setOnClickListener(clickListener);
-            whiteRectangle.setBackground(getResources().getDrawable(R.drawable.rounded_corner));
-            whiteRectangle.setBackgroundColor(Color.WHITE);
-            whiteRectangle.setElevation(8);
-            whiteRectangle.setPadding(0,0,0,0);
-            RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, pixToDp(45));
-            p.setMargins(pixToDp(10), 0, pixToDp(10), pixToDp(20));
-            p.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, imageButton.getId());
-            whiteRectangle.setLayoutParams(p);
-            // Adding all the views to the relative layout
-            exhibitionLayout.addView(imageButton);
-            exhibitionLayout.addView(whiteRectangle);
-            // Setting margins of end result
-            RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, pixToDp(225));
-            newParams.setMargins(0,0,0,pixToDp(10));
-            exhibitionLayout.setLayoutParams(newParams);
-
-            layout.addView(exhibitionLayout);
-        }
-
-        TextView title = root.findViewById(R.id.museum_title);
-        title.setText(museum.getName());
-        TextView desc = root.findViewById(R.id.museum_description);
-        desc.setText(museum.getDescriptions().getText());
-        // COVID 19 information
-        ImageView img = root.findViewById(R.id.info_image);
-        TextView covidText = root.findViewById(R.id.covid_text);
-
-        View.OnClickListener clickListener = new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
+        // Creating the view
+        sharedViewModel.getMuseum().observe(getViewLifecycleOwner(), new Observer<Museo>() {
             @Override
-            public void onClick(View v) {
-                openDialog();
-            }
-        };
+            public void onChanged(Museo museo) {
+                museum = museo;
+                String url = museum.getImage();
+                if (!url.equals(""))
+                    Picasso.get().load(url).placeholder(R.drawable.catalonia).fit().into(imageView);
 
-        img.setOnClickListener(clickListener);
-        covidText.setOnClickListener(clickListener);
+                LinearLayout layout = root.findViewById(R.id.layout_view);
+                layout.removeAllViews();
+
+                // Generating the exposition buttons
+                for (Exhibition e : museum.getExhibitionObjects()){
+                    RelativeLayout holder = new RelativeLayout(getContext());
+                    View v = RelativeLayout.inflate(getContext(), R.layout.custom_exposition_button, holder);
+                    ImageButton ib = v.findViewById(R.id.image_button_expo);
+                    Picasso.get().load(validateUrl(e.getImage())).fit().centerCrop().into(ib);
+                    TextView expoTitle = v.findViewById(R.id.white_rectangle_expo);
+                    expoTitle.setText(e.getName());
+                    Log.d("Setting Stuff", "it works");
+
+                    View.OnClickListener clickListener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sharedViewModel.setCurExposition(e);
+                            sharedViewModel.setActive(sharedViewModel.getmExpositionFragment());
+                            FragmentManager fm = getParentFragmentManager();
+                            fm.beginTransaction().hide(sharedViewModel.getmMuseoFragment()).show(sharedViewModel.getmExpositionFragment()).commit();
+                        }
+                    };
+
+                    ib.setOnClickListener(clickListener);
+                    expoTitle.setOnClickListener(clickListener);
+
+                    layout.addView(holder);
+                }
+
+                TextView title = root.findViewById(R.id.museum_title);
+                title.setText(museum.getName());
+                TextView desc = root.findViewById(R.id.museum_description);
+                desc.setText(museum.getDescriptions().getText());
+                // COVID 19 information
+                ImageView img = root.findViewById(R.id.info_image);
+                TextView covidText = root.findViewById(R.id.covid_text);
+
+                View.OnClickListener clickListener = new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onClick(View v) {
+                        openDialog();
+                    }
+                };
+
+                img.setOnClickListener(clickListener);
+                covidText.setOnClickListener(clickListener);
+            }
+        });
+
+
         return root;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void openDialog() {
         //CustomDialog dialog = new CustomDialog(museum.getCovidInformation().getAfluence(), museum.getOpeningHour());
-        //CustomDialog dialog = new CustomDialog(museum.getCovidInformation().getAfluence(), museum.getOpeningHour());
-        CustomDialog dialog = new CustomDialog(null, 0, museum.getRestrictions(), getContext()); // For testing
+        CustomDialog dialog = new CustomDialog(museum.getCovidInformation(), museum.getOpeningHour(), museum.getRestrictions(), getContext());
+        //CustomDialog dialog = new CustomDialog(null, 0, museum.getRestrictions(), getContext()); // For testing
         dialog.show(getChildFragmentManager(), "Informacio");
         Calendar calendar = Calendar.getInstance();
     }
@@ -234,10 +238,6 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         if (!url.contains("https")) url = url.replace("http", "https");
         return url;
     }
-    int pixToDp(int value){
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, root.getResources().getDisplayMetrics()));
-    }
-
     @Override
     public boolean OnBack() {
         super.getActivity().finish();

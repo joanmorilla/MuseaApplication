@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = mHomeFragment;
 
+    TextView txt;
+
     BottomNavigationView navView;
     private MapView mMapView;
 
@@ -78,8 +80,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         fm.beginTransaction().add(R.id.nav_host_fragment, mNotificationsFragment, "2").hide(mNotificationsFragment).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, mUserFragment, "3").hide(mUserFragment).commit();
         // Mantenemos el estado al recargar la activity (cambio de tema)
-        selectIniFrag();
         navView = findViewById(R.id.nav_view);
+        //navView.setSelectedItemId(R.id.navigation_home);
+        txt = findViewById(R.id.title_test);
+        selectIniFrag();
         // Definimos comportamiento de la barra de navegación
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
@@ -99,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if (!SingletonDataHolder.getInstance().backStack.isEmpty() && !SingletonDataHolder.getInstance().backStack.lastElement().equals(item.getItemId())) SingletonDataHolder.getInstance().backStack.push(item.getItemId());
                     else if (SingletonDataHolder.getInstance().backStack.isEmpty()) SingletonDataHolder.getInstance().backStack.push(item.getItemId());
                 }
-                TextView txt = findViewById(R.id.title_test);
+
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
                         fm.beginTransaction().hide(active).show(mHomeFragment).commit();
@@ -147,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return false;
             }
         });
-        navView.setSelectedItemId(R.id.navigation_home);
+
 
     }
 
@@ -169,20 +173,43 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         switch (SingletonDataHolder.getInstance().main_initial_frag){
             case 1:
                 active = mSearchFragment;
+                txt.setText(R.string.title_dashboard);
+                txt.setClickable(false);
+                navView.setSelectedItemId(R.id.navigation_dashboard);
                 break;
             case 2:
                 active = mNotificationsFragment;
+                txt.setText(R.string.title_notifications);
+                txt.setClickable(false);
+                navView.setSelectedItemId(R.id.navigation_notifications);
                 break;
             case 3:
                 active = mUserFragment;
+                txt.setText(R.string.title_user);
+                txt.setClickable(false);
+                navView.setSelectedItemId(R.id.navigation_user);
                 break;
             case 4:
                 active = mMapFragment;
+                txt.setText(R.string.title_maps);
+                txt.setClickable(false);
+                navView.setSelectedItemId(R.id.navigation_maps);
                 break;
             default:
                 active = mHomeFragment;
+                //fm.beginTransaction().show(active).commit();
+                txt.setText(R.string.title_home);
+                txt.setClickable(true);
+                txt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(), "Funca", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                navView.setSelectedItemId(R.id.navigation_home);
                 break;
         }
+        //navView.setSelectedItemId(R.id.navigation_home);
         fm.beginTransaction().show(active).commit();
     }
 

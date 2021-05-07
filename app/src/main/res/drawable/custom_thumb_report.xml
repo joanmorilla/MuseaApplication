@@ -10,8 +10,8 @@
             <solid android:color="@android:color/transparent" />
         </shape>
     </item>
-    <item android:drawable="@drawable/ic_round_delete_outline_24">
-        <color android:color="@color/red_alert"></color>
+    <item android:drawable="@drawable/ic_baseline_report_gmailerrorred_24">
+        <color android:color="@color/yellow"></color>
     </item>
 
 </layer-list>

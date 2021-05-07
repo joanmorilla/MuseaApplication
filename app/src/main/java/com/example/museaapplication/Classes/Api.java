@@ -36,6 +36,9 @@ public interface Api {
     @GET("museums")
     Call<MuseoValue> getMuseums();
 
+    @GET("https://musea-api.herokuapp.com/museums/{idMuseo}")
+    Call<MuseoValue> getMuseum(@Path("idMuseo") String idMuseo);
+
     @GET("museums/{idMuseo}/{idExpo}")
     Call<WorksValue> getExhibition(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId);
 

@@ -10,8 +10,9 @@
         <item name="colorSecondaryVariant">@color/grey_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorSurface</item>
         <!-- Customize your theme here. -->
+        <item name="colorSurface">#283447</item>
     </style>
 
     <!-- Como en las vistas/activities Login y Signup no uso la barra de arriba utilizan este estilo de pagina -->
@@ -25,7 +26,9 @@
         <item name="colorSecondaryVariant">@color/grey_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">#488BD3EF</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
+        <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
         <!-- Customize your theme here. -->
 
     </style>

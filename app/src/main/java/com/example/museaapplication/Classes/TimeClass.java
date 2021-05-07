@@ -30,6 +30,10 @@ public class TimeClass {
         return Calendar.getInstance().getTime();
     }
 
+    public static int getCurHour() {
+        return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+    }
+
     private static int reformatDay(int day){
         int temp = day - 2;
         if (temp < 0) temp = 6;

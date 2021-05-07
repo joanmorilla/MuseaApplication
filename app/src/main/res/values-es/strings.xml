@@ -58,7 +58,7 @@
 
     <!-- user -->
     <string name="user_pref">Preferidos</string>
-    <string name="mus_vis">Museos Visitados</string>
+    <string name="mus_vis">Visitados</string>
     <string name="quiz_usu">Quizzes</string>
     <string name="most_visited">Obras Favoritas</string>
     <string name="change_photo">Cambiar foto de perfil</string>
@@ -76,5 +76,15 @@
     <!--Misceláneo-->
     <string name="search_museum">Buscar museo</string>
     <string name="language_dialog_title">Escoger idioma</string>
+    <string name="your_comment_here">Escribe tu comentario…</string>
+    <string name="comments_title">Comentarios</string>
+
+    <!--Delete confirmation dialog-->
+    <string name="delete_dialog">Borrar</string>
+    <string name="delete_confirmation">¿Seguro que quieres borrar tu comentario?</string>
+    <string name="confirm">Confirmar</string>
+    <string name="dialog_cancel">Cancelar</string>
+
+
 
 </resources>

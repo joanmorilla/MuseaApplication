@@ -34,7 +34,7 @@
         android:text="Un titulo super largo"
         android:textSize="15sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="?android:textColorPrimary"
         android:textAlignment="center"
         android:gravity="center_vertical"
         />
@@ -59,7 +59,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/ic_baseline_volume_up_24"/>
+        android:background="@drawable/ic_baseline_volume_up_24"
+        android:backgroundTint="?android:textColorPrimary"/>
     <ImageButton
         android:id="@+id/heart_button_work"
         android:layout_width="35dp"
@@ -69,7 +70,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/ic_baseline_favorite_border_24"/>
+        android:background="@drawable/ic_baseline_favorite_border_24"
+        android:backgroundTint="?android:textColorPrimary"/>
     <ImageButton
         android:id="@+id/comments_button_work"
         android:layout_width="35dp"
@@ -79,7 +81,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="?android:textColorPrimary"
         android:background="@drawable/ic_chats"/>
 
 </RelativeLayout>

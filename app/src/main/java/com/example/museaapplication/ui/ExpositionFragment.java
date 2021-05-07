@@ -207,7 +207,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
     @Override
     public boolean OnBack() {
         getParentFragmentManager().beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmMuseoFragment()).commit();
-        getActivity().setTitle(sharedViewModel.getCurMuseo().getName());
+        //getActivity().setTitle(sharedViewModel.getCurMuseo().getName());
         sharedViewModel.setActive(sharedViewModel.getmMuseoFragment());
         return true;
     }
