@@ -31,6 +31,7 @@ import com.example.museaapplication.Classes.Dominio.Favourites;
 import com.example.museaapplication.Classes.Dominio.Likes;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Dominio.UserInfo;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.SettingsActivity;
 import com.example.museaapplication.ui.favourite.FavouriteMus;
@@ -110,7 +111,7 @@ public class UserFragment extends Fragment {
         CircularImageView circularImageView = root.findViewById(R.id.circularImageView);
         String url = "https://museaimages.s3.eu-west-3.amazonaws.com/logo.png";
         Picasso.get().load(url).fit().into(circularImageView);
-
+        SingletonDataHolder.userViewModel = uvm;
 
         /*SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         String defaultValue = "";
@@ -165,6 +166,7 @@ public class UserFragment extends Fragment {
         uvm.getLikes().observe(getViewLifecycleOwner(), new Observer<Likes[]>() {
             @Override
             public void onChanged(Likes[] likes) {
+                Log.e("Entra", "ENTRA AQUIII");
                 work_likes = new Likes[likes.length];
                 work_likes = likes;
                 generar_likes();
@@ -174,12 +176,13 @@ public class UserFragment extends Fragment {
         fav_m.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), FavouriteMus.class);
+               /* Intent intent = new Intent(getActivity(), FavouriteMus.class);
                 ArrayList<String> i = mus_favs_id;
                 ArrayList<String> im = mus_favs_image;
                 intent.putStringArrayListExtra("id",i);
                 intent.putStringArrayListExtra("image",im);
-                startActivity(intent);
+                startActivity(intent);*/
+                uvm.loadlikes();
             }
         });
 
@@ -221,6 +224,7 @@ public class UserFragment extends Fragment {
     private void generar_likes(){
 
         LinearLayout scrollPais = root.findViewById(R.id.layout_likes);
+        scrollPais.removeAllViews();
         for(int i = work_likes.length -1; i >= 0; i--){
             // Generamos boton
             ImageButton b = new ImageButton(scrollPais.getContext());

@@ -35,10 +35,13 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.museaapplication.Classes.DepthPageTransformer;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
+import com.example.museaapplication.Classes.Dominio.Likes;
 import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.OnBackPressed;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
+import com.example.museaapplication.ui.user.UserViewModel;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -68,6 +71,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
     private String mParam1;
     private String mParam2;
     SharedViewModel sharedViewModel;
+    UserViewModel userViewModel;
 
     public ExpositionFragment() {
         // Required empty public constructor
@@ -109,6 +113,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
         txt = root.findViewById(R.id.expo_title);
         viewPager2 = root.findViewById(R.id.view_pager_works);
 
+
         ImageButton backArrow = root.findViewById(R.id.back_arrow_work);
         backArrow.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
             @Override
@@ -132,7 +137,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
             }
         });
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         sharedViewModel.getCurExposition().observe(getViewLifecycleOwner(), new Observer<Exhibition>() {
             @Override
             public void onChanged(Exhibition exhibition) {
@@ -141,7 +146,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
                 txt.setText(exhibition.getName());
                 ArrayList<Work> works = exhibition.getWorkObjects();
                 if (exhibition.getWorkObjects() != null) {
-                    MyViewPagerAdapter adapter = new MyViewPagerAdapter(getContext(), works);
+                    MyViewPagerAdapter adapter = new MyViewPagerAdapter(getContext(), works, userViewModel);
                     viewPager2.setPageTransformer(true, new DepthPageTransformer());
                     viewPager2.setAdapter(adapter);
                 }
@@ -214,11 +219,13 @@ class MyViewPagerAdapter extends PagerAdapter  {
     private ArrayList<Work> works = new ArrayList<>();
     private boolean love = false;
     private TextToSpeech mTTs;
+    UserViewModel userViewModel;
 
-    public MyViewPagerAdapter(Context c, ArrayList<Work> w) {
+    public MyViewPagerAdapter(Context c, ArrayList<Work> w, UserViewModel userViewModel) {
         context = c;
         works = w;
         inflater = LayoutInflater.from(context);
+        this.userViewModel = userViewModel;
         mTTs = new TextToSpeech(c, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -251,6 +258,10 @@ class MyViewPagerAdapter extends PagerAdapter  {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
+                Likes likes = new Likes();
+                likes.setArtworkId(works.get(position).get_id());
+                likes.setImage(works.get(position).getImage());
+                SingletonDataHolder.userViewModel.loadlikes();
                 if (works.get(position).likeWork()) v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_24));
                 else
                     v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_border_24));

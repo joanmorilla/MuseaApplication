@@ -21,7 +21,7 @@ public class Work implements Serializable {
 
 
     public boolean likeWork(){
-        Call<Void> call = RetrofitClient.getInstance().getMyApi().likeWork("admin", _id);
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().likeWork("RaulPes", _id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -33,6 +33,8 @@ public class Work implements Serializable {
             }
         });
         loved = !loved;
+
+
         return loved;
     }
 

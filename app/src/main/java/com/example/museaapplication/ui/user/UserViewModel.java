@@ -14,6 +14,8 @@ import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.UserInfoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,22 +31,24 @@ public class UserViewModel extends ViewModel {
 
     public LiveData<Likes[]> getLikes()
     {
-        if (Likes == null) {
-            Likes = new MutableLiveData<Likes[]>();
-            loadlikes();
-        }
+        Likes = new MutableLiveData<Likes[]>();
+        loadlikes();
+
         return Likes;
 
     }
 
-    public LiveData<Likes[]> UpdateLikes()
+    public void UpdateLikes()
     {
-        if (Likes == null) {
             Likes = new MutableLiveData<Likes[]>();
+            Log.e("Funciona", "UPDATELIKES VIEWMODEL");
             loadlikes();
-        }
-        return Likes;
+    }
 
+    public void addlike(Likes like){
+        Likes[] likes = new Likes[this.Likes.getValue().length + 1];
+        likes[likes.length - 1] = like;
+        this.Likes.postValue(likes);
     }
 
 
