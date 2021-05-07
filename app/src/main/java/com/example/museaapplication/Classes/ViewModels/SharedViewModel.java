@@ -123,7 +123,6 @@ public class SharedViewModel extends ViewModel {
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
                 AuxMuseo aux = response.body().getMuseum();
                 Museo museum = new Museo();
-
                 museum.set_id(aux.get_id());
                 museum.setName(aux.getName());
                 museum.setImage(aux.getImage());

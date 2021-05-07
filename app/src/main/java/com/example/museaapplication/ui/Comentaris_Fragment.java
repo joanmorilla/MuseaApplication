@@ -236,7 +236,8 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                                 if (seekBar.getProgress() <= 175) {
                                     seekBar.setProgress(0);
                                 } else {
-                                    seekBar.setProgress(255);
+                                    seekBar.setProgress(0);
+                                    Toast.makeText(getContext(), "Baneaso Perro", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

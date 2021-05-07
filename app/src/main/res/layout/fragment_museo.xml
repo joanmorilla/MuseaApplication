@@ -74,7 +74,7 @@
                         android:layout_marginTop="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="75dp"
-                        android:text="Un museo cualquiera con un nombre largo" />
+                        android:text="" />
                     <ImageView
                         android:id="@+id/info_image"
                         android:layout_width="50dp"
@@ -109,7 +109,7 @@
                     android:paddingRight="85dp"
                     android:paddingLeft="10dp"
                     android:textSize="15sp"
-                    android:text="Aquesta es una descripció de proba i per tant no s'ha de tomar en serioooooooooooooooooooooooooooooooooooooooooooooooooooooo"/>
+                    android:text=""/>
 
                 <View
                     android:layout_width="wrap_content"
