@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Info;
+import com.example.museaapplication.Classes.Dominio.Quizz;
 import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.Json.ExhibitionValue;
 import com.example.museaapplication.Classes.Dominio.Museo;
@@ -13,6 +14,7 @@ import com.example.museaapplication.Classes.Json.ExpositionListValue;
 import com.example.museaapplication.Classes.Json.ExpositionsList;
 import com.example.museaapplication.Classes.Json.InfoValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
+import com.example.museaapplication.Classes.Json.QuizzValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
 import com.example.museaapplication.Classes.Json.WorksArray;
 import com.example.museaapplication.Classes.Json.WorksValue;
@@ -193,4 +195,5 @@ public class APIRequests {
     private void CacheWorks(Museo m, Exhibition e){
         getWorksOfExhibition(m, e);
     }
+
 }

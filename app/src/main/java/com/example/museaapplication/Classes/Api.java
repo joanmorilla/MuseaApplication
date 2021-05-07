@@ -8,6 +8,7 @@ import com.example.museaapplication.Classes.Json.FavouritesValue;
 import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.InfoValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
+import com.example.museaapplication.Classes.Json.QuizzValue;
 import com.example.museaapplication.Classes.Json.UserInfoValue;
 import com.example.museaapplication.Classes.Json.UserValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
@@ -81,4 +82,9 @@ public interface Api {
 
     @GET("https://museaimages.s3.eu-west-3.amazonaws.com/logo.png")
     Call<User> getImage();
+
+    // Quizzes
+    @GET("https://musea-api.herokuapp.com/quizzes")
+    Call<QuizzValue> getQuizzes();
+
 }

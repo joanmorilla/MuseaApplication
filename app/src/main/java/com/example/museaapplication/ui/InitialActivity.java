@@ -1,4 +1,4 @@
-package com.example.museaapplication;
+package com.example.museaapplication.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.museaapplication.R;
 import com.example.museaapplication.ui.login.LoginFragment;
 
 public class InitialActivity extends AppCompatActivity {

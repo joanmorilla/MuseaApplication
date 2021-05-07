@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:title="Prizes"
+    <item
         android:id="@+id/prizeButton"
-        app:showAsAction="always"
         android:icon="@drawable/ic_action_achievement"
+        android:title="Prizes"
+        app:showAsAction="always"
         />
 </menu>

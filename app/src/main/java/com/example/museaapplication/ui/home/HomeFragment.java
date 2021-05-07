@@ -1,13 +1,9 @@
 package com.example.museaapplication.ui.home;
 
-import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
@@ -16,20 +12,16 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Space;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -37,28 +29,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.example.museaapplication.Classes.APIRequests;
-import com.example.museaapplication.Classes.Delegate;
 import com.example.museaapplication.Classes.Dominio.Museo;
-import com.example.museaapplication.Classes.Json.MuseoValue;
-import com.example.museaapplication.Classes.RetrofitClient;
-import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.TimeClass;
+import com.example.museaapplication.ui.QuizzActivity;
 import com.example.museaapplication.ui.MuseuActivity;
 import com.example.museaapplication.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.google.android.material.resources.MaterialResources.getDrawable;
 
 
 public class HomeFragment extends Fragment {
@@ -66,6 +47,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     boolean interactable = true;
     View root;
+
 
     Museo[] museus;
 
@@ -93,6 +75,18 @@ public class HomeFragment extends Fragment {
         });
         setHasOptionsMenu(true);
         return root;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.prizeButton:
+                Intent i = new Intent(getContext(), QuizzActivity.class);
+                startActivity(i);
+                return true;
+        }
+        return false;
     }
 
     @Override

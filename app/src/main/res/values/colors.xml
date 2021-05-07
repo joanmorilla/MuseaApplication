@@ -17,4 +17,6 @@
     <color name="bar_char">#042BBC</color>
     <color name="yellow">#FFEB3B</color>
     <color name="green">#52FD08</color>
+    <color name="semiTransparentColor">#9AFFFFFF</color>
+    <color name="green_ok">#9ADF82</color>
 </resources>

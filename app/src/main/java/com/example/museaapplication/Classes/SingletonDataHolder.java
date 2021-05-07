@@ -1,6 +1,7 @@
 package com.example.museaapplication.Classes;
 
 import com.example.museaapplication.Classes.Dominio.Museo;
+import com.example.museaapplication.Classes.Dominio.Quizz;
 
 import java.util.Stack;
 
@@ -20,6 +21,8 @@ public class SingletonDataHolder {
 
     private Museo[] museums;
 
+    private Quizz[] quizzes;
+
     public int main_initial_frag = 0;
     public static Stack<Integer> backStack;
 
@@ -38,5 +41,13 @@ public class SingletonDataHolder {
 
     public void setMuseums(Museo[] museums) {
         this.museums = museums;
+    }
+
+    public Quizz[] getQuizzes() {
+        return quizzes;
+    }
+
+    public void setQuizzes(Quizz[] quizzes) {
+        this.quizzes = quizzes;
     }
 }

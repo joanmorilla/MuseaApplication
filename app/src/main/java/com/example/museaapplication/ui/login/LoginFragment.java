@@ -51,7 +51,7 @@ public class LoginFragment extends Fragment {
         fm = getParentFragmentManager();
 
         // Carga de preferencias compartidas
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("infoUser", Context.MODE_PRIVATE);
 
         // Imagen de portada
         ImageView imageView = root.findViewById(R.id.image_holder);
@@ -67,7 +67,6 @@ public class LoginFragment extends Fragment {
         final TextView textWarnings = root.findViewById(R.id.text_warnigs);
 
         final View loadingPanel = root.findViewById(R.id.loadingPanel);
-        loadingPanel.setVisibility(View.GONE);
 
         loginViewModel.getRes().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
@@ -107,6 +106,17 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        // Implementación del botton 'login'
+        final Button loginButton = root.findViewById(R.id.button_login);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!loginViewModel.validUsernamePassword(username.getText().toString(),password.getText().toString())) {
+                    if (textWarnings.getText().toString().isEmpty()) textWarnings.setText(getContext().getResources().getString(R.string.warning_login2));
+                }
+            }
+        });
+
         // Inicio de sesión automatico
         String defaultValue = "";
         String sharedValue = sharedPref.getString(getString(R.string.auto_signin_key), defaultValue);
@@ -118,25 +128,14 @@ public class LoginFragment extends Fragment {
             if (index != -1) {
                 username.setText(sharedValue.substring(0,index));
                 password.setText(sharedValue.substring(index + 1));
-                if (!loginViewModel.validUsernamePassword(username.getText().toString(),password.getText().toString())) {
-                    if (textWarnings.getText().toString().isEmpty()) textWarnings.setText(getContext().getResources().getString(R.string.warning_login2));
-                }
+                loginButton.performClick();
             }
         }
         else {
             Log.d("SharedPreferences","Logeate tu mismo crack " + sharedValue);
+            loadingPanel.setVisibility(View.GONE);
         }
 
-        // Implementación del botton 'login'
-        final Button loginButton = root.findViewById(R.id.button_login);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!loginViewModel.validUsernamePassword(username.getText().toString(),password.getText().toString())) {
-                    if (textWarnings.getText().toString().isEmpty()) textWarnings.setText(getContext().getResources().getString(R.string.warning_login2));
-                }
-            }
-        });
 
         // Implementación de los intentos de inicio de sesión
         loginViewModel.getnAttempts().observe(getViewLifecycleOwner(), new Observer<Integer>() {
@@ -186,7 +185,7 @@ public class LoginFragment extends Fragment {
         //password.setText("");
         //username.setText("");
 
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("infoUser", Context.MODE_PRIVATE);
         String defaultValue = "";
         String sharedValue = sharedPref.getString(getString(R.string.auto_signin_key), defaultValue);
         if (checkBoxRememberMe.isChecked() || !sharedValue.isEmpty()) {
@@ -202,9 +201,6 @@ public class LoginFragment extends Fragment {
             password.setText("");
             username.setText("");
         }
-
-        final View loadingPanel = root.findViewById(R.id.loadingPanel);
-        loadingPanel.setVisibility(View.GONE);
     }
 
     String imageToString(int id){
