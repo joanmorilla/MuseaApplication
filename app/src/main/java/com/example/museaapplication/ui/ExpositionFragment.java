@@ -159,6 +159,8 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
                     MyViewPagerAdapter adapter = new MyViewPagerAdapter(getContext(), works, sharedViewModel, getParentFragmentManager());
                     viewPager2.setPageTransformer(true, new DepthPageTransformer());
                     viewPager2.setAdapter(adapter);
+                }else{
+                    viewPager2.setAdapter(null);
                 }
                 /*LinearLayout rl = root.findViewById(R.id.linear_layout_expo);
                 View v = getLayoutInflater().inflate(R.layout.work_card_layout, rl);
@@ -309,6 +311,7 @@ class MyViewPagerAdapter extends PagerAdapter {
         else
             return index;
     }*/
+
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
