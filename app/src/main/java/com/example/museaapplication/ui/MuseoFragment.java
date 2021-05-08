@@ -175,7 +175,6 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
                         @Override
                         public void onClick(View v) {
                             sharedViewModel.setCurExposition(e);
-                            Log.e("ExpoEntrada", "" + e);
                             sharedViewModel.setActive(sharedViewModel.getmExpositionFragment());
                             FragmentManager fm = getParentFragmentManager();
                             fm.beginTransaction().hide(sharedViewModel.getmMuseoFragment()).show(sharedViewModel.getmExpositionFragment()).commit();

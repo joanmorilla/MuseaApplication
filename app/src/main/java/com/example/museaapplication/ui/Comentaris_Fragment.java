@@ -286,7 +286,7 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                                                         public void onResponse(Call<Void> call, Response<Void> response) {
                                                             if (response.code() == 200) {
                                                                 ll.removeView(v);
-                                                                newText.setVisibility(View.VISIBLE);
+                                                                //newText.setVisibility(View.VISIBLE);
                                                                 sharedViewModel.getCurWork().getValue().removeComment(c);
                                                             }
                                                         }

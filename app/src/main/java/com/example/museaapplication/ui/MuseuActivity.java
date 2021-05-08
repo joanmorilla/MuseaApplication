@@ -49,6 +49,9 @@ import retrofit2.Response;
 
 public class MuseuActivity extends AppCompatActivity {
 
+    public static Museo curMuseum;
+
+
     SharedViewModel sharedViewModel;
     FragmentManager fm;
 
@@ -79,11 +82,10 @@ public class MuseuActivity extends AppCompatActivity {
             Log.d("ID", data.getPath().replace("/museums/", ""));
             sharedViewModel.loadMuseum(data.getPath().replace("/museums/", ""));
         }else {
-            Bundle b = getIntent().getExtras();
-            Museo museum = (Museo) b.getSerializable("Museu");
-
-            sharedViewModel.setCurMuseum(museum);
-            sharedViewModel.setMyMuseum(museum);
+            // Keep it cutre. Gracias google por copiar los datos en nuevas variables al iniciar una activity cuando
+            // java pasa referencias. Muy útil.
+            sharedViewModel.setCurMuseum(curMuseum);
+            sharedViewModel.setMyMuseum(curMuseum);
         }
     }
 
@@ -107,7 +109,7 @@ public class MuseuActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //fm.beginTransaction().show(sharedViewModel.getActive()).commit();
+        fm.beginTransaction().show(sharedViewModel.getActive()).commit();
     }
 
     @Override

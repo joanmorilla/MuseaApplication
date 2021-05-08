@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
@@ -136,14 +137,14 @@ public class HomeFragment extends Fragment {
             YoYo.with(Techniques.ZoomIn)/*.delay((museums.length - i) * 200)*/.duration(700).playOn(v);
             TextView txt  = v.findViewById(R.id.white_rectangle);
             // Setting the texts in custom button
-            txt.setText(museums[i].getName());
+            txt.setText(m[i].getName());
             txt = v.findViewById(R.id.text_horari);
-            if (museums[i].getCovidInformation() != null){
-                txt.setText(timeStringValidation(museums[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
-                museums[i].setOpeningHour(parseOpeningHour(museums[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+            if (m[i].getCovidInformation() != null){
+                txt.setText(timeStringValidation(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+                m[i].setOpeningHour(parseOpeningHour(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
             }
             txt = v.findViewById(R.id.text_pais);
-            txt.setText(museums[i].getCity());
+            txt.setText(m[i].getCity());
             ImageButton ib = v.findViewById(R.id.image_view);
             ib.setOnClickListener(clickFunc(m[i]));
             if (!m[i].getImage().equals(""))
@@ -163,7 +164,7 @@ public class HomeFragment extends Fragment {
                 if (interactable) {
                     String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(TimeClass.getNow());
                     Intent i = new Intent(getContext(), MuseuActivity.class);
-                    i.putExtra("Museu", (Serializable) m);
+                    MuseuActivity.curMuseum = m;
                     startActivity(i);
                     getActivity().overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
                     interactable = false;

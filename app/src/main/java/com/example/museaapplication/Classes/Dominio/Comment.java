@@ -1,5 +1,8 @@
 package com.example.museaapplication.Classes.Dominio;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 public class Comment implements Serializable {

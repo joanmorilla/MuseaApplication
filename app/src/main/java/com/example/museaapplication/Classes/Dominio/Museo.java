@@ -1,12 +1,17 @@
 package com.example.museaapplication.Classes.Dominio;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class Museo implements Serializable {
+public class Museo implements Serializable{
     private Location[] location;
     //@SerializedName("expositions")
     //private String[] exhibitions;
@@ -38,6 +43,7 @@ public class Museo implements Serializable {
         _id ="";
         exhibitionObjects = new ArrayList<>();
     }
+
 
     public void addExhibition(Exhibition e){
         if (exhibitionObjects == null) exhibitionObjects = new ArrayList<>();
@@ -147,4 +153,6 @@ public class Museo implements Serializable {
     public void setRestrictions(Restriction[] restrictions) {
         this.restrictionsObjects = restrictions;
     }
+
+
 }

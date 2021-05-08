@@ -1,5 +1,8 @@
 package com.example.museaapplication.Classes.Dominio;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -79,7 +82,6 @@ public class Exhibition implements Serializable {
         if (workObjects == null) workObjects = new ArrayList<>();
         workObjects.add(w);
     }
-
    /* public void setWorkObjects(List<Work> workObjects) {
         this.workObjects = workObjects;
     }

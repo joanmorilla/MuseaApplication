@@ -197,7 +197,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
         switch (id) {
             case android.R.id.home:
                 getParentFragmentManager().beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmMuseoFragment()).commit();
-                getActivity().setTitle(sharedViewModel.getCurMuseo().getName());
+                //getActivity().setTitle(sharedViewModel.getCurMuseo().getName());
                 sharedViewModel.setActive(sharedViewModel.getmMuseoFragment());
                 return true;
             case R.id.mybutton:
@@ -316,8 +316,6 @@ class MyViewPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
-        works.remove(position);
-        notifyDataSetChanged();
     }
 
     @Override
