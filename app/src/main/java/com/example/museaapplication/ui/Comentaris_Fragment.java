@@ -109,7 +109,7 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_comentaris, container, false);
         vib = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-
+        TextView newText = root.findViewById(R.id.such_empty_text);
         newCommentText = root.findViewById(R.id.comment_input);
         postButton = root.findViewById(R.id.post_comment_button);
         refresLayout = root.findViewById(R.id.refresh_layout_comments);
@@ -210,6 +210,7 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                     SeekBar seekBar = v.findViewById(R.id.seek_bar_comment);
                     SeekBar seekBarReport = v.findViewById(R.id.seek_bar_report_comment);
                     TextView elapsed = v.findViewById(R.id.elapsed_time_comment);
+                    // Different behaviour for current user's comments and others'
                     if (!c.getAuthor().equals("user1")){
                         seekBar.setEnabled(false);
                         seekBarReport.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -285,6 +286,7 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                                                         public void onResponse(Call<Void> call, Response<Void> response) {
                                                             if (response.code() == 200) {
                                                                 ll.removeView(v);
+                                                                newText.setVisibility(View.VISIBLE);
                                                                 sharedViewModel.getCurWork().getValue().removeComment(c);
                                                             }
                                                         }
@@ -330,10 +332,10 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                     ll.addView(v);
                     i++;
                 }
+
+                newText.setVisibility(View.GONE);
                 if (i == 0) {
-                    TextView newText = new TextView(getContext());
-                    newText.setText("Wow such empty");
-                    ll.addView(newText);
+                    newText.setVisibility(View.VISIBLE);
                 }
             }
         });

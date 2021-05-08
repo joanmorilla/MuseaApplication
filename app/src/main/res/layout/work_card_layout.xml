@@ -11,7 +11,8 @@
         android:layout_height="match_parent"
         android:shadowColor="@android:color/transparent"
         android:elevation="10dp"
-        android:background="@drawable/rounded_corner" />
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="?android:windowBackground"/>
 
     <ImageView
         android:id="@+id/image_holder_work"
@@ -26,7 +27,7 @@
     <TextView
         android:id="@+id/title_text_work"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingBottom="5dp"
         android:elevation="11dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,15 +41,30 @@
         />
 
     <TextView
+        android:id="@+id/text_author_work"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Autor"
+        android:gravity="center"
+        android:elevation="11dp"
+        android:layout_below="@+id/title_text_work"
+        android:layout_alignLeft="@+id/image_holder_work"
+        android:layout_alignRight="@+id/image_holder_work"
+        />
+
+    <TextView
         android:id="@+id/desc_text_work"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:elevation="11dp"
         android:text="Una descripcion de prueba"
         android:textSize="15sp"
-        android:layout_below="@+id/title_text_work"/>
+        android:layout_marginTop="10dp"
+        android:layout_alignLeft="@+id/image_holder_work"
+        android:layout_alignRight="@+id/image_holder_work"
+        android:layout_below="@+id/text_author_work"/>
 
     <ImageButton
         android:id="@+id/sound_button_work"

@@ -21,7 +21,7 @@
         <activity android:name=".ui.edit.edit_user" />
         <activity
             android:name=".ui.MuseuActivity"
-            android:theme="@style/Theme.MuseaLoginSignup"
+            android:theme="@style/Theme.MuseuActTheme"
             android:screenOrientation="portrait">
 
             <intent-filter android:label="Museums">

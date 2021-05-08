@@ -18,4 +18,5 @@
     <color name="yellow">#FFEB3B</color>
     <color name="green">#52FD08</color>
     <color name="surface">#283447</color>
+    <color name="windowBackground">#DA011627</color>
 </resources>
