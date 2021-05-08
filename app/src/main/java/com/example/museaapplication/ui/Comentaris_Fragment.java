@@ -129,7 +129,7 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
             @Override
             public void onRefresh() {
                 Work w = sharedViewModel.getCurWork().getValue();
-                    sharedViewModel.getCurWork().getValue().setCommentsObjects(new ArrayList<>());
+                sharedViewModel.getCurWork().getValue().setCommentsObjects(new ArrayList<>());
                 Call<CommentsValue> call = RetrofitClient.getInstance().getMyApi().getComments(w.get_id());
                 call.enqueue(new Callback<CommentsValue>() {
                     @Override

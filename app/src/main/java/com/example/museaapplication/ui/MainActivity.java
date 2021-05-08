@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.museaapplication.Classes.SingletonDataHolder;
+import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.Map.MapFragment;
 import com.example.museaapplication.ui.search.SearchFragment;
@@ -21,6 +22,7 @@ import com.example.museaapplication.ui.user.UserFragment;
 import com.example.museaapplication.ui.dashboard.DashboardFragment;
 import com.example.museaapplication.ui.home.HomeFragment;
 import com.example.museaapplication.ui.notifications.NotificationsFragment;
+import com.example.museaapplication.ui.user.UserViewModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -35,6 +37,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     // Fragmentos del hub de navegación inferior
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setCustomView(R.layout.appbar_layout_test);
+
 
         // Inicialización del fragment manager
         setContentView(R.layout.activity_main);

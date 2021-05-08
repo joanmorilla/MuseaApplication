@@ -190,6 +190,19 @@ public class SharedViewModel extends ViewModel {
             }
         });
     }
+    public void likeWork(String _id){
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().likeWork("RaulPes", _id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
     private int parseOpeningHour(String time){
         if (time.contains("Closed")) return -1;
         int index = time.indexOf(':');

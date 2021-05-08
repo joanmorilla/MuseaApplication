@@ -23,17 +23,7 @@ public class Work implements Serializable {
     private ArrayList<Comment> commentsObjects;
 
     public boolean likeWork(){
-        Call<Void> call = RetrofitClient.getInstance().getMyApi().likeWork("admin", _id);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-            }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-
-            }
-        });
         loved = !loved;
         return loved;
     }

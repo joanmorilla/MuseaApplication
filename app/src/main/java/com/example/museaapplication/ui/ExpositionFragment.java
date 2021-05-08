@@ -48,6 +48,7 @@ import com.example.museaapplication.Classes.DepthPageTransformer;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.OnBackPressed;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
@@ -259,7 +260,11 @@ class MyViewPagerAdapter extends PagerAdapter {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
-                if (works.get(position).likeWork()) v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_24));
+                SingletonDataHolder.userViewModel.loadlikes();
+                sharedViewModel.likeWork(works.get(position).get_id());
+                if (works.get(position).likeWork()) {
+                    v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_24));
+                }
                 else
                     v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_border_24));
                 YoYo.with(Techniques.ZoomIn).duration(300).playOn(ib);

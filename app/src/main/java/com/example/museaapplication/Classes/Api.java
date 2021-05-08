@@ -67,7 +67,7 @@ public interface Api {
     @GET("https://musea-api.herokuapp.com/users/admin/favourites")
     Call<FavouritesValue> getFavourites();
 
-    @GET("https://musea-api.herokuapp.com/users/admin/likes")
+    @GET("https://musea-api.herokuapp.com/users/RaulPes/likes")
     Call<LikesValue> getLikes();
 
 
