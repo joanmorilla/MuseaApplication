@@ -155,6 +155,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
                 Picasso.get().load(validateUrl(exhibition.getImage())).centerCrop().fit().into(imageView);
                 txt.setText(exhibition.getName());
                 ArrayList<Work> works = exhibition.getWorkObjects();
+                Log.e("ExpoSal", "" + exhibition);
                 if (exhibition.getWorkObjects() != null) {
                     MyViewPagerAdapter adapter = new MyViewPagerAdapter(getContext(), works, sharedViewModel, getParentFragmentManager());
                     viewPager2.setPageTransformer(true, new DepthPageTransformer());
@@ -262,7 +263,7 @@ class MyViewPagerAdapter extends PagerAdapter {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
-                SingletonDataHolder.userViewModel.loadlikes();
+                //SingletonDataHolder.userViewModel.loadlikes();
                 sharedViewModel.likeWork(works.get(position).get_id());
                 if (works.get(position).likeWork()) {
                     v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_24));
@@ -292,11 +293,11 @@ class MyViewPagerAdapter extends PagerAdapter {
         imageHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog(validateUrl(works.get(0).getImage()));
+                openDialog(validateUrl(works.get(position).getImage()));
             }
         });
 
-        Picasso.get().load(validateUrl(works.get(0).getImage())).fit().into(imageHolder);
+        Picasso.get().load(validateUrl(works.get(position).getImage())).fit().into(imageHolder);
         //imageHolder.setImageBitmap(draw);
 
         container.addView(v);
@@ -315,6 +316,8 @@ class MyViewPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+        works.remove(position);
+        notifyDataSetChanged();
     }
 
     @Override

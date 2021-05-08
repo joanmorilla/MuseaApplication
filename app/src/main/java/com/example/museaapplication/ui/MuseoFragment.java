@@ -147,10 +147,6 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         View view = root.findViewById(R.id.toolbar_layout);
         view.setOnApplyWindowInsetsListener(Listener);
 
-
-
-        TextView txtV = root.findViewById(R.id.text_view);
-
         // Set the image we get from previous activity
         ImageView imageView = root.findViewById(R.id.image_holder);
 
@@ -174,12 +170,12 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
                     Picasso.get().load(validateUrl(e.getImage())).fit().centerCrop().into(ib);
                     TextView expoTitle = v.findViewById(R.id.white_rectangle_expo);
                     expoTitle.setText(e.getName());
-                    Log.d("Setting Stuff", "it works");
 
                     View.OnClickListener clickListener = new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             sharedViewModel.setCurExposition(e);
+                            Log.e("ExpoEntrada", "" + e);
                             sharedViewModel.setActive(sharedViewModel.getmExpositionFragment());
                             FragmentManager fm = getParentFragmentManager();
                             fm.beginTransaction().hide(sharedViewModel.getmMuseoFragment()).show(sharedViewModel.getmExpositionFragment()).commit();

@@ -82,7 +82,7 @@ public class MuseuActivity extends AppCompatActivity {
             Bundle b = getIntent().getExtras();
             Museo museum = (Museo) b.getSerializable("Museu");
 
-            //sharedViewModel.setCurMuseum(museum);
+            sharedViewModel.setCurMuseum(museum);
             sharedViewModel.setMyMuseum(museum);
         }
     }
@@ -106,8 +106,8 @@ public class MuseuActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        fm.beginTransaction().show(sharedViewModel.getActive()).commit();
         super.onResume();
+        //fm.beginTransaction().show(sharedViewModel.getActive()).commit();
     }
 
     @Override

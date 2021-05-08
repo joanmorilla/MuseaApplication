@@ -1,5 +1,7 @@
 package com.example.museaapplication.Classes.Dominio;
 
+import android.util.Log;
+
 import com.example.museaapplication.Classes.RetrofitClient;
 
 import java.io.Serializable;
@@ -23,7 +25,6 @@ public class Work implements Serializable {
     private ArrayList<Comment> commentsObjects;
 
     public boolean likeWork(){
-
         loved = !loved;
         return loved;
     }
