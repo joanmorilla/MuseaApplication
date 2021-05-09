@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
     Museo[] museus;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
         TextView txt = root.findViewById(R.id.title_test);
         //txt.setText(R.string.title_home);

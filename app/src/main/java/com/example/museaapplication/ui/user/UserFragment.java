@@ -209,7 +209,6 @@ public class UserFragment extends Fragment {
             // Asignamos un comportamiento para cuando se presione
             // Finalmente lo añadimos a la vista desplazable
             scrollPais.addView(b);
-            Log.d("Obras", "En el bucle");
         }
     }
 

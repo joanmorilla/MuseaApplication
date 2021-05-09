@@ -42,6 +42,10 @@ public class HomeViewModel extends ViewModel {
         return Museums;
     }
 
+    public LiveData<Museo[]> getMuseumsInMap() {
+        return Museums;
+    }
+
     public void loadUsers(){
         //APIRequests.getInstance().getInfo("Museo del Prado", "Madrid");
         Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseums();

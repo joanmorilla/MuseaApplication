@@ -323,7 +323,6 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                     try {
                         Date now = Calendar.getInstance().getTime();
                         date = sdf.parse(c.getDatetime().replace("T", ","));
-                        Log.d("Timezone", "" + TimeZone.getDefault().getRawOffset());
                         long res = now.getTime() - date.getTime();
                         elapsed.setText(elapsedTime(res));
                     } catch (ParseException e) {
@@ -356,7 +355,6 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
         long hoursInMilli = minutesInMilli * 60;
         long daysInMilli = hoursInMilli * 24;
         long monthsInMilli = daysInMilli * 30;
-        Log.d("Milisecs", ""+milisec);
 
         long elapsedMonths = milisec / monthsInMilli;
         milisec = milisec % monthsInMilli;
@@ -371,16 +369,18 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
         milisec = milisec % minutesInMilli;
 
         long elapsedSeconds = milisec / secondsInMilli;
-
-        if (elapsedDays == 0){
-            if (elapsedHours == 0){
-                if (elapsedMinutes == 0){
-                    return elapsedSeconds + "s";
+        if (elapsedMonths == 0) {
+            if (elapsedDays == 0) {
+                if (elapsedHours == 0) {
+                    if (elapsedMinutes == 0) {
+                        return elapsedSeconds + "s";
+                    }
+                    return elapsedMinutes + "m";
                 }
-                return elapsedMinutes + "m";
+                return elapsedHours + "h";
             }
-            return elapsedHours + "h";
+            return elapsedDays + "d";
         }
-        return elapsedDays + "d";
+        return elapsedMonths + "m";
     }
 }

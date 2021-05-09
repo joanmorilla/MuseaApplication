@@ -17,6 +17,7 @@ import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.Map.MapFragment;
+import com.example.museaapplication.ui.home.HomeViewModel;
 import com.example.museaapplication.ui.search.SearchFragment;
 import com.example.museaapplication.ui.user.UserFragment;
 import com.example.museaapplication.ui.dashboard.DashboardFragment;
@@ -74,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setCustomView(R.layout.appbar_layout_test);
-
 
         // Inicialización del fragment manager
         setContentView(R.layout.activity_main);

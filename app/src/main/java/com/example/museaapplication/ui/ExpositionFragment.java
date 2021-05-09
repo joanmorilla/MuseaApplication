@@ -155,7 +155,6 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
                 Picasso.get().load(validateUrl(exhibition.getImage())).centerCrop().fit().into(imageView);
                 txt.setText(exhibition.getName());
                 ArrayList<Work> works = exhibition.getWorkObjects();
-                Log.e("ExpoSal", "" + exhibition);
                 if (exhibition.getWorkObjects() != null) {
                     MyViewPagerAdapter adapter = new MyViewPagerAdapter(getContext(), works, sharedViewModel, getParentFragmentManager());
                     viewPager2.setPageTransformer(true, new DepthPageTransformer());

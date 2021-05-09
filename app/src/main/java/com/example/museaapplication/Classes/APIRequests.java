@@ -116,7 +116,6 @@ public class APIRequests {
             @Override
             public void onResponse(Call<WorkValue> call, Response<WorkValue> response) {
                 WorkValue wv = response.body();
-                Log.d("obra", wv.getWork().getAuthor());
                 //e.addWork(wv.getWork());
             }
 
@@ -195,7 +194,6 @@ public class APIRequests {
                 if (response.body() != null) {
                     Comment[] comments = response.body().getComments();
                     for (Comment c : comments){
-                        Log.d("Comment", c.getContent() + " " + w.get_id());
                         w.addComment(c);
                     }
                 }

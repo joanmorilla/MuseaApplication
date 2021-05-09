@@ -81,18 +81,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.map_fragment, container, false);
         mMapView = root.findViewById(R.id.map_view);
-        mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        mHomeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
         mHomeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
             @Override
             public void onChanged(Museo[] museos) {
                 museums = museos;
                 for (Museo m : museos) {
-
                     if (m.getLocation() != null && m.getLocation().length != 0){
                         LatLng pos = new LatLng(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal());
-                        Log.d("Entro", "Estas veces");
-                        MyClusterItem item = new MyClusterItem(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal(), m.getName(), m.getDescriptions().getText());
+                        MyClusterItem item = new MyClusterItem(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal(), m.getName(), m.getAddress());
                         item.setId(m.get_id());
                         //mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                         manager.addItem(item);
@@ -100,7 +98,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         });
-
         initGoogleMap(savedInstanceState);
         /*TextView txt = super.getActivity().findViewById(R.id.title_test);
         txt.setText(R.string.title_maps);*/
@@ -225,13 +222,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             manager.setOnClusterItemInfoWindowClickListener(new ClusterManager.OnClusterItemInfoWindowClickListener<MyClusterItem>() {
                 @Override
                 public void onClusterItemInfoWindowClick(MyClusterItem item) {
+                    // Aqui puedo poner la distincion de si el museo ya esta descargado o hay que descargarlo para la vista.
+                    // Si la funcion encuentra el museo entonces este ya esta en el sistema y le pasamos este, en caso contrario pasamos la uri
+                    // y descargamos ese museo de la API.
                     int position = getMPosition(item.getTitle());
+                    Intent i = new Intent(getContext(), MuseuActivity.class);
                     if (position >= 0) {
-                        Intent i = new Intent(getContext(), MuseuActivity.class);
+                        MuseuActivity.curMuseum = museums[position];
+                        startActivity(i);
+                    }else {
                         Uri uri = Uri.parse("/museums/" + id);
                         i.setData(uri);
-                        i.putExtra("Museu", (Serializable) museums[position]);
-                        startActivity(i);
                     }
                 }
             });
