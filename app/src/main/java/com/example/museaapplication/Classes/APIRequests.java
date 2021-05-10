@@ -39,6 +39,7 @@ public class APIRequests {
     }
 
     public Likes[] likes;
+    public Likes[] favourites;
     public void getAllMuseums(Delegate function) {
         Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseums();
         call.enqueue(new Callback<MuseoValue>() {
@@ -208,6 +209,9 @@ public class APIRequests {
             }
         });
     }
+    public void getFavourites() {
+
+    }
 
 
     private void CacheExhibitions() {
@@ -230,6 +234,9 @@ public class APIRequests {
         for (Likes l : likes){
             if (l.getArtworkId().equals(id)) return true;
         }
+        return false;
+    }
+    public boolean checkFavourites(String id){
         return false;
     }
 }

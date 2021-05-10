@@ -16,6 +16,8 @@ import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Stack;
 
 import retrofit2.Call;
@@ -26,12 +28,24 @@ public class HomeViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
     private MutableLiveData<Museo[]> Museums;
+    private MutableLiveData<Museo[]> FavouriteMuseums = new MutableLiveData<>();
     private Stack<Integer> order = new Stack<>();
+
+    private ArrayList<Museo> curFavorites;
+
+    private Likes[] favourites;
     //private MutableLiveData<String[]> horaris;
 
     public HomeViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("Propers");
+    }
+
+    public LiveData<Museo[]> getFavouriteMuseums() {
+        if (FavouriteMuseums == null) {
+            FavouriteMuseums = new MutableLiveData<>();
+        }
+        return FavouriteMuseums;
     }
 
     public LiveData<Museo[]> getMuseums() {
@@ -46,22 +60,27 @@ public class HomeViewModel extends ViewModel {
         return Museums;
     }
 
-    public void loadUsers(){
-        //APIRequests.getInstance().getInfo("Museo del Prado", "Madrid");
-        Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseums();
-        call.enqueue(new Callback<MuseoValue>() {
+    public void loadUsers() {
+        Call<LikesValue> callFavourites = RetrofitClient.getInstance().getMyApi().getFavMuseums("RaulPes");
+        callFavourites.enqueue(new Callback<LikesValue>() {
             @Override
-            public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
-                MuseoValue mymuseumList = response.body();
-                Museo[] museums = mymuseumList.getMuseums();
-                cacheExpositionsAndInfo(museums);
-            }
+            public void onResponse(Call<LikesValue> call, Response<LikesValue> response) {
+                favourites = response.body().getLikesList();
+                Call<MuseoValue> callMuseums = RetrofitClient.getInstance().getMyApi().getMuseums();
+                callMuseums.enqueue(new Callback<MuseoValue>() {
+                    @Override
+                    public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
+                        MuseoValue mymuseumList = response.body();
+                        Museo[] museums = mymuseumList.getMuseums();
+                        cacheExpositionsAndInfo(museums);
+                        cacheFavMuseums(museums);
+                    }
 
-            @Override
-            public void onFailure(Call<MuseoValue> call, Throwable t) {
-                Log.e("TAG1Museo", t.getLocalizedMessage());
-                Log.e("TAG2Museo", t.getMessage());
-                t.printStackTrace();
+                    @Override
+                    public void onFailure(Call<MuseoValue> call, Throwable t) {
+                        Log.e("TAG1Museo", t.getLocalizedMessage());
+                        Log.e("TAG2Museo", t.getMessage());
+                        t.printStackTrace();
                 /*new CountDownTimer(1000, 100){
                     @Override
                     public void onTick(long millisUntilFinished) {
@@ -73,9 +92,38 @@ public class HomeViewModel extends ViewModel {
                         loadUsers();
                     }
                 };*/
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<LikesValue> call, Throwable t) {
+
             }
         });
+
     }
+
+    private void cacheFavMuseums(Museo[] museums){
+        if (curFavorites == null) curFavorites = new ArrayList<>();
+        for (Museo m : museums){
+            boolean res = checkFavourites(m.get_id());
+            if (res) {
+                Log.e("Funca",m.getName());
+                curFavorites.add(m);
+            }
+            m.setLiked(res);
+        }
+        FavouriteMuseums.postValue(curFavorites.toArray(new Museo[0]));
+    }
+
+    private boolean checkFavourites(String id){
+        for (Likes l : favourites){
+            if (l.getArtworkId().equals(id)) return true;
+        }
+        return false;
+    }
+
     private void cacheExpositionsAndInfo(Museo[] museums) {
         Call<LikesValue> call = RetrofitClient.getInstance().getMyApi().getLikes();
         call.enqueue(new Callback<LikesValue>() {

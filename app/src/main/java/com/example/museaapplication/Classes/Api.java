@@ -64,7 +64,7 @@ public interface Api {
     @GET("https://musea-api.herokuapp.com/users/admin")
     Call<UserInfoValue> getUserInfo();
 
-    @GET("https://musea-api.herokuapp.com/users/admin/favourites")
+    @GET("https://musea-api.herokuapp.com/users/RaulPes/favourites")
     Call<FavouritesValue> getFavourites();
 
     @GET("https://musea-api.herokuapp.com/users/RaulPes/likes")
@@ -77,6 +77,12 @@ public interface Api {
     // User favorites
     @POST("https://musea-api.herokuapp.com/users/{userId}/likes?")
     Call<Void> likeWork(@Path("userId") String userId, @Query("artwork") String artworkId);
+
+    @POST("https://musea-api.herokuapp.com/users/{userId}/favourites")
+    Call<Void> favMuseum(@Path("userId") String userId, @Query("museum") String museumId);
+
+    @GET ("https://musea-api.herokuapp.com/users/{userId}/favourites")
+    Call<LikesValue> getFavMuseums(@Path("userId") String userId);
 
     // Info of schedules
     @GET("https://musea-api.herokuapp.com/info?")

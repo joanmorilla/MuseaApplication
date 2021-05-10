@@ -23,6 +23,7 @@ public class Museo implements Serializable{
     private Descriptions descriptions;
     @SerializedName("image")
     private String image;
+    private boolean liked = false;
 
     private Restriction[] restrictionsObjects;
 
@@ -44,6 +45,10 @@ public class Museo implements Serializable{
         exhibitionObjects = new ArrayList<>();
     }
 
+    public boolean like() {
+        liked = !liked;
+        return liked;
+    }
 
     public void addExhibition(Exhibition e){
         if (exhibitionObjects == null) exhibitionObjects = new ArrayList<>();
@@ -155,4 +160,11 @@ public class Museo implements Serializable{
     }
 
 
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
 }

@@ -128,11 +128,11 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
             @Override
             public void onClick(View v) {
                 YoYo.with(Techniques.BounceInUp).duration(700).playOn(v);
-                love();
-                if (!loved) {
-                    heartButton.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
+                sharedViewModel.likeMuseum(museum.get_id());
+                if (!museum.like()) {
+                    v.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
                 }else {
-                    heartButton.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
+                    v.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
                 }
             }
         });
@@ -158,6 +158,8 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
                 String url = museum.getImage();
                 if (!url.equals(""))
                     Picasso.get().load(url).placeholder(R.drawable.catalonia).fit().into(imageView);
+
+                if (museum.isLiked())  heartButton.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
 
                 LinearLayout layout = root.findViewById(R.id.layout_view);
                 layout.removeAllViews();
