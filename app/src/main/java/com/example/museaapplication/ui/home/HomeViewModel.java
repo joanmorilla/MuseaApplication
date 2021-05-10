@@ -101,7 +101,7 @@ public class HomeViewModel extends ViewModel {
     }
     public void newFavourite(Museo m){
         if (curFavorites.contains(m)) return;
-        curFavorites.add(m);
+        curFavorites.add(0, m);
         FavouriteMuseums.postValue(curFavorites.toArray(new Museo[0]));
     }
     public void unFavorite(Museo m){
@@ -111,20 +111,37 @@ public class HomeViewModel extends ViewModel {
 
     private void cacheFavMuseums(Museo[] museums){
         if (curFavorites == null) curFavorites = new ArrayList<>();
-        for (Museo m : museums){
-            boolean res = checkFavourites(m.get_id());
-            if (res) {
-                Log.e("Funca",m.getName());
-                curFavorites.add(m);
-            }
-            m.setLiked(res);
+        // Better solution
+        for (int i = favourites.length-1; i >= 0; i--){
+            checkMuseums(museums, favourites[i].getArtworkId());
         }
+
+       /* // Working alternative
+        for (Museo m : museums){
+            boolean res = checkFavourites(m);
+            m.setLiked(res);
+        }*/
+
         FavouriteMuseums.postValue(curFavorites.toArray(new Museo[0]));
     }
+    private void checkMuseums(Museo[] museums, String id){
+        for (Museo m : museums) {
+            if (m.get_id().equals(id)) {
+                m.setLiked(true);
+                curFavorites.add(m);
+                return;
+            }
+        }
+        // Here we place the code for downloading the favourite museums we don't already have
+    }
 
-    private boolean checkFavourites(String id){
+    private boolean checkFavourites(Museo m){
+        if (curFavorites == null) curFavorites = new ArrayList<>();
         for (Likes l : favourites){
-            if (l.getArtworkId().equals(id)) return true;
+            if (l.getArtworkId().equals(m.get_id())) {
+                curFavorites.add(m);
+                return true;
+            }
         }
         return false;
     }

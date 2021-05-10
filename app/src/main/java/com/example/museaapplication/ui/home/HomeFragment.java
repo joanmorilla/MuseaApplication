@@ -116,29 +116,29 @@ public class HomeFragment extends Fragment {
         LinearLayout scrollFavourites = root.findViewById(R.id.layout_favourites);
         scrollFavourites.removeAllViews();
         // We go through the museums
-        for(int i = m.length - 1; i >= 0; i--){
+        for (Museo museo : m) {
             // For the complex button we use relative layout
             RelativeLayout holder = new RelativeLayout(getContext());
             View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
             // Adding enter animation
             YoYo.with(Techniques.ZoomIn)/*.delay((museums.length - i) * 200)*/.duration(700).playOn(v);
-            TextView txt  = v.findViewById(R.id.white_rectangle);
+            TextView txt = v.findViewById(R.id.white_rectangle);
             // Setting the texts in custom button
-            txt.setText(m[i].getName());
+            txt.setText(museo.getName());
             txt = v.findViewById(R.id.text_horari);
-            if (m[i].getCovidInformation() != null){
-                txt.setText(timeStringValidation(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
-                m[i].setOpeningHour(parseOpeningHour(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+            if (museo.getCovidInformation() != null) {
+                txt.setText(timeStringValidation(museo.getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+                museo.setOpeningHour(parseOpeningHour(museo.getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
             }
             txt = v.findViewById(R.id.text_pais);
-            txt.setText(m[i].getCity());
+            txt.setText(museo.getCity());
             ImageButton ib = v.findViewById(R.id.image_view);
-            ib.setOnClickListener(clickFunc(m[i]));
-            if (!m[i].getImage().equals(""))
-                Picasso.get().load(m[i].getImage()).fit().centerCrop().into(ib);
+            ib.setOnClickListener(clickFunc(museo));
+            if (!museo.getImage().equals(""))
+                Picasso.get().load(museo.getImage()).fit().centerCrop().into(ib);
             // Size the relative layout
             RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, pixToDp(155));
-            newParams.setMargins(pixToDp(5),0,pixToDp(5),pixToDp(0));
+            newParams.setMargins(pixToDp(5), 0, pixToDp(5), pixToDp(0));
             holder.setLayoutParams(newParams);
             // Finally add it to the scroll layout
             scrollFavourites.addView(holder);

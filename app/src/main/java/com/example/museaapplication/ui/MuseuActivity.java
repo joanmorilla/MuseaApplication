@@ -45,8 +45,8 @@ public class MuseuActivity extends AppCompatActivity {
 
         if (getIntent().getData() != null) {
             Uri data = getIntent().getData();
-            Log.d("URIII", "" + data.getPath());
-            Log.d("ID", data.getPath().replace("/museums/", ""));
+            /*Log.d("URIII", "" + data.getPath());
+            Log.d("ID", data.getPath().replace("/museums/", ""));*/
             sharedViewModel.loadMuseum(data.getPath().replace("/museums/", ""));
         }else {
             // Keep it cutre. Gracias google por copiar los datos en nuevas variables al iniciar una activity cuando
