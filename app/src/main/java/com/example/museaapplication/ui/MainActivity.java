@@ -1,44 +1,35 @@
 package com.example.museaapplication.ui;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.museaapplication.Classes.SingletonDataHolder;
-import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
-import com.example.museaapplication.R;
-import com.example.museaapplication.ui.Map.MapFragment;
-import com.example.museaapplication.ui.home.HomeViewModel;
-import com.example.museaapplication.ui.search.SearchFragment;
-import com.example.museaapplication.ui.user.UserFragment;
-import com.example.museaapplication.ui.dashboard.DashboardFragment;
-import com.example.museaapplication.ui.home.HomeFragment;
-import com.example.museaapplication.ui.notifications.NotificationsFragment;
-import com.example.museaapplication.ui.user.UserViewModel;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.museaapplication.Classes.SingletonDataHolder;
+import com.example.museaapplication.R;
+import com.example.museaapplication.ui.Map.MapFragment;
+import com.example.museaapplication.ui.home.HomeFragment;
+import com.example.museaapplication.ui.home.HomeViewModel;
+import com.example.museaapplication.ui.notifications.NotificationsFragment;
+import com.example.museaapplication.ui.search.SearchFragment;
+import com.example.museaapplication.ui.user.UserFragment;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     // Fragmentos del hub de navegación inferior
@@ -58,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     BottomNavigationView navView;
     private MapView mMapView;
 
+    HomeViewModel hvm;
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -65,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
 
         mMapView = findViewById(R.id.map_view);
-
+        hvm = new ViewModelProvider(this).get(HomeViewModel.class);
 
         //SingletonDataHolder.getInstance().backStack.push(R.id.navigation_home);
         for (Fragment f: fm.getFragments()) {   
@@ -220,5 +213,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        boolean changed = data.getBooleanExtra("Changed", false);
+        boolean result = data.getBooleanExtra("Value", true);
+        if (changed) {
+            if (result){
+                hvm.newFavourite(MuseuActivity.curMuseum);
+            }else hvm.unFavorite(MuseuActivity.curMuseum);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.museaapplication.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -65,6 +66,7 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
     View root;
     boolean loved = false;
     SharedViewModel sharedViewModel;
+    Intent intent;
 
     public MuseoFragment() {
         // Required empty public constructor
@@ -88,7 +90,9 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        intent = new Intent();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -121,13 +125,14 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+               OnBack();
             }
         });
         heartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 YoYo.with(Techniques.BounceInUp).duration(700).playOn(v);
+                intent.putExtra("Changed", true);
                 sharedViewModel.likeMuseum(museum.get_id());
                 if (!museum.like()) {
                     v.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
@@ -237,8 +242,15 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
     }
     @Override
     public boolean OnBack() {
+        // Do we enter from app of share?
+        if (getActivity().getIntent().getData() == null){
+            Log.e("Holawey", "keloke");
+            // From App
+            intent.putExtra("Value", museum.isLiked());
+            // Return the intent with the bool that states whether the museum has been liked or not
+            getActivity().setResult(Activity.RESULT_OK, intent);
+        }
         super.getActivity().finish();
         return false;
     }
-
 }

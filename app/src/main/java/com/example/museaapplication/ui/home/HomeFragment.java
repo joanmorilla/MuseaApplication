@@ -1,36 +1,21 @@
 package com.example.museaapplication.ui.home;
 
-import android.animation.Animator;
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Base64;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Space;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -38,28 +23,16 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.example.museaapplication.Classes.APIRequests;
-import com.example.museaapplication.Classes.Delegate;
 import com.example.museaapplication.Classes.Dominio.Museo;
-import com.example.museaapplication.Classes.Json.MuseoValue;
-import com.example.museaapplication.Classes.RetrofitClient;
-import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.TimeClass;
-import com.example.museaapplication.ui.MuseuActivity;
 import com.example.museaapplication.R;
+import com.example.museaapplication.ui.MuseuActivity;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
-import java.sql.Time;
+import org.jetbrains.annotations.NotNull;
+
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.google.android.material.resources.MaterialResources.getDrawable;
 
 
 public class HomeFragment extends Fragment {
@@ -68,19 +41,9 @@ public class HomeFragment extends Fragment {
     boolean interactable = true;
     View root;
 
-    Museo[] museus;
-
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
-        TextView txt = root.findViewById(R.id.title_test);
-        //txt.setText(R.string.title_home);
-        /*txt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Funca", Toast.LENGTH_SHORT).show();
-            }
-        });*/
         ProgressBar pb = (ProgressBar) root.findViewById(R.id.progress_bar);
         pb.setVisibility(View.VISIBLE);
         homeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
@@ -113,27 +76,15 @@ public class HomeFragment extends Fragment {
         super.onResume();
         interactable = true;
     }
+
     int pixToDp(int value){
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, root.getResources().getDisplayMetrics()));
     }
 
-    String imageToString(int id){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),id);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
-    }
-    Bitmap stringToImage(String codeImage){
-        byte[] imageBytes = Base64.decode(codeImage, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-    }
-
-    void GenerarBotones(Museo[] m) {
+    private void GenerarBotones(@NotNull Museo[] m) {
         LinearLayout scrollPais = root.findViewById(R.id.layout_pais);
-        Museo[] museums = m;
         // We go through the museums
-        for(int i = museums.length - 1; i >= 0; i--){
+        for(int i = m.length - 1; i >= 0; i--){
             // For the complex button we use relative layout
             RelativeLayout holder = new RelativeLayout(getContext());
             View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
@@ -161,8 +112,9 @@ public class HomeFragment extends Fragment {
             scrollPais.addView(holder);
         }
     }
-    private void GenerateFavourites(Museo[] m){
+    private void GenerateFavourites(@NotNull Museo[] m){
         LinearLayout scrollFavourites = root.findViewById(R.id.layout_favourites);
+        scrollFavourites.removeAllViews();
         // We go through the museums
         for(int i = m.length - 1; i >= 0; i--){
             // For the complex button we use relative layout
@@ -192,15 +144,15 @@ public class HomeFragment extends Fragment {
             scrollFavourites.addView(holder);
         }
     }
-    View.OnClickListener clickFunc(Museo m) {
+    private View.OnClickListener clickFunc(Museo m) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (interactable) {
                     String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(TimeClass.getNow());
-                    Intent i = new Intent(getContext(), MuseuActivity.class);
+                    Intent i = new Intent(getActivity(), MuseuActivity.class);
                     MuseuActivity.curMuseum = m;
-                    startActivity(i);
+                    startActivityForResult(i, 1);
                     getActivity().overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
                     interactable = false;
                 }

@@ -1,8 +1,6 @@
 package com.example.museaapplication.ui.home;
 
-import android.os.CountDownTimer;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,10 +12,8 @@ import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
-import com.example.museaapplication.Classes.SingletonDataHolder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Stack;
 
 import retrofit2.Call;
@@ -102,6 +98,15 @@ public class HomeViewModel extends ViewModel {
             }
         });
 
+    }
+    public void newFavourite(Museo m){
+        if (curFavorites.contains(m)) return;
+        curFavorites.add(m);
+        FavouriteMuseums.postValue(curFavorites.toArray(new Museo[0]));
+    }
+    public void unFavorite(Museo m){
+        curFavorites.remove(m);
+        FavouriteMuseums.postValue(curFavorites.toArray(new Museo[0]));
     }
 
     private void cacheFavMuseums(Museo[] museums){
