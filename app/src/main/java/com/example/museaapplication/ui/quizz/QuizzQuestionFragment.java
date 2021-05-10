@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -41,6 +42,12 @@ public class QuizzQuestionFragment extends Fragment {
     private TextView total;
     private ImageView image;
     private TextView question;
+
+    private TextView countdownText;
+    private CountDownTimer countDownTimer;
+    private long timeLeftInMilliseconds = 30000; //30 segundos
+    private boolean timerRunning;
+
     private Button button1;
     private Button button2;
     private Button button3;
@@ -79,6 +86,7 @@ public class QuizzQuestionFragment extends Fragment {
         button2 = root.findViewById(R.id.quizz_button2);
         button3 = root.findViewById(R.id.quizz_button3);
         button4 = root.findViewById(R.id.quizz_button4);
+        countdownText = root.findViewById(R.id.crono_text);
         hasAnswered = false;
         currentQuizz = 0;
 
@@ -99,6 +107,10 @@ public class QuizzQuestionFragment extends Fragment {
     }
 
     private void updateCard() {
+        if(timerRunning) stopTimer();
+        timeLeftInMilliseconds = 30000;
+        startTimer();
+
         hasAnswered = false;
         current.setText(String.valueOf(currentQuizz+1));
         if (quizz.getImage().isEmpty())
@@ -123,6 +135,64 @@ public class QuizzQuestionFragment extends Fragment {
         button4.setText(quizz.getAnswers()[3].getText());
         button4.setTextSize(chooseSize(quizz.getAnswers()[3].getText().length()));
         button4.setBackgroundColor(chooseColor(-1));
+    }
+
+    public void startStop(){
+        if(timerRunning){
+            stopTimer();
+        } else{
+            startTimer();
+        }
+    }
+
+    public void stopTimer(){
+        countDownTimer.cancel();
+        timerRunning = false;
+    }
+
+    public void startTimer(){
+        countDownTimer = new CountDownTimer(timeLeftInMilliseconds,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timeLeftInMilliseconds = millisUntilFinished;
+                updateTimer();
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
+        timerRunning = true;
+    }
+
+    public void updateTimer(){
+        int seconds = (int) timeLeftInMilliseconds % 60000 / 1000;
+        if(seconds == 0){
+            showcorrect();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    nextQuizz();
+                }
+            }, 3000);
+
+        }
+        String timelefttext = "";
+        timelefttext +=seconds;
+        countdownText.setText(timelefttext);
+    }
+
+    public void showcorrect(){
+        if (quizz.getAnswers()[0].isCorrect()) button1.setBackgroundColor(correctColor);
+        else button1.setBackgroundColor(errorColor);
+        if (quizz.getAnswers()[1].isCorrect()) button2.setBackgroundColor(correctColor);
+        else button2.setBackgroundColor(errorColor);
+        if (quizz.getAnswers()[2].isCorrect()) button3.setBackgroundColor(correctColor);
+        else button3.setBackgroundColor(errorColor);
+        if (quizz.getAnswers()[3].isCorrect()) button4.setBackgroundColor(correctColor);
+        else button4.setBackgroundColor(errorColor);
     }
 
     private void buttonActions() {
