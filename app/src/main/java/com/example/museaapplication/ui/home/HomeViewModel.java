@@ -22,10 +22,10 @@ import retrofit2.Response;
 
 public class HomeViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<String> mText;
     private MutableLiveData<Museo[]> Museums;
     private MutableLiveData<Museo[]> FavouriteMuseums = new MutableLiveData<>();
-    private Stack<Integer> order = new Stack<>();
+    private final Stack<Integer> order = new Stack<>();
 
     private ArrayList<Museo> curFavorites;
 
@@ -100,7 +100,7 @@ public class HomeViewModel extends ViewModel {
 
     }
     public void newFavourite(Museo m){
-        if (curFavorites.contains(m)) return;
+        curFavorites.remove(m);
         curFavorites.add(0, m);
         FavouriteMuseums.postValue(curFavorites.toArray(new Museo[0]));
     }
@@ -115,6 +115,8 @@ public class HomeViewModel extends ViewModel {
         for (int i = favourites.length-1; i >= 0; i--){
             checkMuseums(museums, favourites[i].getArtworkId());
         }
+
+        // Otra idea seria guardar los ids en una arraylist de strings y consultar las posiciones de inserción dentro de la lista
 
        /* // Working alternative
         for (Museo m : museums){

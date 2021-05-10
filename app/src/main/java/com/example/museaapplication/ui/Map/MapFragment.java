@@ -229,7 +229,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     Intent i = new Intent(getContext(), MuseuActivity.class);
                     if (position >= 0) {
                         MuseuActivity.curMuseum = museums[position];
-                        startActivity(i);
+                        startActivityForResult(i, 1 );
                     }else {
                         Uri uri = Uri.parse("/museums/" + id);
                         i.setData(uri);

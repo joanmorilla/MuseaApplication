@@ -84,7 +84,7 @@
     <string name="delete_confirmation">Segur que vols esborrar el comentari?</string>
     <string name="confirm">Confirmar</string>
     <string name="dialog_cancel">Cancel·lar</string>
-
+    <string name="favourites">Favorits</string>
 
 
 </resources>
