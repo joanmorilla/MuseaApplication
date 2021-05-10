@@ -1,12 +1,11 @@
 package com.example.museaapplication.ui.quizz;
 
-import androidx.lifecycle.ViewModelProvider;
-
-import android.graphics.Color;
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -20,9 +19,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.museaapplication.Classes.Dominio.Quizz;
+import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.squareup.picasso.Picasso;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class QuizzQuestionFragment extends Fragment {
 
@@ -42,10 +46,12 @@ public class QuizzQuestionFragment extends Fragment {
     private Button button3;
     private Button button4;
 
+    private Button endButton;
+
     private boolean hasAnswered;
     private int currentQuizz;
 
-    private int nRightAnswers;
+    private int points;
     private int totalPoints;
 
     Quizz quizz;
@@ -63,6 +69,7 @@ public class QuizzQuestionFragment extends Fragment {
         errorColor = getContext().getResources().getColor(R.color.red_alert);
         defaultColor = getContext().getResources().getColor(R.color.grey_700);
 
+        //quizzCard
         current = root.findViewById(R.id.quizz_current);
         total = root.findViewById(R.id.quizz_total);
         image = root.findViewById(R.id.quizz_image);
@@ -74,6 +81,9 @@ public class QuizzQuestionFragment extends Fragment {
         button4 = root.findViewById(R.id.quizz_button4);
         hasAnswered = false;
         currentQuizz = 0;
+
+        //endCard
+        endButton = root.findViewById(R.id.quizz_back_button);
 
         // Ahora mismo pilla una solo quizz guardada en el SINGLETON
         // Para cuando hagamos subsets 'quizz' sera una array
@@ -152,6 +162,13 @@ public class QuizzQuestionFragment extends Fragment {
                 }
             }
         });
+
+        endButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
     }
 
     private void nextQuizz() {
@@ -163,21 +180,25 @@ public class QuizzQuestionFragment extends Fragment {
                 // Do something after 1s = 1000ms
                 currentQuizz += 1;
                 if (currentQuizz >= SingletonDataHolder.getInstance().getQuizzes().length) {
-                    currentQuizz = 0;
-                    Log.d("Total points", "" + totalPoints);
-                    Log.d("correct answers", "" + nRightAnswers);
+                    // End of the game
+                    endQuizz();
                 }
-                quizz = SingletonDataHolder.getInstance().getQuizzes()[currentQuizz];
-                updateCard();
+                else {
+                    quizz = SingletonDataHolder.getInstance().getQuizzes()[currentQuizz];
+                    updateCard();
+                }
             }
         }, 1000);
     }
 
     private int chooseColor(int questionIndex) {
+        // reset buttons
         if (questionIndex == -1) return defaultColor;
+
+        // answered quizz
+        totalPoints += quizz.getPoints();
         if (quizz.getAnswers()[questionIndex].isCorrect()) {
-            nRightAnswers += 1;
-            totalPoints += quizz.getPoints();
+            points += quizz.getPoints();
             return correctColor;
         }
         return errorColor;
@@ -189,5 +210,47 @@ public class QuizzQuestionFragment extends Fragment {
         else if (textLength <= 40)
             return 18;
         return 12;
+    }
+
+    private void endQuizz() {
+        Log.d("Points", "" + points);
+        Log.d("Total points", "" + totalPoints);
+        // Show end view
+
+        root.findViewById(R.id.quizzCard).setVisibility(View.GONE);
+        root.findViewById(R.id.endCard).setVisibility(View.VISIBLE);
+
+        // Update points
+        String username = SingletonDataHolder.getInstance().getLoggedUser();
+        Log.d("Check Singleton:","" + username);
+        // borrar la siguiente linea cuando tengamos el username
+        username = "luisitodescomunica";
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().updatePoints(username,String.valueOf(points),String.valueOf(totalPoints));
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d("Update Points:","Points updated correctly");
+                        break;
+                    case 404:
+                        Log.d("Update Points:","There is no user for such id");
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("TAG1", t.getLocalizedMessage());
+                Log.e("TAG2", t.getMessage());
+                t.printStackTrace();
+            }
+        });
+
+
+
+
     }
 }

@@ -8,6 +8,9 @@ import java.util.Stack;
 public class SingletonDataHolder {
     private static SingletonDataHolder _instance;
 
+    public SingletonDataHolder() {
+    }
+
 
     public static SingletonDataHolder getInstance() {
         if (_instance == null) {
@@ -22,6 +25,8 @@ public class SingletonDataHolder {
     private Museo[] museums;
 
     private Quizz[] quizzes;
+
+    private String loggedUser;
 
     public int main_initial_frag = 0;
     public static Stack<Integer> backStack;
@@ -49,5 +54,13 @@ public class SingletonDataHolder {
 
     public void setQuizzes(Quizz[] quizzes) {
         this.quizzes = quizzes;
+    }
+
+    public String getLoggedUser() {
+        return loggedUser;
+    }
+
+    public void setLoggedUser(String loggedUser) {
+        this.loggedUser = loggedUser;
     }
 }

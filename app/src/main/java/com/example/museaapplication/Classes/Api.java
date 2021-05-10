@@ -87,4 +87,9 @@ public interface Api {
     @GET("https://musea-api.herokuapp.com/quizzes")
     Call<QuizzValue> getQuizzes();
 
+    @POST("https://musea-api.herokuapp.com/users/{username}/points")
+    Call<Void> updatePoints(@Path("username") String username,
+                            @Query("points") String points,
+                            @Query("total") String total);
+
 }

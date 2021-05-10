@@ -9,18 +9,18 @@
     android:background="@drawable/background_default">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/helpCard"
+        android:id="@+id/quizzCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="10dp"
-        card_view:cardBackgroundColor="@color/semiTransparentColor"
-        card_view:cardCornerRadius="15dp"
-        card_view:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        card_view:cardBackgroundColor="@color/semiTransparentColor"
+        card_view:cardCornerRadius="15dp"
+        card_view:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,70 +30,71 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:layout_marginTop="5dp">
+                android:orientation="horizontal">
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    card_view:cardBackgroundColor="@color/semiTransparentColor"
                     android:shape="ring"
+                    card_view:cardBackgroundColor="@color/semiTransparentColor"
                     card_view:cardCornerRadius="15dp"
                     card_view:cardElevation="0dp">
+
                     <TextView
                         android:id="@+id/quizz_current"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:textAlignment="center"
                         android:gravity="center"
                         android:text="00"
-                        android:textSize="20dp"/>
+                        android:textAlignment="center"
+                        android:textSize="20dp" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="/"
-                    android:textSize="20dp"/>
+                    android:textSize="20dp" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    card_view:cardBackgroundColor="@color/semiTransparentColor"
                     android:shape="ring"
+                    card_view:cardBackgroundColor="@color/semiTransparentColor"
                     card_view:cardCornerRadius="15dp"
                     card_view:cardElevation="0dp">
+
                     <TextView
                         android:id="@+id/quizz_total"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:textAlignment="center"
                         android:gravity="center"
                         android:text="00"
-                        android:textSize="20dp"/>
+                        android:textAlignment="center"
+                        android:textSize="20dp" />
                 </androidx.cardview.widget.CardView>
-
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 card_view:cardBackgroundColor="@android:color/transparent"
                 card_view:cardCornerRadius="15dp"
-                card_view:cardElevation="0dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginHorizontal="30dp">
+                card_view:cardElevation="0dp">
 
                 <ImageView
                     android:id="@+id/quizz_image"
                     android:layout_width="300dp"
                     android:layout_height="300dp"
-                    android:layout_gravity="center"/>
-
+                    android:layout_gravity="center" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -103,92 +104,312 @@
                     card_view:cardBackgroundColor="@color/semiTransparentColor"
                     card_view:cardCornerRadius="15dp"
                     card_view:cardElevation="0dp">
+
                     <TextView
                         android:id="@+id/quizz_question"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Phasellus dictum eros a luctus elementum. Nam augue felis, convallis in risus dictum, mattis rhoncus erat. Aliquam fermentum, lorem ac sollicitudin eleifend, quam sem efficitur sem, quis finibus elit ex in mauris. Pellentesque nec nulla mollis nulla efficitur egestas vitae vel dui. Nulla posuere diam vitae convallis tempus. Sed rhoncus pellentesque sollicitudin. Aliquam luctus, felis nec tincidunt pretium, sapien dui fermentum sem, ac elementum mi nulla eget urna. Suspendisse potenti. In quis cursus turpis. Cras nisi tortor, lobortis ac ante eget, iaculis luctus tellus. Proin risus nisi, egestas quis nunc vel, tristique interdum leo. Morbi pretium est sit amet enim ullamcorper sodales. Donec blandit diam ante, non euismod tellus vehicula et.
-
-    "
-                        android:maxLines="9"
                         android:ellipsize="end"
-                        android:scrollbars = "vertical"
                         android:gravity="center"
+                        android:maxLines="9"
+                        android:scrollbars="vertical"
+                        android:text="Phasellus dictum eros a luctus elementum. Nam augue felis, convallis in risus dictum, mattis rhoncus erat. Aliquam fermentum, lorem ac sollicitudin eleifend, quam sem efficitur sem, quis finibus elit ex in mauris. Pellentesque nec nulla mollis nulla efficitur egestas vitae vel dui. Nulla posuere diam vitae convallis tempus. Sed rhoncus pellentesque sollicitudin. Aliquam luctus, felis nec tincidunt pretium, sapien dui fermentum sem, ac elementum mi nulla eget urna. Suspendisse potenti. In quis cursus turpis. Cras nisi tortor, lobortis ac ante eget, iaculis luctus tellus. Proin risus nisi, egestas quis nunc vel, tristique interdum leo. Morbi pretium est sit amet enim ullamcorper sodales. Donec blandit diam ante, non euismod tellus cula et."
                         android:textAlignment="center"
-                        android:textSize="28dp"
-                        android:textColor="@color/black"/>
-
+                        android:textColor="@color/black"
+                        android:textSize="28dp" />
                 </androidx.cardview.widget.CardView>
-
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_gravity="center"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="20dp"
-                android:layout_gravity="center"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <Button
                         android:id="@+id/quizz_button1"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="5dp"
+                        android:layout_weight="1"
                         android:backgroundTint="@color/grey_700"
-                        android:textSize="12dp"
-                        android:text="Phasellus dictum eros a luctus elementum"/>
+                        android:text="Phasellus dictum eros a luctus elementum"
+                        android:textSize="12dp" />
+
                     <Button
                         android:id="@+id/quizz_button2"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="5dp"
+                        android:layout_weight="1"
                         android:backgroundTint="@color/grey_700"
-                        android:textSize="12dp"
-                        android:text="go a"/>
+                        android:text="go a"
+                        android:textSize="12dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <Button
                         android:id="@+id/quizz_button3"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="5dp"
+                        android:layout_weight="1"
                         android:backgroundTint="@color/grey_700"
-                        android:textSize="12dp"
                         android:text="go backasdasdasdasd"
-                        />
+                        android:textSize="12dp" />
+
                     <Button
                         android:id="@+id/quizz_button4"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="5dp"
+                        android:layout_weight="1"
                         android:backgroundTint="@color/grey_700"
-                        android:textSize="12dp"
-                        android:text="go "/>
+                        android:text="go "
+                        android:textSize="12dp" />
                 </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/endCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        card_view:cardBackgroundColor="@color/semiTransparentColor"
+        card_view:cardCornerRadius="15dp"
+        card_view:cardElevation="0dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="20dp">
+
+            <TextView
+                android:id="@+id/quizz_congratulation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="2"
+                android:scrollbars="vertical"
+                android:text="Phasellus dictum eros a luctus elementum. Nam augue felis, convallis in risus dictum, mattis rhoncus erat. Aliquam fermentum, lorem ac sollicitudin eleifend, quam sem efficitur sem, quis finibus elit ex in mauris. Pellentesque nec nulla mollis nulla efficitur egestas vitae vel dui. Nulla posuere diam vitae convallis tempus. Sed rhoncus pellentesque sollicitudin. Aliquam luctus, felis nec tincidunt pretium, sapien dui fermentum sem, ac elementum mi nulla eget urna. Suspendisse potenti. In quis cursus turpis. Cras nisi tortor, lobortis ac ante eget, iaculis luctus tellus. Proin risus nisi, egestas quis nunc vel, tristique interdum leo. Morbi pretium est sit amet enim ullamcorper sodales. Donec blandit diam ante, non euismod tellus cula et."
+                android:textAllCaps="true"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="28dp"
+                android:layout_marginVertical="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginVertical="20dp">
+
+                <ImageView
+                    android:id="@+id/quizz_bronze"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@color/bronze"/>
+                <ImageView
+                    android:id="@+id/quizz_silver"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@color/silver"/>
+                <ImageView
+                    android:id="@+id/quizz_gold"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@color/gold"/>
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="76"
+                    android:background="@android:color/transparent"/>
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="8dp"
+                    android:background="@color/bronze"/>
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="10"
+                    android:background="@android:color/transparent"/>
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="8dp"
+                    android:background="@color/silver"/>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="10"
+                    android:background="@android:color/transparent"/>
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="8dp"
+                    android:background="@color/gold"/>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="5"
+                    android:background="@android:color/transparent"/>
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/quizz_bar"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="95"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="76"
+                    android:background="@android:color/transparent"/>
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="8dp"
+                    android:background="@color/bronze"/>
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="10"
+                    android:background="@android:color/transparent"/>
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="8dp"
+                    android:background="@color/silver"/>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="10"
+                    android:background="@android:color/transparent"/>
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="8dp"
+                    android:background="@color/gold"/>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="5"
+                    android:background="@android:color/transparent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="POINTS:"
+                    android:textAllCaps="true"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:gravity="center" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/quizz_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="268"
+                        android:textSize="20dp"
+                        android:textAlignment="center"
+                        android:gravity="center" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/"
+                        android:textSize="20dp"
+                        android:textAlignment="center"
+                        android:gravity="center" />
+                    <TextView
+                        android:id="@+id/quizz_totalPoints"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="999"
+                        android:textSize="20dp"
+                        android:textAlignment="center"
+                        android:gravity="center" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/quizz_back_button"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:text="back"
+                android:textSize="24dp"
+                android:backgroundTint="@color/grey_700"
+                android:layout_gravity="center"
+                android:layout_marginVertical="20dp"/>
 
         </LinearLayout>
 
-
     </androidx.cardview.widget.CardView>
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

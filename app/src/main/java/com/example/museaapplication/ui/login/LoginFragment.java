@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.ui.MainActivity;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.signup.SignupFragment;
@@ -111,8 +112,10 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SingletonDataHolder.getInstance().setLoggedUser(username.getText().toString());
                 if (!loginViewModel.validUsernamePassword(username.getText().toString(),password.getText().toString())) {
                     if (textWarnings.getText().toString().isEmpty()) textWarnings.setText(getContext().getResources().getString(R.string.warning_login2));
+                    SingletonDataHolder.getInstance().setLoggedUser("");
                 }
             }
         });

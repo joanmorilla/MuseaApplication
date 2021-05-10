@@ -19,4 +19,7 @@
     <color name="green">#52FD08</color>
     <color name="semiTransparentColor">#9AFFFFFF</color>
     <color name="green_ok">#9ADF82</color>
+    <color name="bronze">#cd7f32</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="gold">#FFD700</color>
 </resources>
