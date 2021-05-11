@@ -4,12 +4,12 @@ import com.example.museaapplication.Classes.Dominio.User;
 import com.example.museaapplication.Classes.Json.ExhibitionValue;
 import com.example.museaapplication.Classes.Json.ExpositionListValue;
 import com.example.museaapplication.Classes.Json.ExpositionsList;
-import com.example.museaapplication.Classes.Json.FavouritesValue;
 import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.InfoValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.UserInfoValue;
 import com.example.museaapplication.Classes.Json.UserValue;
+import com.example.museaapplication.Classes.Json.VisitedValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
 import com.example.museaapplication.Classes.Json.WorksArray;
 import com.example.museaapplication.Classes.Json.WorksValue;
@@ -49,8 +49,6 @@ public interface Api {
     @GET("https://musea-api.herokuapp.com/users/RaulPes")
     Call<UserInfoValue> getUserInfo();
 
-    @GET("https://musea-api.herokuapp.com/users/luisitodescomunica/favourites")
-    Call<FavouritesValue> getFavourites();
 
     @GET("https://musea-api.herokuapp.com/users/RaulPes/likes")
     Call<LikesValue> getLikes();
@@ -60,6 +58,9 @@ public interface Api {
 
     @POST("https://musea-api.herokuapp.com/users/{username}/visited?")
     Call<Void> addVisitedMuseum(@Path("username") String username, @Query("museum") String museum);
+
+    @GET("https://musea-api.herokuapp.com/users/{username}/visited")
+    Call<VisitedValue> getVisitedMuseum(@Path("username") String username);
 
     // User favorites
     @POST("https://musea-api.herokuapp.com/users/{username}/likes?")

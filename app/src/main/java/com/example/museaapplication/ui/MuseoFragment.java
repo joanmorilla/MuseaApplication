@@ -40,6 +40,7 @@ import com.example.museaapplication.Classes.CustomDialog;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.OnBackPressed;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
 import com.github.mikephil.charting.charts.BarChart;
@@ -106,6 +107,7 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
             @Override
             public void onClick(View v) {
                 YoYo.with(Techniques.BounceInUp).duration(700).playOn(v);
+                SingletonDataHolder.userViewModel.UpdateUserInfo();
                 love();
                 if (!loved) {
                     heartButton.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));

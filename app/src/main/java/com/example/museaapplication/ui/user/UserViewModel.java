@@ -6,10 +6,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.museaapplication.Classes.Dominio.Favourites;
+
 import com.example.museaapplication.Classes.Dominio.Likes;
 import com.example.museaapplication.Classes.Dominio.UserInfo;
-import com.example.museaapplication.Classes.Json.FavouritesValue;
+
 import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.UserInfoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
@@ -23,7 +23,6 @@ import retrofit2.Response;
 public class UserViewModel extends ViewModel {
 
     private MutableLiveData<UserInfo> Userinfo;
-    private MutableLiveData<Favourites[]> Favourites;
     private MutableLiveData<Likes[]> Likes;
 
     public UserViewModel() {
@@ -45,12 +44,6 @@ public class UserViewModel extends ViewModel {
             loadlikes();
     }
 
-    public void addlike(Likes like){
-        Likes[] likes = new Likes[this.Likes.getValue().length + 1];
-        likes[likes.length - 1] = like;
-        this.Likes.postValue(likes);
-    }
-
 
     public void loadlikes() {
         Call<LikesValue> call = RetrofitClient.getInstance().getMyApi().getLikes();
@@ -64,36 +57,6 @@ public class UserViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<LikesValue> call, Throwable t) {
-                Log.e("TAG1", t.getLocalizedMessage());
-                Log.e("TAG2", t.getMessage());
-                t.printStackTrace();
-            }
-        });
-
-    }
-
-    public LiveData<Favourites[]> getFavourites()
-    {
-        if (Favourites == null) {
-            Favourites = new MutableLiveData<Favourites[]>();
-            loadUsers();
-        }
-        return Favourites;
-
-    }
-
-    public void loadUsers() {
-        Call<FavouritesValue> call = RetrofitClient.getInstance().getMyApi().getFavourites();
-        call.enqueue(new Callback<FavouritesValue>() {
-            @Override
-            public void onResponse(Call<FavouritesValue> call, Response<FavouritesValue> response) {
-                FavouritesValue myfavlist = response.body();
-                /*Favourites[] favourites = myfavlist.getFavouritesList();
-                Favourites.postValue(favourites);*/
-            }
-
-            @Override
-            public void onFailure(Call<FavouritesValue> call, Throwable t) {
                 Log.e("TAG1", t.getLocalizedMessage());
                 Log.e("TAG2", t.getMessage());
                 t.printStackTrace();
@@ -129,5 +92,12 @@ public class UserViewModel extends ViewModel {
             }
             });
         }
+
+    public void UpdateUserInfo()
+    {
+        Likes = new MutableLiveData<Likes[]>();
+        Log.e("Funciona", "UPDATELIKES VIEWMODEL");
+        loadUsersinfo();
+    }
 
 }

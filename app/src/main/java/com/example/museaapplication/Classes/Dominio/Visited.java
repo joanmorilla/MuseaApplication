@@ -1,10 +1,13 @@
 package com.example.museaapplication.Classes.Dominio;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
-public class Favourites implements Serializable {
-
+public class Visited implements Serializable {
+    @SerializedName("museumId")
     private String museumId;
+    @SerializedName("image")
     private String image;
 
 

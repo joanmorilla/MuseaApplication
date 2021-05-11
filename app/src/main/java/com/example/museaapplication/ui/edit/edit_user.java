@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.MainActivity;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -66,6 +67,7 @@ public class edit_user extends AppCompatActivity {
                 if(warningMessage.isEmpty()) {
                     textwarn.setText("");
                     euvm.edit_user_info(name.getText().toString(), bio.getText().toString());
+                    SingletonDataHolder.userViewModel.UpdateUserInfo();
                     finish();
                 }
                 else{

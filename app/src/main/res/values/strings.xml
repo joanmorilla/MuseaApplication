@@ -75,4 +75,8 @@
     <string name="restriccions_text_dialog_covid">Restrictions</string>
     <string name="points">Points:</string>
 
+    <!-- Visited -->
+    <string name="title_visited">Visited Museums</string>
+
+
 </resources>
