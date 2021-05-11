@@ -137,6 +137,7 @@ public class SharedViewModel extends ViewModel {
                         for (Likes l : response.body().getLikesList()){
                             if (l.getArtworkId().equals(museum.get_id())) {
                                 museum.setLiked(true);
+                                setMyMuseum(museum);
                                 return;
                             }
                         }
