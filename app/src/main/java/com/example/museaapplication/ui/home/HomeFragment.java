@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -83,10 +84,27 @@ public class HomeFragment extends Fragment {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, root.getResources().getDisplayMetrics()));
     }
 
+    private String translateCountry(String country) {
+        switch (country){
+            case "ES":
+                return "Spain";
+            case "FR":
+                return "France";
+        }
+        return "";
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void GenerarBotones(@NotNull Museo[] m) {
         LinearLayout scrollPais = root.findViewById(R.id.layout_pais);
+        LinearLayout scrollPropers = root.findViewById(R.id.layout_close);
+
+
+        String country = Locale.getDefault().getDisplayCountry(Locale.forLanguageTag("en-EN"));
+        Log.e("Country", country);
         // We go through the museums
         for(int i = m.length - 1; i >= 0; i--){
+
             // For the complex button we use relative layout
             RelativeLayout holder = new RelativeLayout(getContext());
             View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
@@ -111,7 +129,8 @@ public class HomeFragment extends Fragment {
             newParams.setMargins(pixToDp(5),0,pixToDp(5),pixToDp(0));
             holder.setLayoutParams(newParams);
             // Finally add it to the scroll layout
-            scrollPais.addView(holder);
+            if (!m[i].getCountry().equals(country)) scrollPropers.addView(holder);
+            else scrollPais.addView(holder);
         }
     }
     private void GenerateFavourites(@NotNull Museo[] m){
