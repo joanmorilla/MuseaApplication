@@ -44,6 +44,7 @@ import com.example.museaapplication.Classes.CustomDialog;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.OnBackPressed;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
 import com.github.mikephil.charting.charts.BarChart;
@@ -133,6 +134,7 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
             public void onClick(View v) {
                 YoYo.with(Techniques.BounceInUp).duration(700).playOn(v);
                 intent.putExtra("Changed", true);
+                SingletonDataHolder.getInstance().addModified(museum.get_id());
                 sharedViewModel.likeMuseum(museum.get_id());
                 if (!museum.like()) {
                     v.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
@@ -165,6 +167,7 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
                     Picasso.get().load(url).placeholder(R.drawable.catalonia).fit().into(imageView);
 
                 if (museum.isLiked())  heartButton.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
+                else heartButton.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
 
                 LinearLayout layout = root.findViewById(R.id.layout_view);
                 layout.removeAllViews();

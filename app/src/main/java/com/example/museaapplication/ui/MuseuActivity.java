@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.OnBackPressed;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
 import com.squareup.picasso.Picasso;
@@ -51,8 +52,12 @@ public class MuseuActivity extends AppCompatActivity {
         }else {
             // Keep it cutre. Gracias google por copiar los datos en nuevas variables al iniciar una activity cuando
             // java pasa referencias. Muy útil.
-            sharedViewModel.setCurMuseum(curMuseum);
-            sharedViewModel.setMyMuseum(curMuseum);
+            if (SingletonDataHolder.getInstance().isModified(curMuseum.get_id())){
+                sharedViewModel.reloadMuseum(curMuseum.get_id());
+            }else {
+                sharedViewModel.setCurMuseum(curMuseum);
+                sharedViewModel.setMyMuseum(curMuseum);
+            }
         }
     }
 
@@ -78,15 +83,6 @@ public class MuseuActivity extends AppCompatActivity {
         super.onResume();
         fm.beginTransaction().show(sharedViewModel.getActive()).commit();
     }
-
-    @Override
-    protected void onDestroy() {
-        /*fm.beginTransaction().hide(sharedViewModel.getmExpositionFragment()).commit();
-        fm.beginTransaction().hide(sharedViewModel.getmMuseoFragment()).commit();
-        fm.beginTransaction().hide(sharedViewModel.getmCommentsFragment()).commit();*/
-        super.onDestroy();
-    }
-
     @Override
     public void onBackPressed() {
         SignalFragments();
