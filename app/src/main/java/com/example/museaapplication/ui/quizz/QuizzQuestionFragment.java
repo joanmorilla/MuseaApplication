@@ -1,11 +1,9 @@
 package com.example.museaapplication.ui.quizz;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
@@ -17,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.museaapplication.Classes.Dominio.Quizz;
@@ -24,6 +23,8 @@ import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.squareup.picasso.Picasso;
+
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,6 +54,11 @@ public class QuizzQuestionFragment extends Fragment {
     private Button button3;
     private Button button4;
 
+    private TextView endMessage;
+    private ProgressBar endBar;
+    private long timeAnimation = 3000; //30 segundos
+    private TextView endPoints;
+    private TextView endTotal;
     private Button endButton;
 
     private boolean hasAnswered;
@@ -61,7 +67,7 @@ public class QuizzQuestionFragment extends Fragment {
     private int points;
     private int totalPoints;
 
-    Quizz quizz;
+    Quizz[] quizzes;
 
     public static QuizzQuestionFragment newInstance() {
         return new QuizzQuestionFragment();
@@ -88,17 +94,27 @@ public class QuizzQuestionFragment extends Fragment {
         button4 = root.findViewById(R.id.quizz_button4);
         countdownText = root.findViewById(R.id.crono_text);
         hasAnswered = false;
-        currentQuizz = 0;
+
 
         //endCard
+        endMessage = root.findViewById(R.id.quizz_congratulation);
+        endBar = root.findViewById(R.id.quizz_bar);
+        endPoints = root.findViewById(R.id.quizz_points);
+        endTotal = root.findViewById(R.id.quizz_totalPoints);
         endButton = root.findViewById(R.id.quizz_back_button);
 
-        // Ahora mismo pilla una solo quizz guardada en el SINGLETON
-        // Para cuando hagamos subsets 'quizz' sera una array
-        // Ya he medio preparado una funcion para un subset en el QuizzQuestionViewModel pero tampoco la he probado XD
-        quizz = SingletonDataHolder.getInstance().getQuizzes()[currentQuizz];
-        total.setText(""+ SingletonDataHolder.getInstance().getQuizzes().length);
-        Log.d("OneQuizz", quizz.get_id());
+
+        // quizzes subset
+        Random random = new Random();
+        int numberOfQuizzes = random.nextInt(11-5)+5;
+
+        quizzes = mViewModel.getSubsetQuizzes(numberOfQuizzes);
+        total.setText(""+ quizzes.length);
+        currentQuizz = 0;
+        for (Quizz q: quizzes) {
+            totalPoints += q.getPoints();
+        }
+        Log.d("Quizzes id:", quizzes[currentQuizz].get_id());
 
         updateCard();
         buttonActions();
@@ -113,27 +129,27 @@ public class QuizzQuestionFragment extends Fragment {
 
         hasAnswered = false;
         current.setText(String.valueOf(currentQuizz+1));
-        if (quizz.getImage().isEmpty())
+        if (quizzes[currentQuizz].getImage().isEmpty())
             Picasso.get().load("https://www.zooplus.es/magazine/wp-content/uploads/2018/04/fotolia_169457098.jpg").into(image);
         else
-            Picasso.get().load(quizz.getImage()).into(image);
+            Picasso.get().load(quizzes[currentQuizz].getImage()).into(image);
 
-        question.setText(quizz.getQuestion().getText());
+        question.setText(quizzes[currentQuizz].getQuestion().getText());
 
-        button1.setText(quizz.getAnswers()[0].getText());
-        button1.setTextSize(chooseSize(quizz.getAnswers()[0].getText().length()));
+        button1.setText(quizzes[currentQuizz].getAnswers()[0].getText());
+        button1.setTextSize(chooseSize(quizzes[currentQuizz].getAnswers()[0].getText().length()));
         button1.setBackgroundColor(chooseColor(-1));
 
-        button2.setText(quizz.getAnswers()[1].getText());
-        button2.setTextSize(chooseSize(quizz.getAnswers()[1].getText().length()));
+        button2.setText(quizzes[currentQuizz].getAnswers()[1].getText());
+        button2.setTextSize(chooseSize(quizzes[currentQuizz].getAnswers()[1].getText().length()));
         button2.setBackgroundColor(chooseColor(-1));
 
-        button3.setText(quizz.getAnswers()[2].getText());
-        button3.setTextSize(chooseSize(quizz.getAnswers()[2].getText().length()));
+        button3.setText(quizzes[currentQuizz].getAnswers()[2].getText());
+        button3.setTextSize(chooseSize(quizzes[currentQuizz].getAnswers()[2].getText().length()));
         button3.setBackgroundColor(chooseColor(-1));
 
-        button4.setText(quizz.getAnswers()[3].getText());
-        button4.setTextSize(chooseSize(quizz.getAnswers()[3].getText().length()));
+        button4.setText(quizzes[currentQuizz].getAnswers()[3].getText());
+        button4.setTextSize(chooseSize(quizzes[currentQuizz].getAnswers()[3].getText().length()));
         button4.setBackgroundColor(chooseColor(-1));
     }
 
@@ -185,13 +201,13 @@ public class QuizzQuestionFragment extends Fragment {
     }
 
     public void showcorrect(){
-        if (quizz.getAnswers()[0].isCorrect()) button1.setBackgroundColor(correctColor);
+        if (quizzes[currentQuizz].getAnswers()[0].isCorrect()) button1.setBackgroundColor(correctColor);
         else button1.setBackgroundColor(errorColor);
-        if (quizz.getAnswers()[1].isCorrect()) button2.setBackgroundColor(correctColor);
+        if (quizzes[currentQuizz].getAnswers()[1].isCorrect()) button2.setBackgroundColor(correctColor);
         else button2.setBackgroundColor(errorColor);
-        if (quizz.getAnswers()[2].isCorrect()) button3.setBackgroundColor(correctColor);
+        if (quizzes[currentQuizz].getAnswers()[2].isCorrect()) button3.setBackgroundColor(correctColor);
         else button3.setBackgroundColor(errorColor);
-        if (quizz.getAnswers()[3].isCorrect()) button4.setBackgroundColor(correctColor);
+        if (quizzes[currentQuizz].getAnswers()[3].isCorrect()) button4.setBackgroundColor(correctColor);
         else button4.setBackgroundColor(errorColor);
     }
 
@@ -249,12 +265,12 @@ public class QuizzQuestionFragment extends Fragment {
             public void run() {
                 // Do something after 1s = 1000ms
                 currentQuizz += 1;
-                if (currentQuizz >= SingletonDataHolder.getInstance().getQuizzes().length) {
+                if (currentQuizz >= quizzes.length) {
                     // End of the game
                     endQuizz();
                 }
                 else {
-                    quizz = SingletonDataHolder.getInstance().getQuizzes()[currentQuizz];
+                    //quizzes = SingletonDataHolder.getInstance().getQuizzes()[currentQuizz];
                     updateCard();
                 }
             }
@@ -266,9 +282,8 @@ public class QuizzQuestionFragment extends Fragment {
         if (questionIndex == -1) return defaultColor;
 
         // answered quizz
-        totalPoints += quizz.getPoints();
-        if (quizz.getAnswers()[questionIndex].isCorrect()) {
-            points += quizz.getPoints();
+        if (quizzes[currentQuizz].getAnswers()[questionIndex].isCorrect()) {
+            points += quizzes[currentQuizz].getPoints();
             return correctColor;
         }
         return errorColor;
@@ -283,12 +298,27 @@ public class QuizzQuestionFragment extends Fragment {
     }
 
     private void endQuizz() {
+        startStop();
         Log.d("Points", "" + points);
         Log.d("Total points", "" + totalPoints);
-        // Show end view
 
+        // Show end view
         root.findViewById(R.id.quizzCard).setVisibility(View.GONE);
         root.findViewById(R.id.endCard).setVisibility(View.VISIBLE);
+
+        float percentage = ((float)points/(float)totalPoints) * 100;
+
+        if (percentage < 75) endMessage.setText(R.string.end_message_garbage);
+        else if (percentage < 85) endMessage.setText(R.string.end_message_bronze);
+        else if (percentage < 95) endMessage.setText(R.string.end_message_silver);
+        else endMessage.setText(R.string.end_message_gold);
+
+
+        endBar.setMax(totalPoints);
+        endBar.setProgress(0);
+        startAnimation();
+
+        endTotal.setText(""+totalPoints);
 
         // Update points
         String username = SingletonDataHolder.getInstance().getLoggedUser();
@@ -307,6 +337,7 @@ public class QuizzQuestionFragment extends Fragment {
                         Log.d("Update Points:","There is no user for such id");
                         break;
                     default:
+                        Log.d("Update Points:","Something unexpected happened");
                         break;
                 }
             }
@@ -323,4 +354,28 @@ public class QuizzQuestionFragment extends Fragment {
 
 
     }
+
+    private void startAnimation() {
+        countDownTimer = new CountDownTimer(timeAnimation,10) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                Log.d("timestamp:", ""+(points * ((timeAnimation-millisUntilFinished)*100/timeAnimation)/100));
+                final int current = (int) (points * ((timeAnimation-millisUntilFinished)*100/timeAnimation)/100);
+                endBar.setProgress(current);
+                endPoints.setText(""+current);
+
+                if (current >= totalPoints * 0.75) root.findViewById(R.id.quizz_bronze).setVisibility(View.VISIBLE);
+                if (current >= totalPoints * 0.85) root.findViewById(R.id.quizz_silver).setVisibility(View.VISIBLE);
+                if (current >= totalPoints * 0.95) root.findViewById(R.id.quizz_gold).setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFinish() {
+                endBar.setProgress(points);
+                endPoints.setText(""+points);
+            }
+        }.start();
+
+    }
+
 }

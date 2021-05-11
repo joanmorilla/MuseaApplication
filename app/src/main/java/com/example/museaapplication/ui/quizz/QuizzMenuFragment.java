@@ -89,9 +89,9 @@ public class QuizzMenuFragment extends Fragment {
             }
         });
 
-        final ImageView imageView = root.findViewById(R.id.idImagenHelp);
+        //final ImageView imageView = root.findViewById(R.id.idImagenHelp);
         // TODO: Imagen DEMO cuando este la view del quizz
-        Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/5/55/International_System_of_Units_Logo.png").into(imageView);
+        //Picasso.get().load("src\\main\\res\\drawable").into(imageView);
 
 
 
