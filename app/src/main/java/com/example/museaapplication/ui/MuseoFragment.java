@@ -161,6 +161,7 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         sharedViewModel.getMuseum().observe(getViewLifecycleOwner(), new Observer<Museo>() {
             @Override
             public void onChanged(Museo museo) {
+                Log.e("Entra", "Pues");
                 museum = museo;
                 String url = museum.getImage();
                 if (!url.equals(""))
@@ -246,13 +247,12 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
     @Override
     public boolean OnBack() {
         // Do we enter from app of share?
-        if (getActivity().getIntent().getData() == null){
-            Log.e("Holawey", "keloke");
+        //if (getActivity().getIntent().getData() == null){
             // From App
             intent.putExtra("Value", museum.isLiked());
             // Return the intent with the bool that states whether the museum has been liked or not
             getActivity().setResult(Activity.RESULT_OK, intent);
-        }
+        //}
         super.getActivity().finish();
         return false;
     }

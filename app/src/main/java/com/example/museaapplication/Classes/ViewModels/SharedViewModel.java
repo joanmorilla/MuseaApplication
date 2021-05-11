@@ -123,29 +123,31 @@ public class SharedViewModel extends ViewModel {
     }
 
     public void loadMuseum(String idMuseo){
-        Call<LikesValue> callLikes = RetrofitClient.getInstance().getMyApi().getFavMuseums("RaulPes");
-        callLikes.enqueue(new Callback<LikesValue>() {
-            @Override
-            public void onResponse(Call<LikesValue> call, Response<LikesValue> response) {
-                 for (Likes l : response.body().getLikesList()){
-                     if (l.getArtworkId().equals(MuseuActivity.curMuseum.get_id())) {
-                         MuseuActivity.curMuseum.setLiked(true);
-                         return;
-                     }
-                 }
-            }
-
-            @Override
-            public void onFailure(Call<LikesValue> call, Throwable t) {
-
-            }
-        });
         Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseum(idMuseo);
         call.enqueue(new Callback<MuseoValue>() {
             @Override
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
+                Log.e("Code", "" + response.body().getMuseum().getName());
                 AuxMuseo aux = response.body().getMuseum();
                 Museo museum = new Museo();
+                Call<LikesValue> callLikes = RetrofitClient.getInstance().getMyApi().getFavMuseums("RaulPes");
+                callLikes.enqueue(new Callback<LikesValue>() {
+                    @Override
+                    public void onResponse(Call<LikesValue> call, Response<LikesValue> response) {
+                        for (Likes l : response.body().getLikesList()){
+                            if (l.getArtworkId().equals(museum.get_id())) {
+                                museum.setLiked(true);
+                                return;
+                            }
+                        }
+                        museum.setLiked(false);
+                    }
+
+                    @Override
+                    public void onFailure(Call<LikesValue> call, Throwable t) {
+
+                    }
+                });
                 museum.set_id(aux.get_id());
                 museum.setName(aux.getName());
                 museum.setImage(aux.getImage());
@@ -203,6 +205,7 @@ public class SharedViewModel extends ViewModel {
                         }
                     });
                 }
+                setMyMuseum(museum);
             }
 
             @Override
@@ -214,30 +217,31 @@ public class SharedViewModel extends ViewModel {
         });
     }
     public void reloadMuseum(String idMuseo){
-        Call<LikesValue> callLikes = RetrofitClient.getInstance().getMyApi().getFavMuseums("RaulPes");
-        callLikes.enqueue(new Callback<LikesValue>() {
-            @Override
-            public void onResponse(Call<LikesValue> call, Response<LikesValue> response) {
-                for (Likes l : response.body().getLikesList()){
-                    if (l.getArtworkId().equals(MuseuActivity.curMuseum.get_id())) {
-                        MuseuActivity.curMuseum.setLiked(true);
-                        return;
-                    }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<LikesValue> call, Throwable t) {
-
-            }
-        });
         Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseum(idMuseo);
         call.enqueue(new Callback<MuseoValue>() {
             @Override
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
                 AuxMuseo aux = response.body().getMuseum();
                 Museo museum = MuseuActivity.curMuseum;
-                Log.e("OtraId", "" + museum);
+                Call<LikesValue> callLikes = RetrofitClient.getInstance().getMyApi().getFavMuseums("RaulPes");
+                callLikes.enqueue(new Callback<LikesValue>() {
+                    @Override
+                    public void onResponse(Call<LikesValue> call, Response<LikesValue> response) {
+                        for (Likes l : response.body().getLikesList()){
+                            if (l.getArtworkId().equals(museum.get_id())) {
+                                museum.setLiked(true);
+                                return;
+                            }
+                        }
+                        museum.setLiked(false);
+                    }
+
+                    @Override
+                    public void onFailure(Call<LikesValue> call, Throwable t) {
+
+                    }
+                });
                 museum.set_id(aux.get_id());
                 museum.setName(aux.getName());
                 museum.setImage(aux.getImage());

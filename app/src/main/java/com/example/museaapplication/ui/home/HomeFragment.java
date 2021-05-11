@@ -1,6 +1,7 @@
 package com.example.museaapplication.ui.home;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -31,6 +32,7 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -149,10 +151,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (interactable) {
-                    String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(TimeClass.getNow());
+                    //String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(TimeClass.getNow());
                     Intent i = new Intent(getActivity(), MuseuActivity.class);
+                    Uri uri = Uri.parse("/museums/" + m.get_id());
+                    i.setData(uri);
                     MuseuActivity.curMuseum = m;
                     startActivityForResult(i, 1);
+                    //startActivity(i);
                     getActivity().overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
                     interactable = false;
                 }

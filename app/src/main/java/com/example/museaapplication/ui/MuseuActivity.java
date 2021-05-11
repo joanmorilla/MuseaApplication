@@ -52,9 +52,8 @@ public class MuseuActivity extends AppCompatActivity {
         }else {
             // Keep it cutre. Gracias google por copiar los datos en nuevas variables al iniciar una activity cuando
             // java pasa referencias. Muy útil.
-            if (SingletonDataHolder.getInstance().isModified(curMuseum.get_id())){
-                sharedViewModel.reloadMuseum(curMuseum.get_id());
-            }else {
+            if (SingletonDataHolder.getInstance().isModified(curMuseum.get_id())) sharedViewModel.reloadMuseum(curMuseum.get_id());
+            else {
                 sharedViewModel.setCurMuseum(curMuseum);
                 sharedViewModel.setMyMuseum(curMuseum);
             }
