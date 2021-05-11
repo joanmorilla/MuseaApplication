@@ -83,17 +83,7 @@ public class HomeFragment extends Fragment {
     int pixToDp(int value){
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, root.getResources().getDisplayMetrics()));
     }
-
-    private String translateCountry(String country) {
-        switch (country){
-            case "ES":
-                return "Spain";
-            case "FR":
-                return "France";
-        }
-        return "";
-    }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void GenerarBotones(@NotNull Museo[] m) {
         LinearLayout scrollPais = root.findViewById(R.id.layout_pais);
