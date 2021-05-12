@@ -129,13 +129,6 @@ public class UserFragment extends Fragment {
             Log.d("SharedPreferences2",sharedValue.substring(index + 1));
             username = (sharedValue.substring(0,index));
             password = (sharedValue.substring(index+1));*/
-
-
-
-
-
-
-
         uvm.getinfoUser().observe(getViewLifecycleOwner(), new Observer<UserInfo>() {
             @SuppressLint("SetTextI18n")
             @Override

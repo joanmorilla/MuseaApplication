@@ -17,19 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:elevation="11dp"/>
-
-        <ImageButton
-            android:id="@+id/back_arrow_comments"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/back_arrow"
-            android:backgroundTint="?android:textColorPrimary"/>
-
         <TextView
-            android:layout_toRightOf="@+id/back_arrow_comments"
-            android:layout_alignTop="@+id/back_arrow_comments"
             android:layout_marginLeft="20dp"
             android:paddingTop="5dp"
             android:layout_width="wrap_content"
@@ -39,7 +27,6 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="?android:textColorPrimary"
-            android:layout_toEndOf="@+id/back_arrow_comments"
             android:id="@+id/title_visited"/>
 
         <Button

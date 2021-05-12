@@ -5,9 +5,11 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Dominio.Visited;
 import com.example.museaapplication.Classes.Dominio.User;
 import com.example.museaapplication.Classes.Dominio.UserInfo;
+import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.VisitedValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 
@@ -18,6 +20,8 @@ import retrofit2.Response;
 public class VisitedMusViewModel extends ViewModel {
 
     private MutableLiveData<Visited[]> Visiteds;
+
+    private MutableLiveData<Museo[]> museo;
 
     public void addVisitedMuseum(String id_museum) {
         Call<Void> call = RetrofitClient.getInstance().getMyApi().addVisitedMuseum("RaulPes",id_museum);
@@ -68,9 +72,36 @@ public class VisitedMusViewModel extends ViewModel {
                 t.printStackTrace();
             }
         });
+    }
 
+    public MutableLiveData<Museo[]> getMuseobyid(String idMuseum) {
+        if (museo == null){
+            museo = new MutableLiveData<Museo[]>();
+            loadMuseo(idMuseum);
+        }
+        return museo;
 
+    }
 
+    public void loadMuseo(String idMuseum){
+        Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseumbyid(idMuseum);
+        call.enqueue(new Callback<MuseoValue>() {
+            @Override
+            public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
+                Log.d("OYEEEEEEEE",response.toString());
+                Log.d("OYEEEEEEEE","" + response.code());
+                MuseoValue mymuseolist = response.body();
+                Museo[] museum = mymuseolist.getMuseums();
+                museo.postValue(museum);
+            }
+
+            @Override
+            public void onFailure(Call<MuseoValue> call, Throwable t) {
+                Log.e("TAG1", t.getLocalizedMessage());
+                Log.e("TAG2", t.getMessage());
+                t.printStackTrace();
+            }
+        });
     }
 
 }

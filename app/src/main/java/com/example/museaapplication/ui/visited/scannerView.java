@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.museaapplication.ui.visited.VisitedMus;
 import com.google.zxing.Result;
@@ -53,7 +54,8 @@ public class scannerView extends AppCompatActivity implements ZXingScannerView.R
     public void handleResult(Result rawResult) {
         vmvm.addVisitedMuseum(rawResult.getText().toString());
         vmvm.loadVisited();
-        onBackPressed();
+        Log.e("llega","LEIDOOOOOO");
+        //onBackPressed();
     }
 
     @Override
