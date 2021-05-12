@@ -73,7 +73,7 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
     ImageButton postButton;
     SwipeRefreshLayout refresLayout;
     int progress;
-    Vibrator vib;
+    public static boolean loaded = false;
 
     public Comentaris_Fragment() {
         // Required empty public constructor
@@ -101,6 +101,10 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
 
     }
 
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     @SuppressLint("ResourceType")
     @Override
@@ -108,7 +112,6 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_comentaris, container, false);
-        vib = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
         TextView newText = root.findViewById(R.id.such_empty_text);
         newCommentText = root.findViewById(R.id.comment_input);
         postButton = root.findViewById(R.id.post_comment_button);
@@ -155,7 +158,6 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                 });
                 //sharedViewModel.setCurWork(null);
                 //vib.vibrate(50);
-
             }
         });
 
@@ -195,6 +197,36 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
         sharedViewModel.getCurWork().observe(getViewLifecycleOwner(), new Observer<Work>() {
             @Override
             public void onChanged(Work work) {
+                if (!loaded) {
+                    // Load comments at start
+                    Work w = work;
+                    loaded = true;
+                    sharedViewModel.getCurWork().getValue().setCommentsObjects(new ArrayList<>());
+                    Call<CommentsValue> call = RetrofitClient.getInstance().getMyApi().getComments(w.get_id());
+                    call.enqueue(new Callback<CommentsValue>() {
+                        @Override
+                        public void onResponse(Call<CommentsValue> call, Response<CommentsValue> response) {
+                            if (response.body() != null) {
+                                Comment[] comments = response.body().getComments();
+                                for (Comment c : comments) {
+                                    w.addComment(c);
+                                }
+                            }
+                            sharedViewModel.setCurWork(w);
+                            refresLayout.setRefreshing(false);
+                        }
+
+                        @Override
+                        public void onFailure(Call<CommentsValue> call, Throwable t) {
+                            Log.e("TAG1Comment", t.getLocalizedMessage());
+                            Log.e("TAG2Comment", t.getMessage());
+
+                            t.printStackTrace();
+                            refresLayout.setRefreshing(false);
+                        }
+                    });
+                }
+
                 LinearLayout ll = root.findViewById(R.id.linearlayout_comments);
                 ll.removeAllViews();
                 int i = 0;

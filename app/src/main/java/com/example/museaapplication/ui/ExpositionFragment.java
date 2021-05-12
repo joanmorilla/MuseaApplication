@@ -277,6 +277,7 @@ class MyViewPagerAdapter extends PagerAdapter {
             public void onClick(View view) {
                 sharedViewModel.setCurWork(works.get(position));
                 sharedViewModel.setActive(sharedViewModel.getmCommentsFragment());
+                Comentaris_Fragment.loaded = false;
                 fm.beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmCommentsFragment()).commit();
             }
         });
