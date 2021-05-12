@@ -1,6 +1,14 @@
 package com.example.museaapplication.ui.home;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +27,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,8 +42,10 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -42,6 +53,8 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     boolean interactable = true;
+    boolean created = false;
+    String country = Locale.getDefault().getDisplayCountry();
     View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,39 +101,113 @@ public class HomeFragment extends Fragment {
     private void GenerarBotones(@NotNull Museo[] m) {
         LinearLayout scrollPais = root.findViewById(R.id.layout_pais);
         LinearLayout scrollPropers = root.findViewById(R.id.layout_close);
+        boolean gpsEnabled = false;
 
+        //country = Locale.getDefault().getDisplayCountry(Locale.forLanguageTag("en-EN"));
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationManager manager = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
+            gpsEnabled = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-        String country = Locale.getDefault().getDisplayCountry(Locale.forLanguageTag("en-EN"));
+            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    try {
+                        Geocoder geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
+                        List<Address> adreesses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+
+                        if (!country.equals(adreesses.get(0).getCountryName())){
+                            country = adreesses.get(0).getCountryName();
+                            scrollPais.removeAllViews();
+                            scrollPropers.removeAllViews();
+                            created = false;
+                        }
+
+                        if (!created) {
+                            for (int i = m.length - 1; i >= 0; i--) {
+
+                                // For the complex button we use relative layout
+                                RelativeLayout holder = new RelativeLayout(getContext());
+                                View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
+                                // Adding enter animation
+                                YoYo.with(Techniques.ZoomIn)/*.delay((museums.length - i) * 200)*/.duration(700).playOn(v);
+                                TextView txt = v.findViewById(R.id.white_rectangle);
+                                // Setting the texts in custom button
+                                txt.setText(m[i].getName());
+                                txt = v.findViewById(R.id.text_horari);
+                                if (m[i].getCovidInformation() != null) {
+                                    txt.setText(timeStringValidation(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+                                    m[i].setOpeningHour(parseOpeningHour(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+                                }
+                                txt = v.findViewById(R.id.text_pais);
+                                txt.setText(m[i].getCity());
+                                ImageButton ib = v.findViewById(R.id.image_view);
+                                ib.setOnClickListener(clickFunc(m[i]));
+                                if (!m[i].getImage().equals(""))
+                                    Picasso.get().load(m[i].getImage()).fit().centerCrop().into(ib);
+                                // Size the relative layout
+                                RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, pixToDp(155));
+                                newParams.setMargins(pixToDp(5), 0, pixToDp(5), pixToDp(0));
+                                holder.setLayoutParams(newParams);
+                                // Finally add it to the scroll layout
+                                if (!m[i].getCountry().equals(country))
+                                    scrollPropers.addView(holder);
+                                else scrollPais.addView(holder);
+                            }
+                            created = true;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onStatusChanged(String s, int i, Bundle bundle) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String s) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String s) {
+
+                }
+            });
+        }
         Log.e("Country", country);
-        // We go through the museums
-        for(int i = m.length - 1; i >= 0; i--){
+        if (!gpsEnabled) {
+            // We go through the museums
+            for (int i = m.length - 1; i >= 0; i--) {
 
-            // For the complex button we use relative layout
-            RelativeLayout holder = new RelativeLayout(getContext());
-            View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
-            // Adding enter animation
-            YoYo.with(Techniques.ZoomIn)/*.delay((museums.length - i) * 200)*/.duration(700).playOn(v);
-            TextView txt  = v.findViewById(R.id.white_rectangle);
-            // Setting the texts in custom button
-            txt.setText(m[i].getName());
-            txt = v.findViewById(R.id.text_horari);
-            if (m[i].getCovidInformation() != null){
-                txt.setText(timeStringValidation(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
-                m[i].setOpeningHour(parseOpeningHour(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+                // For the complex button we use relative layout
+                RelativeLayout holder = new RelativeLayout(getContext());
+                View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
+                // Adding enter animation
+                YoYo.with(Techniques.ZoomIn).duration(700).playOn(v);
+                TextView txt = v.findViewById(R.id.white_rectangle);
+                // Setting the texts in custom button
+                txt.setText(m[i].getName());
+                txt = v.findViewById(R.id.text_horari);
+                if (m[i].getCovidInformation() != null) {
+                    txt.setText(timeStringValidation(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+                    m[i].setOpeningHour(parseOpeningHour(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+                }
+                txt = v.findViewById(R.id.text_pais);
+                txt.setText(m[i].getCity());
+                ImageButton ib = v.findViewById(R.id.image_view);
+                ib.setOnClickListener(clickFunc(m[i]));
+                if (!m[i].getImage().equals(""))
+                    Picasso.get().load(m[i].getImage()).fit().centerCrop().into(ib);
+                // Size the relative layout
+                RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, pixToDp(155));
+                newParams.setMargins(pixToDp(5), 0, pixToDp(5), pixToDp(0));
+                holder.setLayoutParams(newParams);
+                // Finally add it to the scroll layout
+                if (!m[i].getCountry().equals(country)) scrollPropers.addView(holder);
+                else scrollPais.addView(holder);
             }
-            txt = v.findViewById(R.id.text_pais);
-            txt.setText(m[i].getCity());
-            ImageButton ib = v.findViewById(R.id.image_view);
-            ib.setOnClickListener(clickFunc(m[i]));
-            if (!m[i].getImage().equals(""))
-                Picasso.get().load(m[i].getImage()).fit().centerCrop().into(ib);
-            // Size the relative layout
-            RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, pixToDp(155));
-            newParams.setMargins(pixToDp(5),0,pixToDp(5),pixToDp(0));
-            holder.setLayoutParams(newParams);
-            // Finally add it to the scroll layout
-            if (!m[i].getCountry().equals(country)) scrollPropers.addView(holder);
-            else scrollPais.addView(holder);
         }
     }
     private void GenerateFavourites(@NotNull Museo[] m){
