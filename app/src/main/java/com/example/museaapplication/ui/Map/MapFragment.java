@@ -240,7 +240,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
             });
             manager.setRenderer(new CustomClusterRenderer(getActivity(), map, manager));
 
-            addItems();
         }
     }
 
