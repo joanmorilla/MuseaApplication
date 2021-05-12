@@ -1,7 +1,9 @@
 package com.example.museaapplication.ui;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -60,7 +64,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMapView = findViewById(R.id.map_view);
         hvm = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        //SingletonDataHolder.getInstance().backStack.push(R.id.navigation_home);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+        } else ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+            //SingletonDataHolder.getInstance().backStack.push(R.id.navigation_home);
         for (Fragment f: fm.getFragments()) {   
             fm.beginTransaction().remove(f).commit();
         }
@@ -224,6 +232,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (result){
                 hvm.newFavourite(MuseuActivity.curMuseum);
             }else hvm.unFavorite(MuseuActivity.curMuseum);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1){
+            mHomeFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            mMapFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

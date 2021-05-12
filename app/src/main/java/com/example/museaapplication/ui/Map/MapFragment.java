@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.example.museaapplication.Classes.Adapters.CustomClusterRenderer;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.MyClusterItem;
+import com.example.museaapplication.Classes.Permissions;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.MainActivity;
 import com.example.museaapplication.ui.MuseuActivity;
@@ -54,7 +55,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, Permissions {
 
     public static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
 
@@ -240,7 +241,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             manager.setRenderer(new CustomClusterRenderer(getActivity(), map, manager));
 
             addItems();
-        } else requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
     }
 
     private int getMPosition(String title){
@@ -282,5 +283,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+    @Override
+    public void Granted() {
+        onMapReady(mMap);
     }
 }

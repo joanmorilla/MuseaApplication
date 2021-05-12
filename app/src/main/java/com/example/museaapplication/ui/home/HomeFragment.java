@@ -24,9 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -35,8 +37,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.museaapplication.Classes.Dominio.Museo;
+import com.example.museaapplication.Classes.Permissions;
 import com.example.museaapplication.Classes.TimeClass;
 import com.example.museaapplication.R;
+import com.example.museaapplication.ui.MainActivity;
 import com.example.museaapplication.ui.MuseuActivity;
 import com.squareup.picasso.Picasso;
 
@@ -49,12 +53,13 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements Permissions {
 
     private HomeViewModel homeViewModel;
     boolean interactable = true;
     boolean created = false;
     String country = Locale.getDefault().getDisplayCountry();
+    Museo[] museums;
     View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,6 +71,7 @@ public class HomeFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onChanged(Museo[] museos) {
+                museums = museos;
                 GenerarBotones(museos);
                 pb.setVisibility(View.GONE);
             }
@@ -114,6 +120,7 @@ public class HomeFragment extends Fragment {
                     try {
                         Geocoder geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
                         List<Address> adreesses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                        Log.e("Esta actualizando", "localización");
 
                         if (!country.equals(adreesses.get(0).getCountryName())){
                             country = adreesses.get(0).getCountryName();
@@ -291,5 +298,27 @@ public class HomeFragment extends Fragment {
         String temp = hours[0].replace("AM", ""); // 10:30
         String[] h = temp.split(":"); // [10, 30]
         return Integer.parseInt(h[0]);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("Entra", "wacho");
+                    GenerarBotones(museums);
+                }else Toast.makeText(getContext(), R.string.perm_denegado, Toast.LENGTH_LONG).show();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void Granted() {
+        GenerarBotones(museums);
     }
 }
