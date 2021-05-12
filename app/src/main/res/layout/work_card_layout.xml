@@ -36,8 +36,7 @@
         android:textSize="15sp"
         android:textStyle="bold"
         android:textColor="?android:textColorPrimary"
-        android:textAlignment="center"
-        android:gravity="center_vertical"
+        android:gravity="center"
         />
 
     <TextView
@@ -52,19 +51,31 @@
         android:layout_alignRight="@+id/image_holder_work"
         />
 
-    <TextView
-        android:id="@+id/desc_text_work"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:elevation="11dp"
-        android:text="Una descripcion de prueba"
-        android:textSize="15sp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:elevation="11dp"
         android:layout_alignLeft="@+id/image_holder_work"
         android:layout_alignRight="@+id/image_holder_work"
-        android:layout_below="@+id/text_author_work"/>
+        android:layout_above="@+id/comments_button_work"
+        android:layout_below="@+id/text_author_work"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/desc_text_work"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="Una descripcion de prueba"
+                android:textSize="15sp"
+                />
+        </LinearLayout>
+    </ScrollView>
+
 
     <ImageButton
         android:id="@+id/sound_button_work"

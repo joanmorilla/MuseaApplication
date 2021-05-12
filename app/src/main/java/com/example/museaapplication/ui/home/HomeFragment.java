@@ -39,9 +39,11 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Permissions;
 import com.example.museaapplication.Classes.TimeClass;
+import com.example.museaapplication.Classes.Vector2;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.MainActivity;
 import com.example.museaapplication.ui.MuseuActivity;
+import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -60,6 +62,7 @@ public class HomeFragment extends Fragment implements Permissions {
     boolean created = false;
     String country = Locale.getDefault().getDisplayCountry();
     Museo[] museums;
+    Geocoder geocoder;
     View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -114,30 +117,27 @@ public class HomeFragment extends Fragment implements Permissions {
             LocationManager manager = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
             gpsEnabled = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 25, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
+                    geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.ENGLISH);
                     try {
-                        Geocoder geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.ENGLISH);
                         List<Address> adreesses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                        Log.e("Esta actualizando", adreesses.get(0).getCountryName());
-
-                        if (!country.equals(adreesses.get(0).getCountryName())){
+                        //if (country != null && !country.equals(adreesses.get(0).getCountryName())){
                             country = adreesses.get(0).getCountryName();
                             scrollPais.removeAllViews();
                             scrollPropers.removeAllViews();
                             created = false;
-                        }
+                        //}
 
                         if (!created) {
                             for (int i = m.length - 1; i >= 0; i--) {
-
                                 // For the complex button we use relative layout
                                 RelativeLayout holder = new RelativeLayout(getContext());
                                 View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
                                 // Adding enter animation
                                 YoYo.with(Techniques.ZoomIn)/*.delay((museums.length - i) * 200)*/.duration(700).playOn(v);
-                                TextView txt = v.findViewById(R.id.white_rectangle);
+                                TextView txt = v.findViewById(R.id.title_text);
                                 // Setting the texts in custom button
                                 txt.setText(m[i].getName());
                                 txt = v.findViewById(R.id.text_horari);
@@ -155,10 +155,21 @@ public class HomeFragment extends Fragment implements Permissions {
                                 RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, pixToDp(155));
                                 newParams.setMargins(pixToDp(5), 0, pixToDp(5), pixToDp(0));
                                 holder.setLayoutParams(newParams);
-                                // Finally add it to the scroll layout
-                                if (!m[i].getCountry().equals(country))
-                                    scrollPropers.addView(holder);
-                                else scrollPais.addView(holder);
+
+                                if (m[i].getLocation() != null && m[i].getLocation().length != 0) {
+                                    List<Address> addressList = geocoder.getFromLocation(m[i].getLocation()[0].getNumberDecimal(), m[i].getLocation()[1].getNumberDecimal(), 1);
+                                    double musLat = addressList.get(0).getLatitude();
+                                    double musLong = addressList.get(0).getLongitude();
+                                    double myLat = adreesses.get(0).getLatitude();
+                                    double myLong = adreesses.get(0).getLongitude();
+                                    float[] results = new float[1];
+                                    if (country != null && country.equals(addressList.get(0).getCountryName())) {
+                                        scrollPais.addView(holder);
+                                    }
+                                    android.location.Location.distanceBetween(musLat, musLong, myLat, myLong, results);
+                                    if (results[0] / 1000 <= 50) GenerateClose(m[i], adreesses);
+                                    Log.e("Distancia", m[i].getName() + " " + results[0] / 1000 + "km");
+                                }
                             }
                             created = true;
                         }
@@ -193,7 +204,7 @@ public class HomeFragment extends Fragment implements Permissions {
                 View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
                 // Adding enter animation
                 YoYo.with(Techniques.ZoomIn).duration(700).playOn(v);
-                TextView txt = v.findViewById(R.id.white_rectangle);
+                TextView txt = v.findViewById(R.id.title_text);
                 // Setting the texts in custom button
                 txt.setText(m[i].getName());
                 txt = v.findViewById(R.id.text_horari);
@@ -217,6 +228,54 @@ public class HomeFragment extends Fragment implements Permissions {
             }
         }
     }
+
+    private void GenerateClose(Museo m, List<Address> adreesses) {
+        LinearLayout scrollPropers = root.findViewById(R.id.layout_close);
+            // For the complex button we use relative layout
+            RelativeLayout holder = new RelativeLayout(getContext());
+            View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
+            // Adding enter animation
+            YoYo.with(Techniques.ZoomIn)/*.delay((museums.length - i) * 200)*/.duration(700).playOn(v);
+            TextView txt = v.findViewById(R.id.title_text);
+            // Setting the texts in custom button
+            txt.setText(m.getName());
+            txt = v.findViewById(R.id.text_horari);
+            if (m.getCovidInformation() != null) {
+                txt.setText(timeStringValidation(m.getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+                m.setOpeningHour(parseOpeningHour(m.getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+            }
+            txt = v.findViewById(R.id.text_pais);
+            txt.setText(m.getCity());
+            ImageButton ib = v.findViewById(R.id.image_view);
+            ib.setOnClickListener(clickFunc(m));
+            if (!m.getImage().equals(""))
+                Picasso.get().load(m.getImage()).fit().centerCrop().into(ib);
+            // Size the relative layout
+            RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, pixToDp(155));
+            newParams.setMargins(pixToDp(5), 0, pixToDp(5), pixToDp(0));
+            holder.setLayoutParams(newParams);
+            // Finally add it to the scroll layout
+            List<Address> addressList = null;
+            try {
+                addressList = geocoder.getFromLocation(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal(), 1);
+                double musLat = addressList.get(0).getLatitude();
+                double musLong = addressList.get(0).getLongitude();
+                double myLat = adreesses.get(0).getLatitude();
+                double myLong = adreesses.get(0).getLongitude();
+                float[] results = new float[1];
+                android.location.Location.distanceBetween(musLat, musLong, myLat, myLong, results);
+                if (results[0]/1000 <= 50) scrollPropers.addView(holder);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    }
+
+    private double distance(Vector2 loc1, Vector2 loc2){
+        double distX = Math.abs(loc1.getX() - loc2.getX());
+        double distY = Math.abs(loc1.getY() - loc2.getY());
+        double result = Math.sqrt((distX*distX) + (distY*distY));
+        return result;
+     }
     private void GenerateFavourites(@NotNull Museo[] m){
         LinearLayout scrollFavourites = root.findViewById(R.id.layout_favourites);
         scrollFavourites.removeAllViews();
@@ -227,7 +286,7 @@ public class HomeFragment extends Fragment implements Permissions {
             View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
             // Adding enter animation
             YoYo.with(Techniques.ZoomIn)/*.delay((museums.length - i) * 200)*/.duration(700).playOn(v);
-            TextView txt = v.findViewById(R.id.white_rectangle);
+            TextView txt = v.findViewById(R.id.title_text);
             // Setting the texts in custom button
             txt.setText(museo.getName());
             txt = v.findViewById(R.id.text_horari);

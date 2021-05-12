@@ -96,17 +96,21 @@ public class HomeViewModel extends ViewModel {
             public void onFailure(Call<LikesValue> call, Throwable t) {
 
             }
-        });
+       });
 
     }
     public void newFavourite(Museo m){
-        curFavorites.remove(m);
-        curFavorites.add(0, m);
-        FavouriteMuseums.postValue(curFavorites.toArray(new Museo[0]));
+        if (curFavorites != null) {
+            curFavorites.remove(m);
+        } else curFavorites = new ArrayList<>();
+            curFavorites.add(0, m);
+            FavouriteMuseums.postValue(curFavorites.toArray(new Museo[0]));
     }
     public void unFavorite(Museo m){
-        curFavorites.remove(m);
-        FavouriteMuseums.postValue(curFavorites.toArray(new Museo[0]));
+        if (curFavorites != null) {
+            curFavorites.remove(m);
+            FavouriteMuseums.postValue(curFavorites.toArray(new Museo[0]));
+        }
     }
 
     private void cacheFavMuseums(Museo[] museums){
