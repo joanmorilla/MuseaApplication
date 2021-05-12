@@ -118,9 +118,9 @@ public class HomeFragment extends Fragment implements Permissions {
                 @Override
                 public void onLocationChanged(Location location) {
                     try {
-                        Geocoder geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
+                        Geocoder geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.ENGLISH);
                         List<Address> adreesses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                        Log.e("Esta actualizando", "localización");
+                        Log.e("Esta actualizando", adreesses.get(0).getCountryName());
 
                         if (!country.equals(adreesses.get(0).getCountryName())){
                             country = adreesses.get(0).getCountryName();
