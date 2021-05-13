@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class LikesValue implements Serializable {
-    @SerializedName("likes")
+    @SerializedName(value="likes", alternate = {"favourites"})
     private Likes[] likes;
 
     public Likes getLikes(int i) {

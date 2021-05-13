@@ -1,15 +1,20 @@
 package com.example.museaapplication.Classes.Dominio;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class Museo implements Serializable {
+public class Museo implements Serializable{
     private Location[] location;
-    @SerializedName("expositions")
-    private String[] exhibitions;
+    //@SerializedName("expositions")
+    //private String[] exhibitions;
     private String _id;
     private String name;
     private String address;
@@ -18,6 +23,7 @@ public class Museo implements Serializable {
     private Descriptions descriptions;
     @SerializedName("image")
     private String image;
+    private boolean liked = false;
 
     private Restriction[] restrictionsObjects;
 
@@ -25,6 +31,8 @@ public class Museo implements Serializable {
     private int openingHour;
 
     private List<Exhibition> exhibitionObjects = new ArrayList<>();
+
+    public Museo(){}
 
     public Museo(String n, String address, String c, String count) {
         /*location = new Location[2];
@@ -35,6 +43,11 @@ public class Museo implements Serializable {
         this.address = address;
         _id ="";
         exhibitionObjects = new ArrayList<>();
+    }
+
+    public boolean like() {
+        liked = !liked;
+        return liked;
     }
 
     public void addExhibition(Exhibition e){
@@ -74,13 +87,13 @@ public class Museo implements Serializable {
         this.location = location;
     }
 
-    public String[] getExhibitions() {
+    /*public String[] getExhibitions() {
         return exhibitions;
-    }
+    }*/
 
-    public void setExhibitions(String[] exhibitions) {
+    /*public void setExhibitions(String[] exhibitions) {
         this.exhibitions = exhibitions;
-    }
+    }*/
 
     public String getAddress() {
         return address;
@@ -144,5 +157,14 @@ public class Museo implements Serializable {
 
     public void setRestrictions(Restriction[] restrictions) {
         this.restrictionsObjects = restrictions;
+    }
+
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
     }
 }

@@ -9,6 +9,17 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 import android.speech.tts.TextToSpeech;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -40,6 +51,7 @@ import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.OnBackPressed;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
+import com.example.museaapplication.InitialActivity;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.user.UserViewModel;
 import com.squareup.picasso.Picasso;
@@ -146,9 +158,11 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
                 txt.setText(exhibition.getName());
                 ArrayList<Work> works = exhibition.getWorkObjects();
                 if (exhibition.getWorkObjects() != null) {
-                    MyViewPagerAdapter adapter = new MyViewPagerAdapter(getContext(), works, userViewModel);
+                    MyViewPagerAdapter adapter = new MyViewPagerAdapter(getContext(), works, sharedViewModel, getParentFragmentManager());
                     viewPager2.setPageTransformer(true, new DepthPageTransformer());
                     viewPager2.setAdapter(adapter);
+                }else{
+                    viewPager2.setAdapter(null);
                 }
                 /*LinearLayout rl = root.findViewById(R.id.linear_layout_expo);
                 View v = getLayoutInflater().inflate(R.layout.work_card_layout, rl);
@@ -184,7 +198,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
         switch (id) {
             case android.R.id.home:
                 getParentFragmentManager().beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmMuseoFragment()).commit();
-                getActivity().setTitle(sharedViewModel.getCurMuseo().getName());
+                //getActivity().setTitle(sharedViewModel.getCurMuseo().getName());
                 sharedViewModel.setActive(sharedViewModel.getmMuseoFragment());
                 return true;
             case R.id.mybutton:
@@ -197,8 +211,11 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
 
     @Override
     public boolean OnBack() {
+        MyViewPagerAdapter fa = (MyViewPagerAdapter)viewPager2.getAdapter();
+        if (fa != null)
+            fa.stopTextToSpeech();
         getParentFragmentManager().beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmMuseoFragment()).commit();
-        getActivity().setTitle(sharedViewModel.getCurMuseo().getName());
+        //getActivity().setTitle(sharedViewModel.getCurMuseo().getName());
         sharedViewModel.setActive(sharedViewModel.getmMuseoFragment());
         return true;
     }
@@ -216,16 +233,18 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
 class MyViewPagerAdapter extends PagerAdapter  {
     private Context context;
     private LayoutInflater inflater;
+    private FragmentManager fm;
     private ArrayList<Work> works = new ArrayList<>();
     private boolean love = false;
-    private TextToSpeech mTTs;
-    UserViewModel userViewModel;
 
-    public MyViewPagerAdapter(Context c, ArrayList<Work> w, UserViewModel userViewModel) {
+    private SharedViewModel sharedViewModel;
+    public TextToSpeech mTTs;
+    public MyViewPagerAdapter(Context c, ArrayList<Work> w, SharedViewModel svm, FragmentManager fragm) {
         context = c;
         works = w;
         inflater = LayoutInflater.from(context);
-        this.userViewModel = userViewModel;
+        sharedViewModel = svm;
+        fm = fragm;
         mTTs = new TextToSpeech(c, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -246,6 +265,8 @@ class MyViewPagerAdapter extends PagerAdapter  {
 
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         /*View v = views.get (position);
@@ -253,21 +274,36 @@ class MyViewPagerAdapter extends PagerAdapter  {
         container.setBackground(new ColorDrawable(Color.TRANSPARENT));
         ViewGroup v = (ViewGroup) inflater.inflate(R.layout.work_card_layout, container, false);
         ImageButton ib = v.findViewById(R.id.heart_button_work);
+        ImageButton ib2 = v.findViewById(R.id.comments_button_work);
+        // Is it liked already
+        if (works.get(position).isLoved()) ib.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_24));
+        else
+            ib.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_border_24));
         ib.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("UseCompatLoadingForDrawables")
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
-                Likes likes = new Likes();
-                likes.setArtworkId(works.get(position).get_id());
-                likes.setImage(works.get(position).getImage());
-                SingletonDataHolder.userViewModel.loadlikes();
-                if (works.get(position).likeWork()) v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_24));
+                //SingletonDataHolder.userViewModel.loadlikes();
+                sharedViewModel.likeWork(works.get(position).get_id());
+                if (works.get(position).likeWork()) {
+                    v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_24));
+                }
                 else
                     v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_border_24));
                 YoYo.with(Techniques.ZoomIn).duration(300).playOn(ib);
             }
         });
+        ib2.setOnClickListener(new View.OnClickListener() {
+                                   @Override
+                                   public void onClick(View view) {
+                                       sharedViewModel.setCurWork(works.get(position));
+                                       sharedViewModel.setActive(sharedViewModel.getmCommentsFragment());
+                                       Comentaris_Fragment.loaded = false;
+                                       fm.beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmCommentsFragment()).commit();
+                                   }
+                               });
+
         ImageButton iwb = v.findViewById(R.id.sound_button_work);
         iwb.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("UseCompatLoadingForDrawables")
@@ -283,32 +319,18 @@ class MyViewPagerAdapter extends PagerAdapter  {
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         title.setText(content);
         title = v.findViewById(R.id.desc_text_work);
+        title.setText(works.get(position).getDescriptions().getText());
+        title = v.findViewById(R.id.text_author_work);
         title.setText(works.get(position).getAuthor());
         ImageView imageHolder = v.findViewById(R.id.image_holder_work);
         imageHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog(validateUrl(works.get(0).getImage()));
+                openDialog(validateUrl(works.get(position).getImage()));
             }
         });
 
-        Target myTarget = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                imageHolder.setImageBitmap(bitmap);
-            }
-
-            @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
-        Picasso.get().load(validateUrl(works.get(0).getImage())).fit().into(imageHolder);
+        Picasso.get().load(validateUrl(works.get(position).getImage())).fit().into(imageHolder);
         //imageHolder.setImageBitmap(draw);
 
         container.addView(v);
@@ -323,6 +345,7 @@ class MyViewPagerAdapter extends PagerAdapter  {
         else
             return index;
     }*/
+
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
@@ -335,6 +358,7 @@ class MyViewPagerAdapter extends PagerAdapter  {
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+        if(mTTs != null) mTTs.stop();
         return view == object;
     }
 
@@ -357,14 +381,14 @@ class MyViewPagerAdapter extends PagerAdapter  {
     }
 
     public Locale getLanguage() {
-        String languagename = Locale.getDefault().getDisplayName();
+        String languagename = InitialActivity.curLanguage;
         Locale locale;
         Log.e("Language",languagename);
         switch (languagename) {
-            case "català (Espanya)":
+            case "ca":
                 locale = new Locale("ca", "ES");
                 return locale;
-            case "español (España)":
+            case "es":
                 locale = new Locale("es", "ES");
                 return locale;
             default:
@@ -373,14 +397,10 @@ class MyViewPagerAdapter extends PagerAdapter  {
     }
 
     public String getDescription (Work w) {
-        String languagename = Locale.getDefault().getDisplayName();
-        switch (languagename) {
-            case "català (Espanya)":
-                return w.getDescriptions().getCa();
-            case "español (España)":
-                return w.getDescriptions().getEs();
-            default:
-                return w.getDescriptions().getEn();
-        }
+        return w.getDescriptions().getText();
+    }
+
+    public void stopTextToSpeech() {
+        mTTs.stop();
     }
 }

@@ -1,6 +1,12 @@
 package com.example.museaapplication.Classes.Dominio;
 
+import android.content.res.Resources;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
+
+import com.example.museaapplication.InitialActivity;
+import com.example.museaapplication.ui.MainActivity;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -11,39 +17,14 @@ public class Descriptions implements Serializable {
         private String en;
 
     public String getText() {
-        String languagename = Locale.getDefault().getDisplayLanguage();
-        Log.d("Lenguaje", languagename);
+        String languagename = InitialActivity.curLanguage;
         switch (languagename) {
-            case "català":
+            case "ca":
                 return ca;
-            case "español":
+            case "es":
                 return es;
             default:
                 return en;
         }
-    }
-
-    public String getCa() {
-        return ca;
-    }
-
-    public void setCa(String ca) {
-        this.ca = ca;
-    }
-
-    public String getEs() {
-        return es;
-    }
-
-    public void setEs(String es) {
-        this.es = es;
-    }
-
-    public String getEn() {
-        return en;
-    }
-
-    public void setEn(String en) {
-        this.en = en;
     }
 }

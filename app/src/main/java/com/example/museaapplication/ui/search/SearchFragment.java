@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -156,7 +157,9 @@ public class SearchFragment extends Fragment implements SearchMuseosAdapter.Recy
             museoListRecent.remove(numberOfRecent);
 
         Intent i = new Intent(getContext(), MuseuActivity.class);
-        i.putExtra("Museu", (Serializable) museo);
+        //i.putExtra("Museu", (Serializable) museo);
+        Uri uri = Uri.parse("/museums/" + museo.get_id());
+        i.setData(uri);
         getContext().startActivity(i);
     }
 }

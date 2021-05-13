@@ -46,9 +46,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
             <LinearLayout
-                android:id="@+id/layout_view"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_height="match_parent">
@@ -69,13 +69,13 @@
                         android:id="@+id/museum_title"
                         android:textStyle="bold"
                         android:textSize="25sp"
-                        android:textColor="@android:color/black"
+                        android:textColor="?android:textColorPrimary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="75dp"
-                        android:text="Un museo cualquiera con un nombre largo" />
+                        android:text="" />
                     <ImageView
                         android:id="@+id/info_image"
                         android:layout_width="50dp"
@@ -83,6 +83,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="15dp"
                         android:background="@drawable/ic_outline_info_24"
+                        android:backgroundTint="?android:textColorPrimary"
                         android:layout_alignParentRight="true"
                         android:clickable="true"/>
 
@@ -92,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:text="COVID-19"
                         android:textSize="15sp"
-                        android:textColor="@android:color/black"
+                        android:textColor="?android:textColorPrimary"
                         android:textStyle="bold"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="50dp"
@@ -109,12 +110,12 @@
                     android:paddingRight="85dp"
                     android:paddingLeft="10dp"
                     android:textSize="15sp"
-                    android:text="Aquesta es una descripció de proba i per tant no s'ha de tomar en serioooooooooooooooooooooooooooooooooooooooooooooooooooooo"/>
+                    android:text=""/>
 
                 <View
                     android:layout_width="wrap_content"
                     android:layout_height="10dp"
-                    android:background="@color/grey_700"/>
+                    android:background="?attr/dividerHorizontal"/>
 
                 <TextView
                     android:id="@+id/text_view"
@@ -129,6 +130,12 @@
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="20dp"></Space>
+                <LinearLayout
+                    android:id="@+id/layout_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
 
             </LinearLayout>
     </ScrollView>
