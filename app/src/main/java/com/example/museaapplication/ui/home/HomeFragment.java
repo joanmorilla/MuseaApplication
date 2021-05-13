@@ -168,7 +168,6 @@ public class HomeFragment extends Fragment implements Permissions {
                                     }
                                     android.location.Location.distanceBetween(musLat, musLong, myLat, myLong, results);
                                     if (results[0] / 1000 <= 50) GenerateClose(m[i], adreesses);
-                                    Log.e("Distancia", m[i].getName() + " " + results[0] / 1000 + "km");
                                 }
                             }
                             created = true;
