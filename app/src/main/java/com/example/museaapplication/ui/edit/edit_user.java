@@ -1,6 +1,7 @@
 package com.example.museaapplication.ui.edit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.MainActivity;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -21,26 +23,57 @@ import com.squareup.picasso.Picasso;
 public class edit_user extends AppCompatActivity {
 
     CircularImageView image_perfil;
-    TextView insert_image;
+    TextView insert_image,textwarn;
     Button save_result;
+    EditText name,bio;
+    private edit_userViewModel euvm;
+
+
     int SELECT_PICTURE = 200;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user);
 
+        euvm = new ViewModelProvider(this).get(edit_userViewModel.class);
         image_perfil = findViewById(R.id.image_perf);
         String url = "https://museaimages.s3.eu-west-3.amazonaws.com/logo.png";
         Picasso.get().load(url).fit().into(image_perfil);
 
         insert_image = findViewById(R.id.select_image);
-
+        name = findViewById(R.id.editTextTextPersonName);
+        bio = findViewById(R.id.editTextTextPersonBio);
         save_result = findViewById(R.id.save_res);
+        textwarn = findViewById(R.id.text_warnigs_edit);
+
+        String name_aux = getIntent().getStringExtra("username");
+        String bio_aux = getIntent().getStringExtra("bio");
+
+        name.setText(name_aux);
+        bio.setText(bio_aux);
 
         save_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"S'han guardat els canvis", Toast.LENGTH_LONG).show();
+                String warningMessage = new String();
+                if(name.getText().toString().length() < 6){
+                   warningMessage = getApplicationContext().getResources().getString(R.string.warning_short_username_edit);
+                }
+                if(bio.getText().toString().length() < 10){
+                    if(!warningMessage.isEmpty()) warningMessage += "\n";
+                    warningMessage += getApplicationContext().getResources().getString(R.string.warning_short_bio);
+                }
+                if(warningMessage.isEmpty()) {
+                    textwarn.setText("");
+                    euvm.edit_user_info(name.getText().toString(), bio.getText().toString());
+                    SingletonDataHolder.userViewModel.UpdateUserInfo();
+                    finish();
+                }
+                else{
+                    textwarn.setText(warningMessage);
+                }
+
             }
         });
 

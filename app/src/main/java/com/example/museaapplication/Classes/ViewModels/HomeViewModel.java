@@ -19,6 +19,7 @@ import retrofit2.Response;
 
 public class HomeViewModel extends ViewModel {
     private MutableLiveData<Museo[]> Museums;
+
     public LiveData<Museo[]> getMuseums() {
         if (Museums == null){
             Museums = new MutableLiveData<Museo[]>();

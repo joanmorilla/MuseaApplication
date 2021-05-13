@@ -29,6 +29,8 @@ public class Work implements Serializable {
 
     public boolean likeWork(){
         loved = !loved;
+
+
         return loved;
     }
 

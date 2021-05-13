@@ -1,5 +1,8 @@
 package com.example.museaapplication.Classes;
 
+
+import android.util.Log;
+
 import androidx.fragment.app.Fragment;
 
 import com.example.museaapplication.Classes.Dominio.Museo;
@@ -11,6 +14,8 @@ import java.util.Stack;
 public class SingletonDataHolder {
     private static SingletonDataHolder _instance;
     public static Fragment active;
+
+    public static UserViewModel userViewModel;
 
     public static UserViewModel userViewModel;
 
@@ -30,6 +35,11 @@ public class SingletonDataHolder {
 
     public int main_initial_frag = 0;
     public static Stack<Integer> backStack;
+
+    public void UpdateLikes(){
+        Log.e("Funciona", "UPDATELIKES SINGLETON");
+        userViewModel.UpdateLikes();
+    }
 
 
     public boolean isModified(String _id) {

@@ -1,7 +1,9 @@
 package com.example.museaapplication.ui.user;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,14 +27,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-import com.example.museaapplication.Classes.Dominio.Favourites;
+
 import com.example.museaapplication.Classes.Dominio.Likes;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Dominio.UserInfo;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.SettingsActivity;
-import com.example.museaapplication.ui.favourite.FavouriteMus;
+
 import com.example.museaapplication.ui.visited.VisitedMus;
 import com.example.museaapplication.ui.edit.edit_user;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -56,10 +58,12 @@ public class UserFragment extends Fragment {
     String[] mus_vis;
     String[] mus_vis_id;
     String[] mus_vis_image;
-    Favourites[] mus_favs;
+
     Likes[] work_likes;
-    List<Favourites> m;
+
     View root;
+    String username;
+    String password;
 
 
 
@@ -108,9 +112,24 @@ public class UserFragment extends Fragment {
         CircularImageView circularImageView = root.findViewById(R.id.circularImageView);
         String url = "https://museaimages.s3.eu-west-3.amazonaws.com/logo.png";
         Picasso.get().load(url).fit().into(circularImageView);
+        SingletonDataHolder.userViewModel = uvm;
 
+        /*SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String defaultValue = "";
+        String sharedValue = sharedPref.getString(getString(R.string.auto_signin_key), defaultValue);
+        int index = sharedValue.lastIndexOf('#');
+        username = (sharedValue.substring(0,index));
+        password = (sharedValue.substring(index + 1));*/
 
-
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("infouser",0);
+        String defaultValue = "";
+        String sharedValue = sharedPref.getString(getString(R.string.auto_signin_key), defaultValue);
+            //int index = sharedValue.lastIndexOf('#');
+            Log.d("SharedPreferences2","Login automatico: " + sharedValue);
+           /* Log.d("SharedPreferences2",sharedValue.substring(0,index));
+            Log.d("SharedPreferences2",sharedValue.substring(index + 1));
+            username = (sharedValue.substring(0,index));
+            password = (sharedValue.substring(index+1));*/
         uvm.getinfoUser().observe(getViewLifecycleOwner(), new Observer<UserInfo>() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -118,6 +137,7 @@ public class UserFragment extends Fragment {
                 user_name.setText(userInfo.getName());
                 user_bio.setText(userInfo.getBio());
                 String n = String.valueOf(userInfo.getFavourites().length);
+                Log.e("FAVVVVV", String.valueOf(userInfo.getFavourites().length));
                 fav_n.setText(n);
                 String x = String.valueOf(userInfo.getVisited().length);
                 vis_n.setText(x);
@@ -129,35 +149,13 @@ public class UserFragment extends Fragment {
 
         });
 
-        uvm.getFavourites().observe(getViewLifecycleOwner(), new Observer<Favourites[]>() {
-            @Override
-            public void onChanged(Favourites[] favourites) {
-                mus_favs = new Favourites[favourites.length];
-                mus_favs = favourites;
-                convertarray();
-            }
-        });
 
         uvm.getLikes().observe(getViewLifecycleOwner(), new Observer<Likes[]>() {
             @Override
             public void onChanged(Likes[] likes) {
-                Log.e("La creacion2", "" + likes.length);
                 work_likes = new Likes[likes.length];
                 work_likes = likes;
                 generar_likes();
-            }
-        });
-
-        fav_m.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*Intent intent = new Intent(getActivity(), FavouriteMus.class);
-                ArrayList<String> i = mus_favs_id;
-                ArrayList<String> im = mus_favs_image;
-                intent.putStringArrayListExtra("id",i);
-                intent.putStringArrayListExtra("image",im);
-                startActivity(intent);*/
-                uvm.loadlikes();
             }
         });
 
@@ -175,6 +173,8 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), edit_user.class);
+                intent.putExtra("username", user_name.getText().toString());
+                intent.putExtra("bio", user_bio.getText().toString());
                 startActivity(intent);
             }
         });
@@ -183,16 +183,6 @@ public class UserFragment extends Fragment {
         return root;
     }
 
-    private void convertarray() {
-        mus_favs_id = new ArrayList<String>(mus_favs.length);
-        mus_favs_image = new ArrayList<String>(mus_favs.length);
-        for(int i = 0; i < mus_favs.length;++i){
-            mus_favs_id.add(mus_favs[i].museumId());
-            mus_favs_image.add(mus_favs[i].image());
-
-        }
-
-    }
 
     private void generar_likes(){
         LinearLayout scrollPais = root.findViewById(R.id.layout_likes);
@@ -210,11 +200,6 @@ public class UserFragment extends Fragment {
             // Finalmente lo añadimos a la vista desplazable
             scrollPais.addView(b);
         }
-    }
-
-    private void setinfo(UserInfo userInfo) {
-
-
     }
 
 
@@ -245,5 +230,8 @@ public class UserFragment extends Fragment {
     int pixToDp(int value){
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, root.getResources().getDisplayMetrics()));
     }
-    }
+
+
+
+}
 

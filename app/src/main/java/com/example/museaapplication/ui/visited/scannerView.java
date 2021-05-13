@@ -1,9 +1,11 @@
-package com.example.museaapplication;
+package com.example.museaapplication.ui.visited;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.museaapplication.ui.visited.VisitedMus;
 import com.google.zxing.Result;
@@ -19,12 +21,14 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class scannerView extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
     ZXingScannerView scannerView;
+    private VisitedMusViewModel vmvm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         scannerView = new ZXingScannerView(this);
         setContentView(scannerView);
+        vmvm = new ViewModelProvider(this).get(VisitedMusViewModel.class);
 
         Dexter.withContext(getApplicationContext())
                 .withPermission(Manifest.permission.CAMERA)
@@ -48,10 +52,10 @@ public class scannerView extends AppCompatActivity implements ZXingScannerView.R
 
     @Override
     public void handleResult(Result rawResult) {
-        VisitedMus.numvisited++;
-        VisitedMus.id_museum = rawResult.getText();
-        VisitedMus.scantext.setText(rawResult.getText());
-        onBackPressed();
+        vmvm.addVisitedMuseum(rawResult.getText().toString());
+        vmvm.loadVisited();
+        Log.e("llega","LEIDOOOOOO");
+        //onBackPressed();
     }
 
     @Override

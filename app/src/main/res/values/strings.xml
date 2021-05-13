@@ -40,6 +40,8 @@
     <!-- signup warnings -->
     <string name="warning_used_username">This username is already being used!</string>
     <string name="warning_short_username">The username must have at least 6 characters and a maximum of 22 characters</string>
+    <string name="warning_short_username_edit">The username must have at least 6 characters</string>
+    <string name="warning_short_bio">The bio must have at least 10 characters </string>
     <string name="warning_used_email">This email is already being used!</string>
     <string name="warning_user_exists">This user already exists!</string>
     <string name="warning_not_email">The email address must be a correct address</string>
@@ -73,6 +75,10 @@
     <string name="restriccions_text_dialog_covid">Restrictions</string>
     <string name="points">Points:</string>
 
+
+    <!-- Visited -->
+    <string name="title_visited">Visited Museums</string>
+
     <!--Misceláneo-->
     <string name="search_museum">Search museum</string>
     <string name="language_dialog_title">Choose Language</string>
@@ -85,6 +91,7 @@
     <string name="confirm">Confirm</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="favourites">Favourites</string>
+
 
 
 </resources>

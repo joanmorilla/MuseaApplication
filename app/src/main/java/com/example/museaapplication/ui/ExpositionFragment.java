@@ -46,12 +46,14 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.museaapplication.Classes.DepthPageTransformer;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
+import com.example.museaapplication.Classes.Dominio.Likes;
 import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.OnBackPressed;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.InitialActivity;
 import com.example.museaapplication.R;
+import com.example.museaapplication.ui.user.UserViewModel;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -81,6 +83,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
     private String mParam1;
     private String mParam2;
     SharedViewModel sharedViewModel;
+    UserViewModel userViewModel;
 
     public ExpositionFragment() {
         // Required empty public constructor
@@ -122,6 +125,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
         txt = root.findViewById(R.id.expo_title);
         viewPager2 = root.findViewById(R.id.view_pager_works);
 
+
         ImageButton backArrow = root.findViewById(R.id.back_arrow_work);
         backArrow.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
             @Override
@@ -145,7 +149,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
             }
         });
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         sharedViewModel.getCurExposition().observe(getViewLifecycleOwner(), new Observer<Exhibition>() {
             @Override
             public void onChanged(Exhibition exhibition) {
@@ -232,9 +236,9 @@ class MyViewPagerAdapter extends PagerAdapter  {
     private FragmentManager fm;
     private ArrayList<Work> works = new ArrayList<>();
     private boolean love = false;
+
     private SharedViewModel sharedViewModel;
     public TextToSpeech mTTs;
-
     public MyViewPagerAdapter(Context c, ArrayList<Work> w, SharedViewModel svm, FragmentManager fragm) {
         context = c;
         works = w;
