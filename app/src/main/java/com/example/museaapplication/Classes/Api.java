@@ -91,11 +91,15 @@ public interface Api {
 
     // User authentication
     @POST("https://musea-authorization-server.herokuapp.com/signup")
-    Call<Void> createUser(@Body User user);
+    Call<Void> createUserAuth(@Body User user);
 
     @POST("https://musea-authorization-server.herokuapp.com/oauth/token")
-    Call<UserValue> getUser(@Header("Authorization") String authHeader,
-                            @Body RequestBody body);
+    Call<UserValue> getUserAuth(@Header("Authorization") String authHeader,
+                                @Body RequestBody body);
+
+    @POST("https://musea-api.herokuapp.com/users")
+    Call<Void> createNewUser(@Query("username") String username,
+                             @Query("email") String email);
 
     @GET("https://museaimages.s3.eu-west-3.amazonaws.com/logo.png")
     Call<User> getImage();
