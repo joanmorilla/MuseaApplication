@@ -108,4 +108,29 @@ public class LoginViewModel extends ViewModel {
 
     public int getRemainingTime() { return (unlockTime - currentTime()); }
 
+    public void createUserInfo(String username, String email) {
+        Call<Void> call2 = RetrofitClient.getInstance().getMyApi().createNewUser(username, email);
+        call2.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call2, Response<Void> response2) {
+                if (response2.code() == 200) {
+                    Log.d("Respuesta 2 ","Usuario creado satisfactoriamente!");
+                    res.setValue(1);
+                }
+                else if (response2.code() == 500) {
+                    Log.d("Respuesta 2 ","No se ha podido crear el Usuario");
+                    res.setValue(2);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call2, Throwable t) {
+                Log.e("TAG3", t.getLocalizedMessage());
+                Log.e("TAG4", t.getMessage());
+                t.printStackTrace();
+                res.setValue(-1);
+            }
+        });
+    }
+
 }

@@ -1,12 +1,11 @@
 package com.example.museaapplication.ui.login;
 
-import androidx.annotation.NonNull;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -20,21 +19,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.museaapplication.Classes.SingletonDataHolder;
-import com.example.museaapplication.ui.MainActivity;
-import com.example.museaapplication.R;
-import com.example.museaapplication.ui.signup.SignupFragment;
-import com.squareup.picasso.Picasso;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.museaapplication.Classes.SingletonDataHolder;
+import com.example.museaapplication.R;
+import com.example.museaapplication.ui.MainActivity;
+import com.example.museaapplication.ui.signup.SignupFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+import com.squareup.picasso.Picasso;
+
 import java.io.ByteArrayOutputStream;
-import java.util.Iterator;
-import java.util.Set;
 
 public class LoginFragment extends Fragment {
 
@@ -42,6 +47,8 @@ public class LoginFragment extends Fragment {
     private FragmentManager fm;
     private LoginViewModel loginViewModel;
     private Integer r;
+    GoogleSignInClient mGoogleSignInClient;
+    int RC_SIGN_IN = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -50,6 +57,11 @@ public class LoginFragment extends Fragment {
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         root = inflater.inflate(R.layout.fragment_login, container, false);
         fm = getParentFragmentManager();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
         // Carga de preferencias compartidas
         SharedPreferences sharedPref = getActivity().getSharedPreferences("infoUser", Context.MODE_PRIVATE);
@@ -140,6 +152,20 @@ public class LoginFragment extends Fragment {
         }
 
 
+        //Implementación del button 'Sign in with Google'
+        final SignInButton loginGoogle = root.findViewById(R.id.sign_in_button);
+        loginGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.sign_in_button:
+                        signIn();
+                        break;
+                    // ...
+                }
+            }
+        });
+
         // Implementación de los intentos de inicio de sesión
         loginViewModel.getnAttempts().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
@@ -218,4 +244,58 @@ public class LoginFragment extends Fragment {
         byte[] imageBytes = Base64.decode(codeImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
     }
+
+
+    public void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            Log.d("Response state","Succesfuly Login");
+            // Signed in successfully, show authenticated UI.
+
+            //Get google information account
+            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
+            if (acct != null) {
+                String personName = acct.getDisplayName();
+                String personGivenName = acct.getGivenName();
+                String personFamilyName = acct.getFamilyName();
+                String personEmail = acct.getEmail();
+                String personId = acct.getId();
+                Uri personPhoto = acct.getPhotoUrl();
+                Log.d("Valeeeee",String.valueOf(personName));
+                Log.d("Valeeeee", String.valueOf(personEmail.split("@")[0]));
+                Log.d("Valeeeee",String.valueOf(personGivenName));
+                loginViewModel.createUserInfo(personEmail.split("@")[0],personEmail);
+            }
+
+
+            Toast.makeText(getContext(), "Logged", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("Google", "signInResult:failed code=" + e.getStatusCode());
+            Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
