@@ -193,7 +193,6 @@ public class HomeFragment extends Fragment implements Permissions {
                 }
             });
         }
-        Log.e("Country", country);
         if (!gpsEnabled) {
             // We go through the museums
             for (int i = m.length - 1; i >= 0; i--) {
@@ -365,7 +364,6 @@ public class HomeFragment extends Fragment implements Permissions {
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d("Entra", "wacho");
                     GenerarBotones(museums);
                 }else Toast.makeText(getContext(), R.string.perm_denegado, Toast.LENGTH_LONG).show();
                 break;

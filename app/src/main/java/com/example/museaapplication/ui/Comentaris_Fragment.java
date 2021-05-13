@@ -31,6 +31,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ import android.widget.Toast;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.museaapplication.Classes.APIRequests;
+import com.example.museaapplication.Classes.Adapters.CustomScrollView;
 import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.Json.CommentsValue;
@@ -46,6 +48,7 @@ import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
 import com.squareup.picasso.Picasso;
+import com.xw.repo.widget.BounceScrollView;
 
 import org.w3c.dom.Text;
 

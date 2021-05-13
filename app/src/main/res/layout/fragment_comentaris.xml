@@ -62,9 +62,9 @@
         android:layout_above="@+id/bottom_panel"
         android:layout_below="@+id/toolbar_big"
         android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
         android:hapticFeedbackEnabled="true"
         >
-
         <ScrollView
             android:id="@+id/scrollView_Comments"
             android:layout_width="match_parent"

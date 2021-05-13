@@ -127,7 +127,6 @@ public class SharedViewModel extends ViewModel {
         call.enqueue(new Callback<MuseoValue>() {
             @Override
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
-                Log.e("Code", "" + response.body().getMuseum().getName());
                 AuxMuseo aux = response.body().getMuseum();
                 Museo museum = new Museo();
                 Call<LikesValue> callLikes = RetrofitClient.getInstance().getMyApi().getFavMuseums("RaulPes");

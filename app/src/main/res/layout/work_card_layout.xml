@@ -51,7 +51,7 @@
         android:layout_alignRight="@+id/image_holder_work"
         />
 
-    <ScrollView
+    <com.xw.repo.widget.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -74,7 +74,7 @@
                 android:textSize="15sp"
                 />
         </LinearLayout>
-    </ScrollView>
+    </com.xw.repo.widget.BounceScrollView>
 
 
     <ImageButton

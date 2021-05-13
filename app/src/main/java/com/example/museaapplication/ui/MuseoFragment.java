@@ -161,7 +161,6 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
         sharedViewModel.getMuseum().observe(getViewLifecycleOwner(), new Observer<Museo>() {
             @Override
             public void onChanged(Museo museo) {
-                Log.e("Entra", "Pues");
                 museum = museo;
                 String url = museum.getImage();
                 if (!url.equals(""))
