@@ -50,6 +50,7 @@ import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.OnBackPressed;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
+import com.example.museaapplication.InitialActivity;
 import com.example.museaapplication.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -207,7 +208,8 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
     @Override
     public boolean OnBack() {
         MyViewPagerAdapter fa = (MyViewPagerAdapter)viewPager2.getAdapter();
-        fa.stopTextToSpeech();
+        if (fa != null)
+            fa.stopTextToSpeech();
         getParentFragmentManager().beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmMuseoFragment()).commit();
         //getActivity().setTitle(sharedViewModel.getCurMuseo().getName());
         sharedViewModel.setActive(sharedViewModel.getmMuseoFragment());
@@ -239,7 +241,6 @@ class MyViewPagerAdapter extends PagerAdapter  {
         inflater = LayoutInflater.from(context);
         sharedViewModel = svm;
         fm = fragm;
-    }
         mTTs = new TextToSpeech(c, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -290,12 +291,14 @@ class MyViewPagerAdapter extends PagerAdapter  {
             }
         });
         ib2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sharedViewModel.setCurWork(works.get(position));
-                sharedViewModel.setActive(sharedViewModel.getmCommentsFragment());
-                Comentaris_Fragment.loaded = false;
-                fm.beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmCommentsFragment()).commit();
+                                   @Override
+                                   public void onClick(View view) {
+                                       sharedViewModel.setCurWork(works.get(position));
+                                       sharedViewModel.setActive(sharedViewModel.getmCommentsFragment());
+                                       Comentaris_Fragment.loaded = false;
+                                       fm.beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmCommentsFragment()).commit();
+                                   }
+                               });
 
         ImageButton iwb = v.findViewById(R.id.sound_button_work);
         iwb.setOnClickListener(new View.OnClickListener() {
@@ -374,7 +377,7 @@ class MyViewPagerAdapter extends PagerAdapter  {
     }
 
     public Locale getLanguage() {
-        String languagename = Locale.getDefault().getLanguage();
+        String languagename = InitialActivity.curLanguage;
         Locale locale;
         Log.e("Language",languagename);
         switch (languagename) {
@@ -390,15 +393,7 @@ class MyViewPagerAdapter extends PagerAdapter  {
     }
 
     public String getDescription (Work w) {
-        String languagename = Locale.getDefault().getLanguage();
-        switch (languagename) {
-            case "ca":
-                return w.getDescriptions().getCa();
-            case "es":
-                return w.getDescriptions().getEs();
-            default:
-                return w.getDescriptions().getEn();
-        }
+        return w.getDescriptions().getText();
     }
 
     public void stopTextToSpeech() {

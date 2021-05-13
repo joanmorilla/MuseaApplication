@@ -16,12 +16,6 @@ public class Descriptions implements Serializable {
         private String es;
         private String en;
 
-    protected Descriptions(Parcel in) {
-        ca = in.readString();
-        es = in.readString();
-        en = in.readString();
-    }
-
     public String getText() {
         String languagename = InitialActivity.curLanguage;
         switch (languagename) {

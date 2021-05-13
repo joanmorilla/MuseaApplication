@@ -117,18 +117,21 @@ public class HomeFragment extends Fragment implements Permissions {
             LocationManager manager = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
             gpsEnabled = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 25, new LocationListener() {
+            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 25000, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.ENGLISH);
                     try {
                         List<Address> adreesses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                        //if (country != null && !country.equals(adreesses.get(0).getCountryName())){
+                        if (adreesses != null && adreesses.size() != 0) {
+                            Log.e("Error", "Entra");
+                            //if (country != null && !country.equals(adreesses.get(0).getCountryName())){
                             country = adreesses.get(0).getCountryName();
                             scrollPais.removeAllViews();
                             scrollPropers.removeAllViews();
                             created = false;
-                        //}
+                            //}
+                        }
 
                         if (!created) {
                             for (int i = m.length - 1; i >= 0; i--) {
@@ -158,16 +161,18 @@ public class HomeFragment extends Fragment implements Permissions {
 
                                 if (m[i].getLocation() != null && m[i].getLocation().length != 0) {
                                     List<Address> addressList = geocoder.getFromLocation(m[i].getLocation()[0].getNumberDecimal(), m[i].getLocation()[1].getNumberDecimal(), 1);
-                                    double musLat = addressList.get(0).getLatitude();
-                                    double musLong = addressList.get(0).getLongitude();
-                                    double myLat = adreesses.get(0).getLatitude();
-                                    double myLong = adreesses.get(0).getLongitude();
-                                    float[] results = new float[1];
-                                    if (country != null && country.equals(addressList.get(0).getCountryName())) {
-                                        scrollPais.addView(holder);
+                                    if (addressList != null && adreesses != null && adreesses.size() != 0) {
+                                        double musLat = addressList.get(0).getLatitude();
+                                        double musLong = addressList.get(0).getLongitude();
+                                        double myLat = adreesses.get(0).getLatitude();
+                                        double myLong = adreesses.get(0).getLongitude();
+                                        float[] results = new float[1];
+                                        if (country != null && country.equals(addressList.get(0).getCountryName())) {
+                                            scrollPais.addView(holder);
+                                        }
+                                        android.location.Location.distanceBetween(musLat, musLong, myLat, myLong, results);
+                                        if (results[0] / 1000 <= 50) GenerateClose(m[i], adreesses);
                                     }
-                                    android.location.Location.distanceBetween(musLat, musLong, myLat, myLong, results);
-                                    if (results[0] / 1000 <= 50) GenerateClose(m[i], adreesses);
                                 }
                             }
                             created = true;
