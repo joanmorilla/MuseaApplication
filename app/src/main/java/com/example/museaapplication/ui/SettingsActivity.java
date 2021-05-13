@@ -14,7 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.museaapplication.InitialActivity;
+import com.example.museaapplication.ui.InitialActivity;
 import com.example.museaapplication.R;
 
 import java.util.Locale;

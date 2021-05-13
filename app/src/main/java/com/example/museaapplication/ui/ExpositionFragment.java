@@ -51,7 +51,7 @@ import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.OnBackPressed;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
-import com.example.museaapplication.InitialActivity;
+import com.example.museaapplication.ui.InitialActivity;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.user.UserViewModel;
 import com.squareup.picasso.Picasso;
