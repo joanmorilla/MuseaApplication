@@ -85,22 +85,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
         mMapView = root.findViewById(R.id.map_view);
         mHomeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
-        mHomeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
-            @Override
-            public void onChanged(Museo[] museos) {
-                museums = museos;
-                for (Museo m : museos) {
-                    if (m.getLocation() != null && m.getLocation().length != 0){
-                        LatLng pos = new LatLng(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal());
-                        MyClusterItem item = new MyClusterItem(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal(), m.getName(), m.getAddress());
-                        item.setId(m.get_id());
-                        //mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                        if (manager != null)
-                        manager.addItem(item);
-                    }
-                }
-            }
-        });
+
         initGoogleMap(savedInstanceState);
         /*TextView txt = super.getActivity().findViewById(R.id.title_test);
         txt.setText(R.string.title_maps);*/
@@ -202,6 +187,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
             });*/
             map.setOnMarkerClickListener(manager);
             // When clicking a cluster make it zoom in
+            mHomeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
+                @Override
+                public void onChanged(Museo[] museos) {
+                    museums = museos;
+                    for (Museo m : museos) {
+                        if (m.getLocation() != null && m.getLocation().length != 0){
+                            LatLng pos = new LatLng(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal());
+                            MyClusterItem item = new MyClusterItem(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal(), m.getName(), m.getAddress());
+                            item.setId(m.get_id());
+                            //mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                            if (manager != null)
+                                manager.addItem(item);
+                        }
+                    }
+                }
+            });
 
 
             manager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<MyClusterItem>() {
