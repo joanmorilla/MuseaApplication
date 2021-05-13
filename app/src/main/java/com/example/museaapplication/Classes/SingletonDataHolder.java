@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.ui.user.UserViewModel;
+import com.example.museaapplication.Classes.Dominio.Quizz;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -16,6 +17,9 @@ public class SingletonDataHolder {
     public static Fragment active;
 
     public static UserViewModel userViewModel;
+
+    public SingletonDataHolder() {
+    }
 
 
     public static SingletonDataHolder getInstance() {
@@ -30,6 +34,10 @@ public class SingletonDataHolder {
 
     private Museo[] museums;
     private ArrayList<String> modifiedMuseums;
+
+    private Quizz[] quizzes;
+
+    private String loggedUser;
 
     public int main_initial_frag = 0;
     public static Stack<Integer> backStack;
@@ -66,5 +74,21 @@ public class SingletonDataHolder {
 
     public void setMuseums(Museo[] museums) {
         this.museums = museums;
+    }
+
+    public Quizz[] getQuizzes() {
+        return quizzes;
+    }
+
+    public void setQuizzes(Quizz[] quizzes) {
+        this.quizzes = quizzes;
+    }
+
+    public String getLoggedUser() {
+        return loggedUser;
+    }
+
+    public void setLoggedUser(String loggedUser) {
+        this.loggedUser = loggedUser;
     }
 }

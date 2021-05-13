@@ -10,23 +10,31 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -36,9 +44,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.museaapplication.Classes.APIRequests;
+import com.example.museaapplication.Classes.Delegate;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Permissions;
 import com.example.museaapplication.Classes.TimeClass;
+import com.example.museaapplication.ui.QuizzActivity;
+import com.example.museaapplication.ui.MuseuActivity;
 import com.example.museaapplication.Classes.Vector2;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.MainActivity;
@@ -46,6 +58,8 @@ import com.example.museaapplication.ui.MuseuActivity;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -64,6 +78,7 @@ public class HomeFragment extends Fragment implements Permissions {
     Museo[] museums;
     Geocoder geocoder;
     View root;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
@@ -88,6 +103,18 @@ public class HomeFragment extends Fragment implements Permissions {
         });
         setHasOptionsMenu(true);
         return root;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.prizeButton:
+                Intent i = new Intent(getContext(), QuizzActivity.class);
+                startActivity(i);
+                return true;
+        }
+        return false;
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Info;
 import com.example.museaapplication.Classes.Dominio.Likes;
+import com.example.museaapplication.Classes.Dominio.Quizz;
 import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.Json.CommentsValue;
 import com.example.museaapplication.Classes.Json.ExhibitionValue;
@@ -16,6 +17,7 @@ import com.example.museaapplication.Classes.Json.ExpositionListValue;
 import com.example.museaapplication.Classes.Json.ExpositionsList;
 import com.example.museaapplication.Classes.Json.InfoValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
+import com.example.museaapplication.Classes.Json.QuizzValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
 import com.example.museaapplication.Classes.Json.WorksArray;
 import com.example.museaapplication.Classes.Json.WorksValue;
@@ -117,6 +119,7 @@ public class APIRequests {
             @Override
             public void onResponse(Call<WorkValue> call, Response<WorkValue> response) {
                 WorkValue wv = response.body();
+                Log.d("obra", wv.getWork().getAuthor());
                 //e.addWork(wv.getWork());
             }
 
@@ -239,4 +242,5 @@ public class APIRequests {
     public boolean checkFavourites(String id){
         return false;
     }
+
 }
