@@ -51,7 +51,20 @@ public class HomeViewModel extends ViewModel {
         }
         return Museums;
     }
+    public void unlikeMuseum(String _id) {
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().favMuseum("RaulPes", _id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
 
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
     public LiveData<Museo[]> getMuseumsInMap() {
         return Museums;
     }

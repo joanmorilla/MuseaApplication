@@ -314,23 +314,26 @@ public class HomeFragment extends Fragment implements Permissions {
         for (Museo museo : m) {
             // For the complex button we use relative layout
             RelativeLayout holder = new RelativeLayout(getContext());
-            View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
+            View v = View.inflate(getContext(), R.layout.custom_favourite_layout, holder);
             // Adding enter animation
             YoYo.with(Techniques.ZoomIn)/*.delay((museums.length - i) * 200)*/.duration(700).playOn(v);
             TextView txt = v.findViewById(R.id.title_text);
             // Setting the texts in custom button
             txt.setText(museo.getName());
-            txt = v.findViewById(R.id.text_horari);
-            if (museo.getCovidInformation() != null) {
-                txt.setText(timeStringValidation(museo.getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
-                museo.setOpeningHour(parseOpeningHour(museo.getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
-            }
             txt = v.findViewById(R.id.text_pais);
             txt.setText(museo.getCity());
             ImageButton ib = v.findViewById(R.id.image_view);
             ib.setOnClickListener(clickFunc(museo));
             if (!museo.getImage().equals(""))
                 Picasso.get().load(museo.getImage()).fit().centerCrop().into(ib);
+            TextView unlikeButton = v.findViewById(R.id.circle_heart);
+            unlikeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    homeViewModel.unFavorite(museo);
+                    homeViewModel.unlikeMuseum(museo.get_id());
+                }
+            });
             // Size the relative layout
             RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, pixToDp(155));
             newParams.setMargins(pixToDp(5), 0, pixToDp(5), pixToDp(0));
