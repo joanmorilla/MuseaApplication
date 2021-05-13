@@ -1,8 +1,13 @@
 package com.example.museaapplication.Classes.Dominio;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
 import com.example.museaapplication.Classes.RetrofitClient;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,20 +24,18 @@ public class Work implements Serializable {
 
     private boolean loved = false;
 
+    private ArrayList<Comment> commentsObjects;
+
 
     public boolean likeWork(){
-        Call<Void> call = RetrofitClient.getInstance().getMyApi().likeWork("admin", _id);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-
-            }
-        });
         loved = !loved;
+        return loved;
+    }
+
+    public void setLoved(boolean b) {
+        loved = b;
+    }
+    public boolean isLoved() {
         return loved;
     }
 
@@ -90,5 +93,20 @@ public class Work implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public void addComment(Comment c){
+        if (commentsObjects == null) commentsObjects = new ArrayList<>();
+        commentsObjects.add(c);
+    }
+    public void removeComment(Comment c){
+        commentsObjects.remove(c);
+    }
+    public void setCommentsObjects(ArrayList<Comment> cs){
+        commentsObjects = cs;
+    }
+    public ArrayList<Comment> getCommentsObjects() {
+        if (commentsObjects == null) commentsObjects = new ArrayList<>();
+        return commentsObjects;
     }
 }

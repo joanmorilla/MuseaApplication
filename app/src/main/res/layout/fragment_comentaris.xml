@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.Comentaris_Fragment"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/such_empty_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wow such empty"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:clickable="false"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/toolbar_big"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:elevation="11dp"/>
+
+        <ImageButton
+            android:id="@+id/back_arrow_comments"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/back_arrow"
+            android:backgroundTint="?android:textColorPrimary"/>
+
+        <TextView
+            android:layout_toRightOf="@+id/back_arrow_comments"
+            android:layout_alignTop="@+id/back_arrow_comments"
+            android:layout_marginLeft="20dp"
+            android:paddingTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/comments_title"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="?android:textColorPrimary"
+            android:layout_toEndOf="@+id/back_arrow_comments" />
+    </RelativeLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout_comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_panel"
+        android:layout_below="@+id/toolbar_big"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:hapticFeedbackEnabled="true"
+        >
+        <ScrollView
+            android:id="@+id/scrollView_Comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:scrollbars="none">
+
+
+            <LinearLayout
+                android:id="@+id/linearlayout_comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/custom_comment" />
+
+            </LinearLayout>
+
+
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <RelativeLayout
+            android:id="@+id/bottom_panel"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="?android:windowBackground">
+
+
+            <com.github.siyamed.shapeimageview.CircularImageView
+                android:id="@+id/user_image_bottom"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/mnac_default"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+            <EditText
+                android:id="@+id/comment_input"
+                android:layout_toRightOf="@+id/user_image_bottom"
+                android:layout_marginRight="42dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="10dp"
+                android:layout_centerVertical="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine|textCapSentences"
+                android:minLines="1"
+                android:lines="5"
+                android:maxLength="250"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="?android:windowBackground"
+                android:elegantTextHeight="true"
+                android:hint="@string/your_comment_here" />
+
+            <ImageButton
+                android:id="@+id/post_comment_button"
+                android:layout_centerVertical="true"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginBottom="5dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ic_round_send_24"/>
+        </RelativeLayout>
+
+
+
+
+</RelativeLayout>

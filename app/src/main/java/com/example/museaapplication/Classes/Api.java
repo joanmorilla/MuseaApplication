@@ -1,6 +1,8 @@
 package com.example.museaapplication.Classes;
 
+import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.User;
+import com.example.museaapplication.Classes.Json.CommentsValue;
 import com.example.museaapplication.Classes.Json.ExhibitionValue;
 import com.example.museaapplication.Classes.Json.ExpositionListValue;
 import com.example.museaapplication.Classes.Json.ExpositionsList;
@@ -18,6 +20,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -33,6 +36,9 @@ public interface Api {
     @GET("museums")
     Call<MuseoValue> getMuseums();
 
+    @GET("https://musea-api.herokuapp.com/museums/{idMuseo}")
+    Call<MuseoValue> getMuseum(@Path("idMuseo") String idMuseo);
+
     @GET("museums/{idMuseo}/{idExpo}")
     Call<WorksValue> getExhibition(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId);
 
@@ -45,13 +51,23 @@ public interface Api {
     @GET("museums/{idMuseo}/{idExpo}/{idObra}")
     Call<WorkValue> getWork(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId, @Path("idObra") String idObra);
 
+    // Comments
+    @GET("https://musea-api.herokuapp.com/comments?")
+    Call<CommentsValue> getComments(@Query("artworkId") String artworkId);
+
+    @POST("https://musea-api.herokuapp.com/comments?")
+    Call<Comment> postComment(@Query("artworkId") String artworkId, @Query("content") String content, @Query("author") String author);
+
+    @DELETE("https://musea-api.herokuapp.com/comments/{commentId}")
+    Call<Void> deleteComment(@Path("commentId") String commentId);
+
     @GET("https://musea-api.herokuapp.com/users/admin")
     Call<UserInfoValue> getUserInfo();
 
-    @GET("https://musea-api.herokuapp.com/users/admin/favourites")
+    @GET("https://musea-api.herokuapp.com/users/RaulPes/favourites")
     Call<FavouritesValue> getFavourites();
 
-    @GET("https://musea-api.herokuapp.com/users/admin/likes")
+    @GET("https://musea-api.herokuapp.com/users/RaulPes/likes")
     Call<LikesValue> getLikes();
 
 
@@ -61,6 +77,12 @@ public interface Api {
     // User favorites
     @POST("https://musea-api.herokuapp.com/users/{userId}/likes?")
     Call<Void> likeWork(@Path("userId") String userId, @Query("artwork") String artworkId);
+
+    @POST("https://musea-api.herokuapp.com/users/{userId}/favourites")
+    Call<Void> favMuseum(@Path("userId") String userId, @Query("museum") String museumId);
+
+    @GET ("https://musea-api.herokuapp.com/users/{userId}/favourites")
+    Call<LikesValue> getFavMuseums(@Path("userId") String userId);
 
     // Info of schedules
     @GET("https://musea-api.herokuapp.com/info?")

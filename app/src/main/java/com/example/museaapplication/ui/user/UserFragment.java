@@ -29,6 +29,7 @@ import com.example.museaapplication.Classes.Dominio.Favourites;
 import com.example.museaapplication.Classes.Dominio.Likes;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Dominio.UserInfo;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.SettingsActivity;
 import com.example.museaapplication.ui.favourite.FavouriteMus;
@@ -90,8 +91,9 @@ public class UserFragment extends Fragment {
         // Inflate the layout for this fragment
         //Toast toast = Toast.makeText(getContext(), name, Toast.LENGTH_SHORT);
         //toast.show();
-
+        Log.e("Creado", "la creaacion");
         uvm = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        SingletonDataHolder.userViewModel = uvm;
         root = inflater.inflate(R.layout.fragment_user, container, false);
         Button btn = root.findViewById(R.id.button_eu);
         TextView user_name = root.findViewById(R.id.user_name);
@@ -139,6 +141,7 @@ public class UserFragment extends Fragment {
         uvm.getLikes().observe(getViewLifecycleOwner(), new Observer<Likes[]>() {
             @Override
             public void onChanged(Likes[] likes) {
+                Log.e("La creacion2", "" + likes.length);
                 work_likes = new Likes[likes.length];
                 work_likes = likes;
                 generar_likes();
@@ -148,12 +151,13 @@ public class UserFragment extends Fragment {
         fav_m.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), FavouriteMus.class);
+                /*Intent intent = new Intent(getActivity(), FavouriteMus.class);
                 ArrayList<String> i = mus_favs_id;
                 ArrayList<String> im = mus_favs_image;
                 intent.putStringArrayListExtra("id",i);
                 intent.putStringArrayListExtra("image",im);
-                startActivity(intent);
+                startActivity(intent);*/
+                uvm.loadlikes();
             }
         });
 
@@ -191,8 +195,8 @@ public class UserFragment extends Fragment {
     }
 
     private void generar_likes(){
-
         LinearLayout scrollPais = root.findViewById(R.id.layout_likes);
+        scrollPais.removeAllViews();
         for(int i = work_likes.length -1; i >= 0; i--){
             // Generamos boton
             ImageButton b = new ImageButton(scrollPais.getContext());
@@ -205,7 +209,6 @@ public class UserFragment extends Fragment {
             // Asignamos un comportamiento para cuando se presione
             // Finalmente lo añadimos a la vista desplazable
             scrollPais.addView(b);
-            Log.d("Obras", "En el bucle");
         }
     }
 

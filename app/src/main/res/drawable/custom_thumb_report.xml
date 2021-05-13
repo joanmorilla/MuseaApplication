@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item>
+        <shape>
+            <size
+                android:height="40dp"
+                android:width="40dp" />
+
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/ic_baseline_report_gmailerrorred_24">
+        <color android:color="@color/yellow"></color>
+    </item>
+
+</layer-list>

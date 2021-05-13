@@ -21,8 +21,21 @@
         <activity android:name=".ui.edit.edit_user" />
         <activity
             android:name=".ui.MuseuActivity"
-            android:theme="@style/Theme.MuseaLoginSignup"
-            android:screenOrientation="portrait" />
+            android:theme="@style/Theme.MuseuActTheme"
+            android:screenOrientation="portrait">
+
+            <intent-filter android:label="Museums">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+                <data android:scheme="http"
+                    android:host="www.musea.com"
+                    android:pathPrefix="/museums"/>
+                <!-- note that the leading "/" is required for pathPrefix-->
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait" />

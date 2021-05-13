@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,11 +27,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.museaapplication.Classes.Adapters.CustomClusterRenderer;
 import com.example.museaapplication.Classes.Dominio.Museo;
+import com.example.museaapplication.Classes.MyClusterItem;
+import com.example.museaapplication.Classes.Permissions;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.MainActivity;
 import com.example.museaapplication.ui.MuseuActivity;
 import com.example.museaapplication.ui.home.HomeViewModel;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,13 +44,18 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
+import com.google.maps.android.clustering.ClusterManager;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Objects;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, Permissions {
 
     public static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
 
@@ -53,9 +64,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private MapView mMapView;
     private GoogleMap mMap;
 
+    private String id;
+
+    ClusterManager<MyClusterItem> manager;
+
     public static MapFragment newInstance() {
         return new MapFragment();
     }
+
+
 
     Bitmap d = null;
 
@@ -66,34 +83,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.map_fragment, container, false);
         mMapView = root.findViewById(R.id.map_view);
-        mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        mHomeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
         mHomeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
             @Override
             public void onChanged(Museo[] museos) {
                 museums = museos;
                 for (Museo m : museos) {
-                    /*Picasso.get().load(m.getImage()).into(new Target() {
-                        @Override
-                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            d = bitmap;
-                        }
-
-                        @Override
-                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                        }
-
-                        @Override
-                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                        }
-
-                    });*/
                     if (m.getLocation() != null && m.getLocation().length != 0){
                         LatLng pos = new LatLng(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal());
-                        mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.getDescriptions().getText()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                        );
+                        MyClusterItem item = new MyClusterItem(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal(), m.getName(), m.getAddress());
+                        item.setId(m.get_id());
+                        //mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                        manager.addItem(item);
                     }
                 }
             }
@@ -102,6 +104,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         /*TextView txt = super.getActivity().findViewById(R.id.title_test);
         txt.setText(R.string.title_maps);*/
         return root;
+    }
+
+    private void addItems() {
+        // Set some lat/lng coordinates to start with.
+        double lat = 51.5145160;
+        double lng = -0.1270060;
+
+        // Add ten cluster items in close proximity, for purposes of this example.
+        for (int i = 0; i < 10; i++) {
+            double offset = i / 60d;
+            lat = lat + offset;
+            lng = lng + offset;
+            MyClusterItem offsetItem = new MyClusterItem(lat, lng, "Title " + i, "Snippet " + i);
+            manager.addItem(offsetItem);
+        }
     }
 
     @Override
@@ -163,27 +180,67 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
+        manager = new ClusterManager<>(getActivity(), mMap);
+        mMap.setOnCameraIdleListener(manager);
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
             map.getUiSettings().setMyLocationButtonEnabled(true);
-            LatLng sydney = new LatLng(0, 0);
-            MarkerOptions marker = new MarkerOptions()
-                    .position(sydney)
-                    .title("Marker in Sydney");
-            map.addMarker(marker);
-            map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            /*map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
+
                     int position = getMPosition(marker.getTitle());
                     if (position >= 0) {
                         Intent i = new Intent(getContext(), MuseuActivity.class);
+                        Uri uri = Uri.parse("/museums/" + id);
+                        i.setData(uri);
                         i.putExtra("Museu", (Serializable) museums[position]);
                         startActivity(i);
                     }
-                    //Toast.makeText(getContext(), marker.getTitle(), Toast.LENGTH_SHORT).show();
+                }
+            });*/
+            map.setOnMarkerClickListener(manager);
+            // When clicking a cluster make it zoom in
+
+
+            manager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<MyClusterItem>() {
+                        @Override
+                        public boolean onClusterClick(final Cluster<MyClusterItem> cluster) {
+                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                                    cluster.getPosition(), (float) Math.floor(map
+                                            .getCameraPosition().zoom + 1)), 300,
+                                    null);
+                            return true;
+                        }
+                    });
+            //
+            manager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MyClusterItem>() {
+                @Override
+                public boolean onClusterItemClick(MyClusterItem item) {
+                    id = item.getId();
+                    return false;
                 }
             });
-        } else requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            manager.setOnClusterItemInfoWindowClickListener(new ClusterManager.OnClusterItemInfoWindowClickListener<MyClusterItem>() {
+                @Override
+                public void onClusterItemInfoWindowClick(MyClusterItem item) {
+                    // Aqui puedo poner la distincion de si el museo ya esta descargado o hay que descargarlo para la vista.
+                    // Si la funcion encuentra el museo entonces este ya esta en el sistema y le pasamos este, en caso contrario pasamos la uri
+                    // y descargamos ese museo de la API.
+                    int position = getMPosition(item.getTitle());
+                    Intent i = new Intent(getContext(), MuseuActivity.class);
+                    if (position >= 0) {
+                        MuseuActivity.curMuseum = museums[position];
+                        startActivityForResult(i, 1 );
+                    }else {
+                        Uri uri = Uri.parse("/museums/" + id);
+                        i.setData(uri);
+                    }
+                }
+            });
+            manager.setRenderer(new CustomClusterRenderer(getActivity(), map, manager));
+
+        }
     }
 
     private int getMPosition(String title){
@@ -225,5 +282,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+    @Override
+    public void Granted() {
+        onMapReady(mMap);
     }
 }
