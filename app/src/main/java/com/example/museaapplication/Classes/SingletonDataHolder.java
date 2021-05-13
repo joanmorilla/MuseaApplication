@@ -15,6 +15,7 @@ import java.util.Stack;
 public class SingletonDataHolder {
     private static SingletonDataHolder _instance;
     public static Fragment active;
+    public static boolean first;
 
     public static UserViewModel userViewModel;
 

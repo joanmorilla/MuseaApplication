@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.login.LoginFragment;
 
@@ -26,6 +27,7 @@ public class InitialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial);
         getSupportFragmentManager().beginTransaction().add(R.id.InitialActivity,new LoginFragment()).show(new LoginFragment()).commit();
+        SingletonDataHolder.first = false;
         loadSettings();
     }
 

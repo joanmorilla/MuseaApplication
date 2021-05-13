@@ -104,6 +104,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //navView.setSelectedItemId(R.id.navigation_home);
         txt = findViewById(R.id.title_test);
         selectIniFrag();
+        if (!SingletonDataHolder.first) {
+            SingletonDataHolder.first = true;
+            SingletonDataHolder.backStack.push(R.id.navigation_home);
+        }
         // Definimos comportamiento de la barra de navegación
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
@@ -186,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 int i = SingletonDataHolder.getInstance().backStack.pop();
                 navView.setSelectedItemId(i);
             } else super.onBackPressed();
-        }
+        }else super.onBackPressed();
     }
 
     void selectIniFrag(){

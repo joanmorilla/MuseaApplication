@@ -147,8 +147,9 @@ public class HomeFragment extends Fragment implements Permissions {
             manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 25000, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-                    geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.ENGLISH);
+                    if (getActivity() == null) return;
                     try {
+                        geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.ENGLISH);
                         List<Address> adreesses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         if (adreesses != null && adreesses.size() != 0) {
                             Log.e("Error", "Entra");
