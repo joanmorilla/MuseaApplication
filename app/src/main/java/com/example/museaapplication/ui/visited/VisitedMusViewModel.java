@@ -77,31 +77,9 @@ public class VisitedMusViewModel extends ViewModel {
     public MutableLiveData<Museo[]> getMuseobyid(String idMuseum) {
         if (museo == null){
             museo = new MutableLiveData<Museo[]>();
-            loadMuseo(idMuseum);
         }
         return museo;
 
-    }
-
-    public void loadMuseo(String idMuseum){
-        Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseumbyid(idMuseum);
-        call.enqueue(new Callback<MuseoValue>() {
-            @Override
-            public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
-                Log.d("OYEEEEEEEE",response.toString());
-                Log.d("OYEEEEEEEE","" + response.code());
-                MuseoValue mymuseolist = response.body();
-                Museo[] museum = mymuseolist.getMuseums();
-                museo.postValue(museum);
-            }
-
-            @Override
-            public void onFailure(Call<MuseoValue> call, Throwable t) {
-                Log.e("TAG1", t.getLocalizedMessage());
-                Log.e("TAG2", t.getMessage());
-                t.printStackTrace();
-            }
-        });
     }
 
 }

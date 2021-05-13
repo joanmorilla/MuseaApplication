@@ -1,6 +1,7 @@
 package com.example.museaapplication.ui.edit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
@@ -68,12 +69,25 @@ public class edit_user extends AppCompatActivity {
                     textwarn.setText("");
                     euvm.edit_user_info(name.getText().toString(), bio.getText().toString());
                     SingletonDataHolder.userViewModel.UpdateUserInfo();
-                    finish();
                 }
                 else{
                     textwarn.setText(warningMessage);
                 }
 
+            }
+        });
+
+        euvm.getFinish().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s == "OK") {
+                    Toast.makeText(edit_user.this, "Guardado correctamente", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                else if (s == "ERROR"){
+                    Toast.makeText(edit_user.this, "No va", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
         });
 

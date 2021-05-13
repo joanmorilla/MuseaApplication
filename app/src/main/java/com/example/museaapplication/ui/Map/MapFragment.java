@@ -95,6 +95,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                         MyClusterItem item = new MyClusterItem(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal(), m.getName(), m.getAddress());
                         item.setId(m.get_id());
                         //mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                        if (manager != null)
                         manager.addItem(item);
                     }
                 }

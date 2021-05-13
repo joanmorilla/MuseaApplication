@@ -65,11 +65,6 @@ public interface Api {
     @DELETE("https://musea-api.herokuapp.com/comments/{commentId}")
     Call<Void> deleteComment(@Path("commentId") String commentId);
 
-
-    @GET("https://musea-api.herokuapp.com/users/RaulPes/favourites")
-    Call<FavouritesValue> getFavourites();
-
-
     @GET("https://musea-api.herokuapp.com/users/RaulPes/likes")
     Call<LikesValue> getLikes();
 

@@ -17,8 +17,6 @@ public class SingletonDataHolder {
 
     public static UserViewModel userViewModel;
 
-    public static UserViewModel userViewModel;
-
 
     public static SingletonDataHolder getInstance() {
         if (_instance == null) {
