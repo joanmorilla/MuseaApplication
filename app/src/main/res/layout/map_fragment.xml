@@ -11,6 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!--<fragment
+        android:id="@+id/autocomplete_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_view_maps"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"/>
+-->
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view_maps"
         app:queryHint="@string/search_map"
@@ -47,6 +54,28 @@
         android:backgroundTint="?android:textColorPrimary"
         android:background="@drawable/ic_baseline_my_location_24"
         />
+
+    <TextView
+        android:id="@+id/button_holder_2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_toLeftOf="@+id/button_holder"
+        android:layout_alignBottom="@+id/button_holder"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/ocupation_button" />
+
+    <ImageView
+        android:id="@+id/icon_pin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/button_holder_2"
+        android:layout_alignLeft="@+id/button_holder_2"
+        android:layout_alignTop="@+id/button_holder_2"
+        android:layout_alignBottom="@+id/button_holder_2"
+        android:layout_margin="15dp"
+        android:clickable="false"
+        android:backgroundTint="?android:textColorPrimary"
+        android:background="@drawable/ic_baseline_pin_drop_24" />
  <ScrollView
         android:layout_below="@+id/search_view_maps"
         android:layout_marginLeft="20dp"

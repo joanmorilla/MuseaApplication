@@ -26,12 +26,15 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.museaapplication.Classes.Adapters.CustomClusterRenderer;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.MyClusterItem;
@@ -47,6 +50,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -72,10 +76,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
     private TextView myLocB;
     private MapView mMapView;
     private GoogleMap mMap;
-    private LinearLayout mapsSuggestions;
-    private SimpleCursorAdapter mAdapter;
-    private List<Address> listAddressSugg;
-    private String[] Suggestions;
+    private boolean isSelecting = false;
+    private Marker curPosMarker;
+
 
     private String id;
 
@@ -98,7 +101,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
         mMapView = root.findViewById(R.id.map_view);
         myLocB = root.findViewById(R.id.button_holder);
         searchView = root.findViewById(R.id.search_view_maps);
-        mapsSuggestions = root.findViewById(R.id.maps_recomendations);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -147,27 +149,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                 return false;
             }
         });
-
+        /*Places.initialize(getContext(), "AIzaSyBV6anl82OMdRRvr9TASOWv3DV5HFahDWs");
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));*/
         mHomeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
         initGoogleMap(savedInstanceState);
         /*TextView txt = super.getActivity().findViewById(R.id.title_test);
         txt.setText(R.string.title_maps);*/
         return root;
-    }
-
-    private void addItems() {
-        // Set some lat/lng coordinates to start with.
-        double lat = 51.5145160;
-        double lng = -0.1270060;
-
-        // Add ten cluster items in close proximity, for purposes of this example.
-        for (int i = 0; i < 10; i++) {
-            double offset = i / 60d;
-            lat = lat + offset;
-            lng = lng + offset;
-            MyClusterItem offsetItem = new MyClusterItem(lat, lng, "Title " + i, "Snippet " + i);
-            manager.addItem(offsetItem);
-        }
     }
 
     @Override
@@ -249,6 +239,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
             map.setMyLocationEnabled(true);
             map.getUiSettings().setMyLocationButtonEnabled(true);
             map.getUiSettings().setCompassEnabled(true);
+            map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    if (isSelecting) {
+                        if (curPosMarker != null) curPosMarker.remove();
+                        curPosMarker = map.addMarker(new MarkerOptions().position(latLng).title("Added now").snippet("Que onda"));
+                        isSelecting = false;
+                        requireActivity().findViewById(R.id.icon_pin).setBackground(getResources().getDrawable(R.drawable.ic_baseline_pin_drop_24));
+                    }
+                }
+            });
             View locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
             View compassButton = mMapView.findViewWithTag("GoogleMapCompass");
             RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) compassButton.getLayoutParams();
@@ -267,7 +268,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
             requireActivity().findViewById(R.id.button_holder).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    YoYo.with(Techniques.Landing).duration(1000).playOn(v);
                     locationButton.callOnClick();
+                }
+            });
+            requireActivity().findViewById(R.id.button_holder_2).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    YoYo.with(Techniques.Landing).duration(1000).playOn(v);
+                    isSelecting = !isSelecting;
+                    if (!isSelecting) requireActivity().findViewById(R.id.icon_pin).setBackground(getResources().getDrawable(R.drawable.ic_baseline_pin_drop_24));
+                    else requireActivity().findViewById(R.id.icon_pin).setBackground(getResources().getDrawable(R.drawable.ic_outline_cancel_24));
                 }
             });
             // When clicking a cluster make it zoom in
