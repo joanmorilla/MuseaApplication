@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
     private MapViewModel mViewModel;
     private SearchView searchView;
     private HomeViewModel mHomeViewModel;
+    private TextView myLocB;
     private MapView mMapView;
     private GoogleMap mMap;
     private LinearLayout mapsSuggestions;
@@ -93,6 +95,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.map_fragment, container, false);
         mMapView = root.findViewById(R.id.map_view);
+        myLocB = root.findViewById(R.id.button_holder);
         searchView = root.findViewById(R.id.search_view_maps);
         mapsSuggestions = root.findViewById(R.id.maps_recomendations);
 
@@ -241,15 +244,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
 
         if (isDarkMode())
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireActivity(), R.raw.maps_dark_style));
+
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
             map.getUiSettings().setMyLocationButtonEnabled(true);
+            map.getUiSettings().setCompassEnabled(true);
             View locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+            View compassButton = mMapView.findViewWithTag("GoogleMapCompass");
+            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) compassButton.getLayoutParams();
+            // position on top right
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
             rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-            rlp.setMargins(0, 0, 30, 230);
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_START,0);
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP,0);
+            rlp.bottomMargin = pixToDp(150);
+            rlp.rightMargin = pixToDp(25);
+            compassButton.setLayoutParams(rlp);
             map.setOnMarkerClickListener(manager);
+            locationButton.setVisibility(View.GONE);
+
+
+            requireActivity().findViewById(R.id.button_holder).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    locationButton.callOnClick();
+                }
+            });
             // When clicking a cluster make it zoom in
             mHomeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
                 @Override
@@ -305,6 +325,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
 
             manager.setRenderer(new CustomClusterRenderer(getActivity(), map, manager));
         }
+    }
+    private int pixToDp(int value){
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, requireActivity().getResources().getDisplayMetrics()));
     }
 
     private int getMPosition(String title){
