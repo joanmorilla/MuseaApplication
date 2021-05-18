@@ -113,7 +113,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                         }else {
-                            Toast.makeText(getContext(), "Could not find, try a different spelling", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getResources().getString(R.string.geocode_error), Toast.LENGTH_SHORT).show();
                         }
                     } catch (IOException e) {
                         e.printStackTrace();

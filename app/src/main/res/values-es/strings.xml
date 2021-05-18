@@ -101,6 +101,7 @@
     <string name="dialog_cancel">Cancelar</string>
     <string name="favourites">Favoritos</string>
     <string name="search_map">Buscar...</string>
+    <string name="geocode_error">No se han encontrado, prueba a escribirlo diferente o ser mas específico</string>
 
 
 </resources>

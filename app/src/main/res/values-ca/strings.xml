@@ -100,6 +100,7 @@
     <string name="dialog_cancel">Cancel·lar</string>
     <string name="favourites">Favorits</string>
     <string name="search_map">Cercar...</string>
+    <string name="geocode_error">Cap resultat, prova a escrivir-ho diferent o ser mes específic</string>
 
 
 </resources>

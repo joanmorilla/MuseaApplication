@@ -99,6 +99,7 @@
     <string name="dialog_cancel">Cancel</string>
     <string name="favourites">Favourites</string>
     <string name="search_map">Search...</string>
+    <string name="geocode_error">Could not find, try a different spelling or be more specific</string>
 
 
 </resources>
