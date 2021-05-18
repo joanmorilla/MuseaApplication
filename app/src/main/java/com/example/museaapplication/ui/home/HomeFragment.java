@@ -367,7 +367,6 @@ public class HomeFragment extends Fragment implements Permissions {
                     i.setData(uri);
                     MuseuActivity.curMuseum = m;
                     startActivityForResult(i, 1);
-                    //startActivity(i);
                     getActivity().overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
                     interactable = false;
                 }

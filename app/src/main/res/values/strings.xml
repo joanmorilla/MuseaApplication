@@ -67,7 +67,6 @@
     <string name="bio">Bio</string>
     <string name="name">Name</string>
     <string name="change_val">Save Changes</string>
-
     <!--Dialog Covid Info-->
     <string name="title_covid">Current Information</string>
     <string name="horari_dialog_covid">Schedule</string>

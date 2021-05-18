@@ -44,6 +44,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.museaapplication.Classes.APIRequests;
 import com.example.museaapplication.Classes.DepthPageTransformer;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Likes;
@@ -286,6 +287,7 @@ class MyViewPagerAdapter extends PagerAdapter  {
             public void onClick(View v) {
                 //SingletonDataHolder.userViewModel.loadlikes();
                 sharedViewModel.likeWork(works.get(position).get_id());
+                APIRequests.getInstance().addLike(new Likes(works.get(position).get_id(), works.get(position).getImage()));
                 if (works.get(position).likeWork()) {
                     v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_24));
                 }
@@ -295,14 +297,14 @@ class MyViewPagerAdapter extends PagerAdapter  {
             }
         });
         ib2.setOnClickListener(new View.OnClickListener() {
-                                   @Override
-                                   public void onClick(View view) {
-                                       sharedViewModel.setCurWork(works.get(position));
-                                       sharedViewModel.setActive(sharedViewModel.getmCommentsFragment());
-                                       Comentaris_Fragment.loaded = false;
-                                       fm.beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmCommentsFragment()).commit();
-                                   }
-                               });
+           @Override
+           public void onClick(View view) {
+               sharedViewModel.setCurWork(works.get(position));
+               sharedViewModel.setActive(sharedViewModel.getmCommentsFragment());
+               Comentaris_Fragment.loaded = false;
+               fm.beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmCommentsFragment()).commit();
+           }
+       });
 
         ImageButton iwb = v.findViewById(R.id.sound_button_work);
         iwb.setOnClickListener(new View.OnClickListener() {

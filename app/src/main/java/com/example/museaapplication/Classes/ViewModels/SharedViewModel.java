@@ -191,9 +191,8 @@ public class SharedViewModel extends ViewModel {
                                 for (Work w : exh.getExposition().getWorks()){
                                     w.setLoved(APIRequests.getInstance().checkLikes(w.get_id()));
                                     e.addWork(w);
-                                    //getCommentsOfWork(w);
+                                    setMyMuseum(museum);
                                 }
-                            setMyMuseum(museum);
                             //e.addWorks(exh.getExposition().getWorks());
                         }
 

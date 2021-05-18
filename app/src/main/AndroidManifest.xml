@@ -14,7 +14,6 @@
         android:roundIcon="@mipmap/ic_launcher_musea_2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MuseaApplication">
-        <activity android:name=".ui.favourite.FavouriteMus"></activity>
         <activity android:name=".ui.visited.scannerView" />
         <activity android:name=".ui.visited.VisitedMus" />
         <activity android:name=".ui.SettingsActivity" />
