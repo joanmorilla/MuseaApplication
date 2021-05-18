@@ -12,7 +12,7 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view_maps"
-        app:queryHint="Search..."
+        app:queryHint="@string/search_map"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
@@ -20,6 +20,8 @@
         android:elevation="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_corner"/>
+        app:queryBackground="@android:color/transparent"
+        android:background="@drawable/ocupation_button"
+        android:alpha="100"/>
 
 </FrameLayout>

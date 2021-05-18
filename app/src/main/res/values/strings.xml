@@ -98,7 +98,7 @@
     <string name="confirm">Confirm</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="favourites">Favourites</string>
-
+    <string name="search_map">Search...</string>
 
 
 </resources>

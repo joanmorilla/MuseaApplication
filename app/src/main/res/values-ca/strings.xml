@@ -99,6 +99,7 @@
     <string name="confirm">Confirmar</string>
     <string name="dialog_cancel">Cancel·lar</string>
     <string name="favourites">Favorits</string>
+    <string name="search_map">Cercar...</string>
 
 
 </resources>
