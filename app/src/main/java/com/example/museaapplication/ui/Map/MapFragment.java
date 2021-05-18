@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,7 +87,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
         View root = inflater.inflate(R.layout.map_fragment, container, false);
         mMapView = root.findViewById(R.id.map_view);
         mHomeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-
 
         initGoogleMap(savedInstanceState);
         /*TextView txt = super.getActivity().findViewById(R.id.title_test);
@@ -180,25 +180,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                 Log.e("Aver", marker.getSnippet());
             }
         });
+
         if (isDarkMode())
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireActivity(), R.raw.maps_dark_style));
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
             map.getUiSettings().setMyLocationButtonEnabled(true);
-            /*map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick(Marker marker) {
-
-                    int position = getMPosition(marker.getTitle());
-                    if (position >= 0) {
-                        Intent i = new Intent(getContext(), MuseuActivity.class);
-                        Uri uri = Uri.parse("/museums/" + id);
-                        i.setData(uri);
-                        i.putExtra("Museu", (Serializable) museums[position]);
-                        startActivity(i);
-                    }
-                }
-            });*/
+            View locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+            rlp.setMargins(0, 0, 30, 230);
             map.setOnMarkerClickListener(manager);
             // When clicking a cluster make it zoom in
             mHomeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
