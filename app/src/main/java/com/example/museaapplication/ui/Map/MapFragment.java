@@ -8,18 +8,24 @@ import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,6 +37,7 @@ import com.example.museaapplication.Classes.Permissions;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.MuseuActivity;
 import com.example.museaapplication.ui.home.HomeViewModel;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -38,10 +45,19 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.AutocompleteFragment;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, Permissions {
@@ -53,6 +69,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
     private HomeViewModel mHomeViewModel;
     private MapView mMapView;
     private GoogleMap mMap;
+    private LinearLayout mapsSuggestions;
+    private SimpleCursorAdapter mAdapter;
+    private List<Address> listAddressSugg;
+    private String[] Suggestions;
 
     private String id;
 
@@ -74,6 +94,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
         View root = inflater.inflate(R.layout.map_fragment, container, false);
         mMapView = root.findViewById(R.id.map_view);
         searchView = root.findViewById(R.id.search_view_maps);
+        mapsSuggestions = root.findViewById(R.id.maps_recomendations);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -84,18 +105,42 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                     Geocoder geocoderv2 = new Geocoder(requireContext());
                     try {
                         listAddress = geocoderv2.getFromLocationName(location, 1);
+                        if (listAddress != null && listAddress.size() != 0) {
+                            Address address = listAddress.get(0);
+                            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                        }else {
+                            Toast.makeText(getContext(), "Could not find, try a different spelling", Toast.LENGTH_SHORT).show();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    Address address = listAddress.get(0);
-                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 }
                 return false;
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public boolean onQueryTextChange(String s) {
+                /*String location = searchView.getQuery().toString();
+                listAddressSugg = null;
+                if (location != null || !location.equals("")){
+                    Geocoder geocoderv2 = new Geocoder(requireContext());
+                    try {
+                        listAddressSugg = geocoderv2.getFromLocationName(location, 5);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (listAddressSugg != null) {
+                        mapsSuggestions.removeAllViews();
+                        for (Address a : listAddressSugg){
+                            TextView suggestion = new TextView(requireContext());
+                            suggestion.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                            suggestion.setText(a.getFeatureName());
+                            mapsSuggestions.addView(suggestion);
+                        }
+                    }
+                }*/
                 return false;
             }
         });
