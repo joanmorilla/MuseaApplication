@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     HomeViewModel hvm;
 
 
+    @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setCustomView(R.layout.appbar_layout_test);
+        actionBar.setShowHideAnimationEnabled(true);
 
         SingletonDataHolder.userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
@@ -127,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if (!SingletonDataHolder.getInstance().backStack.isEmpty() && !SingletonDataHolder.getInstance().backStack.lastElement().equals(item.getItemId())) SingletonDataHolder.getInstance().backStack.push(item.getItemId());
                     else if (SingletonDataHolder.getInstance().backStack.isEmpty()) SingletonDataHolder.getInstance().backStack.push(item.getItemId());
                 }
-
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
                         fm.beginTransaction().hide(active).show(mHomeFragment).commit();
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         SingletonDataHolder.getInstance().main_initial_frag = 0;
                         txt.setText(R.string.title_home);
                         txt.setClickable(true);
+                        getSupportActionBar().show();
                         txt.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -148,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         SingletonDataHolder.getInstance().main_initial_frag = 1;
                         txt.setText(R.string.title_dashboard);
                         txt.setClickable(false);
+                        getSupportActionBar().show();
                         return true;
                     case R.id.navigation_maps:
                         fm.beginTransaction().hide(active).show(mMapFragment).commit();
@@ -155,12 +158,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         SingletonDataHolder.getInstance().main_initial_frag = 4;
                         txt.setText(R.string.title_maps);
                         txt.setClickable(false);
+                        getSupportActionBar().hide();
                         return true;
                     case R.id.navigation_notifications:
                         fm.beginTransaction().hide(active).show(mNotificationsFragment).commit();
                         active = mNotificationsFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 2;
                         txt.setText(R.string.title_notifications);
+                        getSupportActionBar().show();
                         txt.setClickable(false);
                         return true;
                     case R.id.navigation_user:
@@ -169,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         active = mUserFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 3;
                         txt.setText(R.string.title_user);
+                        getSupportActionBar().show();
                         txt.setClickable(false);
                         return true;
                 }

@@ -24,6 +24,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
@@ -98,7 +99,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
         myLocB = root.findViewById(R.id.button_holder);
         searchView = root.findViewById(R.id.search_view_maps);
         mapsSuggestions = root.findViewById(R.id.maps_recomendations);
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

@@ -14,9 +14,9 @@
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view_maps"
         app:queryHint="@string/search_map"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         app:iconifiedByDefault="false"
         android:elevation="5dp"
         android:layout_width="match_parent"
