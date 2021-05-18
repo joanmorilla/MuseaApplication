@@ -53,6 +53,7 @@ import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.zip.Inflater;
 
 /**
@@ -164,7 +165,7 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
                 museum = museo;
                 String url = museum.getImage();
                 if (!url.equals(""))
-                    Picasso.get().load(url).placeholder(R.drawable.catalonia).fit().into(imageView);
+                    Picasso.get().load(url).placeholder(R.drawable.noimage).fit().into(imageView);
 
                 if (museum.isLiked())  heartButton.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
                 else heartButton.setBackground(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
@@ -250,9 +251,9 @@ public class MuseoFragment extends Fragment implements OnBackPressed {
             // From App
             intent.putExtra("Value", museum.isLiked());
             // Return the intent with the bool that states whether the museum has been liked or not
-            getActivity().setResult(Activity.RESULT_OK, intent);
+            requireActivity().setResult(Activity.RESULT_OK, intent);
         //}
-        super.getActivity().finish();
+        super.requireActivity().finish();
         return false;
     }
 }

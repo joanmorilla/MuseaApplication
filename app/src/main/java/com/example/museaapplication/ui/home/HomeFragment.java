@@ -55,7 +55,10 @@ import com.example.museaapplication.Classes.Vector2;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.MainActivity;
 import com.example.museaapplication.ui.MuseuActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -78,6 +81,7 @@ public class HomeFragment extends Fragment implements Permissions {
     Museo[] museums;
     Geocoder geocoder;
     View root;
+    Location curLocation;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -144,6 +148,16 @@ public class HomeFragment extends Fragment implements Permissions {
             LocationManager manager = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
             gpsEnabled = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
+            if (!gpsEnabled) {
+                FusedLocationProviderClient flpc = LocationServices.getFusedLocationProviderClient(getActivity());
+                flpc.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        curLocation = location;
+                    }
+                });
+            }
+
             manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 25000, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
@@ -152,7 +166,6 @@ public class HomeFragment extends Fragment implements Permissions {
                         geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.ENGLISH);
                         List<Address> adreesses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         if (adreesses != null && adreesses.size() != 0) {
-                            Log.e("Error", "Entra");
                             //if (country != null && !country.equals(adreesses.get(0).getCountryName())){
                             country = adreesses.get(0).getCountryName();
                             scrollPais.removeAllViews();
@@ -307,6 +320,7 @@ public class HomeFragment extends Fragment implements Permissions {
         double result = Math.sqrt((distX*distX) + (distY*distY));
         return result;
      }
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void GenerateFavourites(@NotNull Museo[] m){
         LinearLayout scrollFavourites = root.findViewById(R.id.layout_favourites);
         scrollFavourites.removeAllViews();
@@ -325,7 +339,7 @@ public class HomeFragment extends Fragment implements Permissions {
             ImageButton ib = v.findViewById(R.id.image_view);
             ib.setOnClickListener(clickFunc(museo));
             if (!museo.getImage().equals(""))
-                Picasso.get().load(museo.getImage()).fit().centerCrop().into(ib);
+                Picasso.get().load(museo.getImage()).fit().placeholder(getResources().getDrawable(R.drawable.noimage)).centerCrop().into(ib);
             TextView unlikeButton = v.findViewById(R.id.circle_heart);
             unlikeButton.setOnClickListener(new View.OnClickListener() {
                 @Override

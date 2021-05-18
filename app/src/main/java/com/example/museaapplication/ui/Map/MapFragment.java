@@ -166,9 +166,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-        manager = new ClusterManager<>(getActivity(), mMap);
+        manager = new ClusterManager<>(requireActivity(), mMap);
         mMap.setOnCameraIdleListener(manager);
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
             map.getUiSettings().setMyLocationButtonEnabled(true);
             /*map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -193,7 +193,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                     museums = museos;
                     for (Museo m : museos) {
                         if (m.getLocation() != null && m.getLocation().length != 0){
-                            LatLng pos = new LatLng(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal());
                             MyClusterItem item = new MyClusterItem(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal(), m.getName(), m.getAddress());
                             item.setId(m.get_id());
                             //mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
@@ -231,17 +230,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                     // y descargamos ese museo de la API.
                     int position = getMPosition(item.getTitle());
                     Intent i = new Intent(getContext(), MuseuActivity.class);
-                    if (position >= 0) {
-                        MuseuActivity.curMuseum = museums[position];
-                        startActivityForResult(i, 1 );
-                    }else {
+                    //if (position < 0) {
                         Uri uri = Uri.parse("/museums/" + id);
                         i.setData(uri);
-                    }
+                    //}
+                    MuseuActivity.curMuseum = museums[position];
+                    startActivityForResult(i, 1 );
                 }
             });
             manager.setRenderer(new CustomClusterRenderer(getActivity(), map, manager));
-
+            addItems();
         }
     }
 
