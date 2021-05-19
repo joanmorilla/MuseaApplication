@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
@@ -58,6 +59,7 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.AutocompleteFragment;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
@@ -74,7 +76,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
     private MapViewModel mViewModel;
     private SearchView searchView;
     private HomeViewModel mHomeViewModel;
-    private TextView myLocB;
     private MapView mMapView;
     private GoogleMap mMap;
     private boolean isSelecting = false;
@@ -98,7 +99,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.map_fragment, container, false);
         mMapView = root.findViewById(R.id.map_view);
-        myLocB = root.findViewById(R.id.button_holder);
         searchView = root.findViewById(R.id.search_view_maps);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -249,7 +249,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                         curPosMarker = map.addMarker(new MarkerOptions().position(latLng).title("Current Position").snippet("Showing museums from this position"));
                         mHomeViewModel.setCurMarker(curPosMarker);
                         isSelecting = false;
-                        requireActivity().findViewById(R.id.icon_pin).setBackground(getResources().getDrawable(R.drawable.ic_baseline_pin_drop_24));
+                        FloatingActionButton fab = requireActivity().findViewById(R.id.button_holder_2);
+                        fab.setImageResource(R.drawable.ic_baseline_pin_drop_24);
                     }
                 }
             });
@@ -275,13 +276,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                     locationButton.callOnClick();
                 }
             });
-            requireActivity().findViewById(R.id.button_holder_2).setOnClickListener(new View.OnClickListener() {
+            /*requireActivity().findViewById(R.id.button_holder).setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        YoYo.with(Techniques.Pulse).duration(500).playOn(v);
+                    }
+                    return false;
+                }
+            });*/
+            FloatingActionButton pinDrop = requireActivity().findViewById(R.id.button_holder_2);
+            pinDrop.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     YoYo.with(Techniques.Landing).duration(1000).playOn(v);
                     isSelecting = !isSelecting;
-                    if (!isSelecting) requireActivity().findViewById(R.id.icon_pin).setBackground(getResources().getDrawable(R.drawable.ic_baseline_pin_drop_24));
-                    else requireActivity().findViewById(R.id.icon_pin).setBackground(getResources().getDrawable(R.drawable.ic_outline_cancel_24));
+                    if (!isSelecting) pinDrop.setImageResource(R.drawable.ic_baseline_pin_drop_24);
+                    else pinDrop.setImageResource(R.drawable.ic_outline_cancel_24);
+                }
+            });
+            pinDrop.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) YoYo.with(Techniques.Pulse).duration(500).playOn(v);
+                    return false;
                 }
             });
             requireActivity().findViewById(R.id.button_holder_2).setOnLongClickListener(new View.OnLongClickListener() {
@@ -292,8 +310,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                         curPosMarker = null;
                         mHomeViewModel.setCurMarker(null);
                         YoYo.with(Techniques.ZoomIn).duration(500).playOn(v);
+                        return true;
                     }
-                    return true;
+                    return false;
                 }
             }
             );

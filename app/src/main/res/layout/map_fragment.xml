@@ -32,19 +32,40 @@
         android:background="@drawable/ocupation_button"
         android:backgroundTint="?attr/colorSurface"/>
 
-    <TextView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_holder_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/button_holder"
+        android:layout_alignBottom="@+id/button_holder"
+        android:layout_marginRight="15dp"
+        app:backgroundTint="?attr/colorSurface"
+        android:contentDescription="New Location"
+        android:tooltipText="New Location"
+        android:src="@drawable/ic_baseline_pin_drop_24"
+        android:scaleType="center"
+        app:tint="?android:textColorPrimary"
+        app:borderWidth="0dp"
+        app:fabSize="normal" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_holder"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:elevation="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="75dp"
+        android:tooltipText="My Location"
+        android:layout_marginBottom="70dp"
         android:layout_marginRight="15dp"
-        android:background="@drawable/ocupation_button"
-        android:backgroundTint="?attr/colorSurface"/>
+        app:backgroundTint="?attr/colorSurface"
+        android:contentDescription="My Location"
+        android:src="@drawable/ic_baseline_my_location_24"
+        android:scaleType="center"
+        app:tint="?android:textColorPrimary"
+        app:borderWidth="0dp"
+        app:fabSize="normal" />
 
-    <ImageView
+
+    <!--<ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="6dp"
@@ -56,10 +77,9 @@
         android:clickable="false"
         android:backgroundTint="?android:textColorPrimary"
         android:background="@drawable/ic_baseline_my_location_24"
-        />
+        />-->
 
-    <TextView
-        android:id="@+id/button_holder_2"
+    <!--<TextView
         android:elevation="5dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -81,7 +101,7 @@
         android:layout_margin="15dp"
         android:clickable="false"
         android:backgroundTint="?android:textColorPrimary"
-        android:background="@drawable/ic_baseline_pin_drop_24" />
+        android:background="@drawable/ic_baseline_pin_drop_24" />-->
  <ScrollView
         android:layout_below="@+id/search_view_maps"
         android:layout_marginLeft="20dp"
