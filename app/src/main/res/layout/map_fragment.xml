@@ -30,21 +30,24 @@
         android:layout_height="wrap_content"
         app:queryBackground="@android:color/transparent"
         android:background="@drawable/ocupation_button"
-        android:alpha="100"/>
+        android:backgroundTint="?attr/colorSurface"/>
 
     <TextView
         android:id="@+id/button_holder"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:elevation="5dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="75dp"
         android:layout_marginRight="15dp"
-        android:background="@drawable/ocupation_button" />
+        android:background="@drawable/ocupation_button"
+        android:backgroundTint="?attr/colorSurface"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="6dp"
         android:layout_alignRight="@+id/button_holder"
         android:layout_alignLeft="@+id/button_holder"
         android:layout_alignTop="@+id/button_holder"
@@ -57,17 +60,20 @@
 
     <TextView
         android:id="@+id/button_holder_2"
+        android:elevation="5dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_toLeftOf="@+id/button_holder"
         android:layout_alignBottom="@+id/button_holder"
         android:layout_marginRight="10dp"
-        android:background="@drawable/ocupation_button" />
+        android:background="@drawable/ocupation_button"
+        android:backgroundTint="?attr/colorSurface"/>
 
     <ImageView
         android:id="@+id/icon_pin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="6dp"
         android:layout_alignRight="@+id/button_holder_2"
         android:layout_alignLeft="@+id/button_holder_2"
         android:layout_alignTop="@+id/button_holder_2"

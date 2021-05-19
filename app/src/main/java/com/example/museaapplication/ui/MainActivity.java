@@ -4,10 +4,12 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -223,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 active = mMapFragment;
                 txt.setText(R.string.title_maps);
                 txt.setClickable(false);
+                getSupportActionBar().hide();
                 navView.setSelectedItemId(R.id.navigation_maps);
                 break;
             default:

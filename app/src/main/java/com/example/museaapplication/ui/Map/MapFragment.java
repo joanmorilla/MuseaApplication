@@ -223,7 +223,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
         mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
             @Override
             public void onInfoWindowLongClick(Marker marker) {
-                if (marker.getId().equals(curPosMarker.getId())) return;
+                if (curPosMarker != null && marker.getId().equals(curPosMarker.getId())) return;
                 Uri gmmIntentUri = Uri.parse("geo:" + marker.getPosition().latitude + "," + marker.getPosition().longitude + "?q=" + marker.getTitle() + marker.getSnippet());
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
