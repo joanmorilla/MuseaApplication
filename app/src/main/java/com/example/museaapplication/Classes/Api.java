@@ -117,4 +117,8 @@ public interface Api {
                             @Query("points") String points,
                             @Query("total") String total);
 
+    // Reports
+    @POST("https://musea-api.herokuapp.com/reports")
+    Call<Void> reportUser(@Query("informant") String idInformant, @Query("comment") String idComment);
+
 }

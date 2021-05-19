@@ -197,6 +197,15 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
             }
         });
 
+        sharedViewModel.getStatus().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s.equals("200"))
+                    Toast.makeText(getContext(), "Comment Reported", Toast.LENGTH_SHORT).show();
+                else Toast.makeText(getContext(), "Could not report" + " " + s, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         sharedViewModel.getCurWork().observe(getViewLifecycleOwner(), new Observer<Work>() {
             @Override
             public void onChanged(Work work) {
@@ -273,7 +282,8 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                                     seekBar.setProgress(0);
                                 } else {
                                     seekBar.setProgress(0);
-                                    Toast.makeText(getContext(), "Baneaso Perro", Toast.LENGTH_SHORT).show();
+                                    // Aqui reportamos
+                                    sharedViewModel.reportComment("user1" , c.get_id());
                                 }
                             }
                         });

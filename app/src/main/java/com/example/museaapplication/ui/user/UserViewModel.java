@@ -78,8 +78,10 @@ public class UserViewModel extends ViewModel {
             @Override
             public void onResponse(Call<UserInfoValue> call, Response<UserInfoValue> response) {
                 UserInfoValue myuserinfo = response.body();
-                UserInfo userin = myuserinfo.getUserinfo();
-                Userinfo.setValue(userin);
+                if (myuserinfo != null){
+                    UserInfo userin = myuserinfo.getUserinfo();
+                    Userinfo.setValue(userin);
+                }
             }
 
             @Override

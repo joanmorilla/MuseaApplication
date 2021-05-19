@@ -1,6 +1,7 @@
 package com.example.museaapplication.Classes.ViewModels;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -38,6 +39,7 @@ public class SharedViewModel extends ViewModel {
     private MutableLiveData<Museo> myMuseum = new MutableLiveData<>();
     private MutableLiveData<Exhibition> curExposition = new MutableLiveData<>();
     private MutableLiveData<Work> curWork = new MutableLiveData<>();
+    private MutableLiveData<String> status = new MutableLiveData<>();
 
     private Fragment mMuseoFragment;
     private Fragment mExpositionFragment;
@@ -307,6 +309,27 @@ public class SharedViewModel extends ViewModel {
             }
         });
     }
+    public LiveData<String> getStatus() {
+        if (status == null) status = new MutableLiveData<>();
+        return status;
+    }
+
+    public void reportComment(String idInformant, String idComment){
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().reportUser(idInformant, idComment);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                status.postValue("" + response.code());
+                Log.e("Error", "" + response.raw());
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
+
     public void likeWork(String _id){
         Call<Void> call = RetrofitClient.getInstance().getMyApi().likeWork("RaulPes", _id);
         call.enqueue(new Callback<Void>() {
