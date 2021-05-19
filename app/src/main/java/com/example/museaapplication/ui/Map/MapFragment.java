@@ -69,6 +69,7 @@ import java.util.List;
 public class MapFragment extends Fragment implements OnMapReadyCallback, Permissions {
 
     public static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+    public static Marker curPosMarker;
 
     private MapViewModel mViewModel;
     private SearchView searchView;
@@ -77,8 +78,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
     private MapView mMapView;
     private GoogleMap mMap;
     private boolean isSelecting = false;
-    private Marker curPosMarker;
-
 
     private String id;
 
@@ -224,6 +223,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
         mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
             @Override
             public void onInfoWindowLongClick(Marker marker) {
+                if (marker.getId().equals(curPosMarker.getId())) return;
                 Uri gmmIntentUri = Uri.parse("geo:" + marker.getPosition().latitude + "," + marker.getPosition().longitude + "?q=" + marker.getTitle() + marker.getSnippet());
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
@@ -243,8 +243,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                 @Override
                 public void onMapClick(LatLng latLng) {
                     if (isSelecting) {
-                        if (curPosMarker != null) curPosMarker.remove();
-                        curPosMarker = map.addMarker(new MarkerOptions().position(latLng).title("Added now").snippet("Que onda"));
+                        if (curPosMarker != null) {
+                            curPosMarker.remove();
+                        }
+                        curPosMarker = map.addMarker(new MarkerOptions().position(latLng).title("Current Position").snippet("Showing museums from this position"));
+                        mHomeViewModel.setCurMarker(curPosMarker);
                         isSelecting = false;
                         requireActivity().findViewById(R.id.icon_pin).setBackground(getResources().getDrawable(R.drawable.ic_baseline_pin_drop_24));
                     }
@@ -281,6 +284,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                     else requireActivity().findViewById(R.id.icon_pin).setBackground(getResources().getDrawable(R.drawable.ic_outline_cancel_24));
                 }
             });
+            requireActivity().findViewById(R.id.button_holder_2).setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (curPosMarker != null) {
+                        curPosMarker.remove();
+                        curPosMarker = null;
+                        mHomeViewModel.setCurMarker(null);
+                        YoYo.with(Techniques.ZoomIn).duration(500).playOn(v);
+                    }
+                    return true;
+                }
+            }
+            );
             // When clicking a cluster make it zoom in
             mHomeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
                 @Override

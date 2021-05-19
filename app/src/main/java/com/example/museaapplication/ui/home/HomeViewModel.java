@@ -12,6 +12,7 @@ import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
+import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -25,6 +26,7 @@ public class HomeViewModel extends ViewModel {
     private final MutableLiveData<String> mText;
     private MutableLiveData<Museo[]> Museums;
     private MutableLiveData<Museo[]> FavouriteMuseums = new MutableLiveData<>();
+    private MutableLiveData<Marker> curPosMarker = new MutableLiveData<>();
     private final Stack<Integer> order = new Stack<>();
 
     private ArrayList<Museo> curFavorites;
@@ -37,6 +39,19 @@ public class HomeViewModel extends ViewModel {
         mText.setValue("Propers");
     }
 
+    public LiveData<Marker> getCurPosMarker() {
+        if (curPosMarker == null) curPosMarker = new MutableLiveData<>();
+        return curPosMarker;
+    }
+    public Marker getMarkerValue() {
+        if (curPosMarker != null)
+            return curPosMarker.getValue();
+        return null;
+    }
+    public void setCurMarker(Marker m) {
+        if (curPosMarker == null) curPosMarker = new MutableLiveData<>();
+        curPosMarker.postValue(m);
+    }
     public LiveData<Museo[]> getFavouriteMuseums() {
         if (FavouriteMuseums == null) {
             FavouriteMuseums = new MutableLiveData<>();
