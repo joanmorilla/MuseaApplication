@@ -79,6 +79,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
     private MapView mMapView;
     private GoogleMap mMap;
     private boolean isSelecting = false;
+    View locationButton;
 
     private String id;
 
@@ -160,6 +161,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (!hidden){
+            locationButton.callOnClick();
+        }
+        super.onHiddenChanged(hidden);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(MapViewModel.class);
@@ -215,6 +224,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
         mMapView.onStop();
     }
 
+
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
@@ -254,7 +264,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                     }
                 }
             });
-            View locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+            locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
             View compassButton = mMapView.findViewWithTag("GoogleMapCompass");
             RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) compassButton.getLayoutParams();
             // position on top right
@@ -267,6 +277,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
             compassButton.setLayoutParams(rlp);
             map.setOnMarkerClickListener(manager);
             locationButton.setVisibility(View.GONE);
+            locationButton.callOnClick();
 
 
             requireActivity().findViewById(R.id.button_holder).setOnClickListener(new View.OnClickListener() {
