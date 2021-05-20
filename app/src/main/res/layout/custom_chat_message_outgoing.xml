@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp">
 
-    <TextView
+    <com.rey.material.widget.Button
         android:id="@+id/messageBackground"
         android:layout_width="match_parent"
         android:layout_alignLeft="@+id/text_content_message_chat"
@@ -12,6 +12,7 @@
         android:layout_alignTop="@+id/text_content_message_chat"
         android:layout_alignParentRight="true"
         android:layout_height="match_parent"
+        android:elevation="0dp"
         android:background="@drawable/outgoing_chat_bubble_bg"/>
 
 
@@ -19,11 +20,13 @@
         android:id="@+id/text_content_message_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ASasdasdaasdasdasd"
+        android:text="ASasdasdaasdasdasdaasdasd asdasdasda asdasd asdasd asdasd asdasd asdsad asdasd asdsad "
         android:paddingRight="25dp"
         android:paddingTop="5dp"
         android:paddingLeft="5dp"
-        android:paddingBottom="5dp"
+        android:paddingBottom="10dp"
+        android:elevation="11dp"
+        android:maxWidth="250dp"
         android:layout_alignParentRight="true"
         />
 

@@ -24,4 +24,6 @@
     <color name="bronze">#cd7f32</color>
     <color name="silver">#C0C0C0</color>
     <color name="gold">#FFD700</color>
+    <color name="speech_bubble_user">#E132AFAF</color>
+    <color name="speech_bubble_agent">#D00D7DE0</color>
 </resources>
