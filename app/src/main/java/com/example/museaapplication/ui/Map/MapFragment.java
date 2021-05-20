@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -48,6 +49,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -162,9 +165,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
 
     @Override
     public void onHiddenChanged(boolean hidden) {
-        if (!hidden){
-            locationButton.callOnClick();
-        }
+        /*if (!hidden){
+            if (locationButton != null)
+                locationButton.callOnClick();
+        }*/
         super.onHiddenChanged(hidden);
     }
 
@@ -244,6 +248,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
 
         if (isDarkMode())
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireActivity(), R.raw.maps_dark_style));
+        else mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireActivity(), R.raw.maps_light_style));
 
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
@@ -256,7 +261,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                         if (curPosMarker != null) {
                             curPosMarker.remove();
                         }
-                        curPosMarker = map.addMarker(new MarkerOptions().position(latLng).title("Current Position").snippet("Showing museums from this position"));
+
+                        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.position);
+                        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
+                        BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
+                        curPosMarker = map.addMarker(new MarkerOptions().position(latLng).title("Current Position").icon(smallMarkerIcon).snippet("Showing museums from this position"));
                         mHomeViewModel.setCurMarker(curPosMarker);
                         isSelecting = false;
                         FloatingActionButton fab = requireActivity().findViewById(R.id.button_holder_2);
