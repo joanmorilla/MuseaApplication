@@ -2,6 +2,7 @@ package com.example.museaapplication.ui.home;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -60,7 +61,10 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -72,6 +76,7 @@ import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
 
 
 public class HomeFragment extends Fragment implements Permissions {
@@ -171,7 +176,6 @@ public class HomeFragment extends Fragment implements Permissions {
             manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 25000, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-                    Log.e("Location", "updated");
                     if (getActivity() == null || MapFragment.curPosMarker != null) return;
                     try {
                         geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.ENGLISH);
@@ -245,7 +249,6 @@ public class HomeFragment extends Fragment implements Permissions {
     }
 
     private void generator(Museo[] m, List<Address> adreesses) {
-        Log.e("Hola", "mundo");
         LinearLayout scrollPais = root.findViewById(R.id.layout_pais);
         LinearLayout scrollPropers = root.findViewById(R.id.layout_close);
         scrollPropers.removeAllViews();
