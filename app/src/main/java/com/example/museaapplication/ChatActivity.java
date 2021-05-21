@@ -1,6 +1,7 @@
 package com.example.museaapplication;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -100,7 +101,18 @@ public class ChatActivity extends AppCompatActivity {
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             NotificationChannel channel2 = new NotificationChannel("BackGround", "Background", importance);
+            notificationManager.createNotificationChannel(channel);
             notificationManager.createNotificationChannel(channel2);
+
+            Notification summaryNot = new NotificationCompat.Builder(getApplicationContext(), "MyChannel")
+                    .setSmallIcon(R.drawable.ic_notification)
+                    .setGroupSummary(true)
+                    .setGroup("Messages")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+                    .build();
+// notificationId is a unique int for each notification that you must define
+            notificationManager.notify(2, summaryNot);
         }
         Username = "User1";
 
@@ -383,10 +395,10 @@ public class ChatActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            mSocket.disconnect();
+            /*mSocket.disconnect();
             mSocket.off("chat message", onNewMessage);
             mSocket.off("connect user", onNewUser);
-            mSocket.off("on typing", onTyping);
+            mSocket.off("on typing", onTyping);*/
             Username = "";
             messageAdapter.clear();
 

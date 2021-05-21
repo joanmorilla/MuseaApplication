@@ -1,6 +1,7 @@
 package com.example.museaapplication.Classes;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -75,16 +76,18 @@ public class SocketService extends Service {
 
         mSocket.connect();
         mSocket.on("chat message", onNewMessage);
-        NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(getApplicationContext(), "BackGround")
+
+        NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(getApplicationContext(), "MyChannel")
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle("Running")
                 .setColor(argb(150, 30, 50, 255))
                 .setContentText("Listening in Background")
                 .setStyle(new NotificationCompat.BigTextStyle())
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setGroup("Messages");
 
 // notificationId is a unique int for each notification that you must define
-        startForeground(1, notBuilder.build());
+        startForeground(3, notBuilder.build());
         return Service.START_STICKY;
     }
 
@@ -115,7 +118,8 @@ public class SocketService extends Service {
                         .setContentText(username + ": " + message)
                         .setStyle(inboxStyle.addLine(username + ": " + message))
                         .setContentIntent(pendingIntent)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setGroup("Messages");
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
 
 // notificationId is a unique int for each notification that you must define
