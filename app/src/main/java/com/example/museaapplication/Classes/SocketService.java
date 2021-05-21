@@ -76,7 +76,7 @@ public class SocketService extends Service {
         mSocket.connect();
         mSocket.on("chat message", onNewMessage);
         NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(getApplicationContext(), "BackGround")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle("Running")
                 .setColor(argb(150, 30, 50, 255))
                 .setContentText("Listening in Background")
@@ -95,8 +95,10 @@ public class SocketService extends Service {
             Log.d("ServiceSocket", "Call");
             JSONObject data = (JSONObject) args[0];
             String message;
+            String username;
             try {
                 Log.d("SocketService", "FetchData");
+                username = data.getString("username");
                 message = data.getString("message");
                 Log.d("SocketService", message);
 
@@ -107,11 +109,11 @@ public class SocketService extends Service {
 
                 PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
                 NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(getApplicationContext(), "MyChannel")
-                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setSmallIcon(R.drawable.ic_notification)
                         .setContentTitle("Chat1")
                         .setColor(argb(150, 30, 50, 255))
-                        .setContentText(message)
-                        .setStyle(inboxStyle.addLine(message))
+                        .setContentText(username + ": " + message)
+                        .setStyle(inboxStyle.addLine(username + ": " + message))
                         .setContentIntent(pendingIntent)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
@@ -123,14 +125,4 @@ public class SocketService extends Service {
             }
         }
     };
-
-    private void setNotificationMessage(CharSequence message) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.drawable.ic_launcher_musea_2_foreground);
-        builder.setContentTitle("Connection status");
-        builder.setContentText(message);
-
-        NotificationManagerCompat nm = NotificationManagerCompat.from(this);
-        nm.notify(1, builder.build());
-    }
 }

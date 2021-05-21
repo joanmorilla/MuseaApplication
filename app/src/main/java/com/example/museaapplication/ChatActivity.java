@@ -116,7 +116,7 @@ public class ChatActivity extends AppCompatActivity {
         }else {
             mSocket.connect();
             mSocket.on("connect user", onNewUser);
-            mSocket.on("chat message", onNewMessage);
+            //mSocket.on("chat message", onNewMessage);
             mSocket.on("on typing", onTyping);
 
             JSONObject userId = new JSONObject();
@@ -331,11 +331,12 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mSocket.on("chat message", onNewMessage);
         if (!hasConnection){
             Log.d(TAG, "Resume");
             mSocket.connect();
             mSocket.on("connect user", onNewUser);
-            mSocket.on("chat message", onNewMessage);
+            //mSocket.on("chat message", onNewMessage);
             mSocket.on("on typing", onTyping);
 
             JSONObject userId = new JSONObject();
