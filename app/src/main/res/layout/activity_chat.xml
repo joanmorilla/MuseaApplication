@@ -1,88 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_700"
-    tools:context=".ui.notifications.NotificationsFragment">
+    android:orientation="vertical"
+    android:clipToPadding="false"
+    android:focusableInTouchMode="true"
+    tools:context="com.example.museaapplication.ChatActivity">
 
-    <ImageView
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/fondo2"/>
+        android:id="@+id/messageListView"
+        android:layout_weight="2"
+        android:divider="#fff"
+        android:transcriptMode="normal"
+        android:verticalScrollbarPosition="right"
+        android:layout_height="wrap_content"
+        />
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/bottom_panel"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="5dp">
+        android:background="#fff"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <include layout="@layout/custom_chat_message_outgoing" />
-            <include layout="@layout/custom_chat_message_outgoing" />
-            <include layout="@layout/custom_chat_message_outgoing" />
-            <include layout="@layout/custom_chat_message_incoming" />
-            <include layout="@layout/custom_chat_message_incoming" />
-            <include layout="@layout/custom_chat_message_incoming" />
-            <include layout="@layout/custom_chat_message_incoming" />
-            <include layout="@layout/custom_chat_message_outgoing" />
-            <include layout="@layout/custom_chat_message_outgoing" />
-            <include layout="@layout/custom_chat_message_incoming" />
-            <include layout="@layout/custom_chat_message_incoming" />
-            <include layout="@layout/custom_chat_message_incoming" />
-
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-    <RelativeLayout
-        android:id="@+id/bottom_panel"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:windowBackground">
-
-
-        <com.github.siyamed.shapeimageview.CircularImageView
-            android:id="@+id/user_image_bottom"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="15dp"
-            android:layout_marginBottom="5dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/mnac_default"
-            android:layout_width="35dp"
-            android:layout_height="35dp" />
         <EditText
-            android:id="@+id/comment_input"
-            android:layout_toRightOf="@+id/user_image_bottom"
-            android:layout_marginRight="42dp"
-            android:layout_marginLeft="7dp"
-            android:layout_marginBottom="5dp"
-            android:paddingLeft="10dp"
-            android:layout_centerVertical="true"
+            android:id="@+id/textField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine|textCapSentences"
-            android:minLines="1"
-            android:lines="5"
-            android:maxLength="250"
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="?android:windowBackground"
-            android:elegantTextHeight="true"
-            android:hint="@string/your_comment_here" />
+            android:layout_weight="2"
+            android:ems="10"
+            android:hint="Write a message"
+            android:inputType="text"
+            android:paddingHorizontal="10dp"
+            android:text="" />
 
         <ImageButton
-            android:id="@+id/post_comment_button"
-            android:layout_centerVertical="true"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginBottom="5dp"
-            android:layout_alignParentRight="true"
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:padding="20dp"
+            android:onClick="sendMessage"
+            android:layout_marginHorizontal="10dp"
             android:background="@drawable/ic_round_send_24"/>
-    </RelativeLayout>
-</RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
