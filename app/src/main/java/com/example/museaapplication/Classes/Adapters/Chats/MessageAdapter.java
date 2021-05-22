@@ -36,7 +36,7 @@ public class MessageAdapter extends ArrayAdapter<MessageFormat> {
             String userConnected = message.getUsername();
             messageText.setText(userConnected);
 
-        }else if(message.getUniqueId().equals(ChatActivity.uniqueId)){
+        }else if(message.getUsername().equals("User1")){
             Log.i(ChatActivity.TAG, "getView: " + message.getUniqueId() + " " + ChatActivity.uniqueId);
 
 

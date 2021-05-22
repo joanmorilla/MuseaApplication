@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.museaapplication.Classes.Adapters.BD.ChatsDBHelper;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageAdapter;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
 import com.example.museaapplication.Classes.SocketService;
@@ -56,6 +57,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private ListView messageListView;
     private MessageAdapter messageAdapter;
+    ChatsDBHelper dbHelper;
 
     private Thread thread2;
     private boolean startTyping = false;
@@ -88,8 +90,9 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        stopService(new Intent(this, SocketService.class));
         Log.e(TAG, "" + mSocket);
+        dbHelper = ChatsDBHelper.getInstance(ChatActivity.this);
+        dbHelper.insertChat("Chat1");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "A channel";
@@ -215,6 +218,8 @@ public class ChatActivity extends AppCompatActivity {
                         Log.i(TAG, "run: " + username + message + id);
 
                         MessageFormat format = new MessageFormat(id, username, message);
+                        MessageFormat messageFormat = new MessageFormat(UUID.randomUUID().toString(), username, message);
+                        dbHelper.insertMessage("Chat1", messageFormat);
                         Log.i(TAG, "run:4 ");
                         messageAdapter.add(format);
                         Log.i(TAG, "run:5 ");
@@ -343,6 +348,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        stopService(new Intent(this, SocketService.class));
         mSocket.on("chat message", onNewMessage);
         if (!hasConnection){
             Log.d(TAG, "Resume");
@@ -363,6 +369,12 @@ public class ChatActivity extends AppCompatActivity {
             NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
             notificationManager.cancel(1);
         }
+        messageAdapter.clear();
+        ArrayList<MessageFormat> messages = dbHelper.getMessagesOfChat("Chat1");
+        for (MessageFormat m: messages){
+            messageAdapter.add(m);
+        }
+        messageListView.smoothScrollToPosition(messages.size()-1);
         Intent service = new Intent(this , SocketService.class);
         //stopService(service);
     }
@@ -405,6 +417,11 @@ public class ChatActivity extends AppCompatActivity {
         }else {
             Log.i(TAG, "onDestroy: is rotating.....");
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.museaapplication.ChatActivity;
+import com.example.museaapplication.Classes.Adapters.BD.ChatsDBHelper;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
 import com.example.museaapplication.R;
 import com.github.nkzawa.emitter.Emitter;
@@ -26,14 +27,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.util.UUID;
 
 
 import static android.graphics.Color.argb;
 
 public class SocketService extends Service {
-
-    private Thread mThread;
-    private boolean mRunning = false;
+    ChatsDBHelper dbHelper;
     private Socket mSocket;
     {
         try {
@@ -48,8 +48,7 @@ public class SocketService extends Service {
     }
     @Override
     public void onCreate() {
-
-        Log.e("SocketService", "" + mSocket);
+        dbHelper = ChatsDBHelper.getInstance(getApplicationContext());
         /*JSONObject userId = new JSONObject();
         try {
             userId.put("username", "Username" + " Connected");
@@ -65,7 +64,7 @@ public class SocketService extends Service {
         Log.d("SocketService", "Destroyed");
         stopForeground(true);
         //mSocket.disconnect();
-        //mSocket.off("chat message", onNewMessage);
+        mSocket.off("chat message", onNewMessage);
         super.onDestroy();
     }
 
@@ -99,12 +98,16 @@ public class SocketService extends Service {
             JSONObject data = (JSONObject) args[0];
             String message;
             String username;
+            String uniqueId;
             try {
                 Log.d("SocketService", "FetchData");
+                uniqueId = data.getString("uniqueId");
                 username = data.getString("username");
                 message = data.getString("message");
                 Log.d("SocketService", message);
 
+                dbHelper.insertMessage("Chat1", new MessageFormat(UUID.randomUUID().toString(), username, message));
+                Log.d("SocketService", "After db");
                 final Intent notificationIntent = getPackageManager()
                         .getLaunchIntentForPackage(getPackageName())
                         .setPackage(null)
