@@ -19,6 +19,7 @@ import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.WorksValue;
 import com.example.museaapplication.Classes.RetrofitClient;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.TimeClass;
 import com.example.museaapplication.ui.ExpositionFragment;
 import com.example.museaapplication.ui.MuseoFragment;
@@ -129,7 +130,7 @@ public class SharedViewModel extends ViewModel {
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
                 AuxMuseo aux = response.body().getMuseum();
                 Museo museum = new Museo();
-                Call<LikesValue> callLikes = RetrofitClient.getInstance().getMyApi().getFavMuseums("RaulPes");
+                Call<LikesValue> callLikes = RetrofitClient.getInstance().getMyApi().getFavMuseums(SingletonDataHolder.getInstance().getLoggedUser().getUserId());
                 callLikes.enqueue(new Callback<LikesValue>() {
                     @Override
                     public void onResponse(Call<LikesValue> call, Response<LikesValue> response) {
@@ -224,7 +225,7 @@ public class SharedViewModel extends ViewModel {
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
                 AuxMuseo aux = response.body().getMuseum();
                 Museo museum = MuseuActivity.curMuseum;
-                Call<LikesValue> callLikes = RetrofitClient.getInstance().getMyApi().getFavMuseums("RaulPes");
+                Call<LikesValue> callLikes = RetrofitClient.getInstance().getMyApi().getFavMuseums(SingletonDataHolder.getInstance().getLoggedUser().getUserId());
                 callLikes.enqueue(new Callback<LikesValue>() {
                     @Override
                     public void onResponse(Call<LikesValue> call, Response<LikesValue> response) {
@@ -309,7 +310,7 @@ public class SharedViewModel extends ViewModel {
         });
     }
     public void likeWork(String _id){
-        Call<Void> call = RetrofitClient.getInstance().getMyApi().likeWork("RaulPes", _id);
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().likeWork(SingletonDataHolder.getInstance().getLoggedUser().getUserId(), _id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

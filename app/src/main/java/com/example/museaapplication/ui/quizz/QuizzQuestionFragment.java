@@ -321,7 +321,7 @@ public class QuizzQuestionFragment extends Fragment {
         endTotal.setText(""+totalPoints);
 
         // Update points
-        String username = SingletonDataHolder.getInstance().getLoggedUser();
+        String username = SingletonDataHolder.getInstance().getLoggedUser().getUserId();
         Log.d("Check Singleton:","" + username);
         // borrar la siguiente linea cuando tengamos el username
         username = "luisitodescomunica";

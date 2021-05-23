@@ -53,8 +53,8 @@ public interface Api {
     @GET("museums/{idMuseo}/{idExpo}/{idObra}")
     Call<WorkValue> getWork(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId, @Path("idObra") String idObra);
 
-    @GET("https://musea-api.herokuapp.com/users/RaulPes")
-    Call<UserInfoValue> getUserInfo();
+    @GET("https://musea-api.herokuapp.com/users/{email}")
+    Call<UserInfoValue> getUserInfo(@Path("email") String email);
 
     // Comments
     @GET("https://musea-api.herokuapp.com/comments?")
@@ -66,8 +66,8 @@ public interface Api {
     @DELETE("https://musea-api.herokuapp.com/comments/{commentId}")
     Call<Void> deleteComment(@Path("commentId") String commentId);
 
-    @GET("https://musea-api.herokuapp.com/users/RaulPes/likes")
-    Call<LikesValue> getLikes();
+    @GET("https://musea-api.herokuapp.com/users/{username}/likes")
+    Call<LikesValue> getLikes(@Path("username") String username);
 
     @PUT("https://musea-api.herokuapp.com/users/{userId}?")
     Call<Void> addInfoUser(@Path("userId") String userId, @Query("name") String nameuser, @Query("bio") String userbio);
@@ -116,5 +116,9 @@ public interface Api {
     Call<Void> updatePoints(@Path("username") String username,
                             @Query("points") String points,
                             @Query("total") String total);
+
+    @PUT("https://musea-api.herokuapp.com/users/{username}/premium")
+    Call<Void> updatePremium(@Path("username") String username,
+                            @Query("days") String days);
 
 }

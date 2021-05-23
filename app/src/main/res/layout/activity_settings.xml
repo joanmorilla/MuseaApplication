@@ -86,7 +86,7 @@
             android:layout_margin="4dp"
             android:drawableLeft="@drawable/ic_stat_help"
             android:drawablePadding="7dp"
-            android:hint="Ajuda i Política de privacitat"
+            android:hint="@string/help_and_privacity"
             android:paddingLeft="10dp"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"

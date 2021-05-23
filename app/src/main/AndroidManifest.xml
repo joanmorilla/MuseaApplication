@@ -14,7 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_musea_2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MuseaApplication">
-        <activity android:name=".ui.favourite.FavouriteMus"></activity>
+        <activity android:name=".ui.PayActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MuseaApplication"/>
+        <activity
+            android:name=".ui.HelpActivity"
+            android:label="@string/title_activity_help"
+            android:theme="@style/Theme.MuseaApplication.NoActionBar" />
+        <activity android:name=".ui.favourite.FavouriteMus" />
         <activity android:name=".ui.visited.scannerView" />
         <activity android:name=".ui.visited.VisitedMus" />
         <activity android:name=".ui.SettingsActivity" />
@@ -25,20 +32,20 @@
             android:theme="@style/Theme.MuseaLoginSignup" />
         <activity
             android:name=".ui.MuseuActivity"
-            android:theme="@style/Theme.MuseuActTheme"
-            android:screenOrientation="portrait">
-
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MuseuActTheme">
             <intent-filter android:label="Museums">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
-                <data android:scheme="http"
+                <data
                     android:host="www.musea.com"
-                    android:pathPrefix="/museums"/>
-                <!-- note that the leading "/" is required for pathPrefix-->
+                    android:pathPrefix="/museums"
+                    android:scheme="http" />
+                <!-- note that the leading "/" is required for pathPrefix -->
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.MainActivity"
@@ -53,7 +60,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-          </activity>
+        </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBV6anl82OMdRRvr9TASOWv3DV5HFahDWs" />

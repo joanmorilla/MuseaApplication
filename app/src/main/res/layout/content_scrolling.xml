@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.HelpActivity"
+    tools:showIn="@layout/activity_help">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="20dp"
+            android:text="General" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:ellipsize="end"
+            android:text="Para rcibir más ayuda o enviar sugerencias por favor envie un correo a esta dirección (support@musea.com) o clicando en el botón de más arriba" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="20dp"
+            android:text="Usuarios Premium" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:ellipsize="end"
+            android:text="Para rcibir más ayuda o enviar sugerencias por favor envie un correo a esta dirección (support@musea.com) o clicando en el botón de más arriba" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="20dp"
+            android:text="Comentarios" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:ellipsize="end"
+            android:text="Para rcibir más ayuda o enviar sugerencias por favor envie un correo a esta dirección (support@musea.com) o clicando en el botón de más arriba" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="20dp"
+            android:text="Visitar museos" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:ellipsize="end"
+            android:text="Para rcibir más ayuda o enviar sugerencias por favor envie un correo a esta dirección (support@musea.com) o clicando en el botón de más arriba" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="20dp"
+            android:text="Quizzes" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:ellipsize="end"
+            android:text="Para rcibir más ayuda o enviar sugerencias por favor envie un correo a esta dirección (support@musea.com) o clicando en el botón de más arriba" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@drawable/image_howto"/>
+
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="20dp"
+            android:text="Política de privacidad" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:ellipsize="end"
+            android:text="@string/large_text" />
+
+    </LinearLayout>
+
+
+</androidx.core.widget.NestedScrollView>

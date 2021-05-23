@@ -99,6 +99,8 @@
     <string name="confirm">Confirmar</string>
     <string name="dialog_cancel">Cancel·lar</string>
     <string name="favourites">Favorits</string>
+    <string name="help_and_privacity">Ajuda i Política de privacitat</string>
+    <string name="button_premium">Become premium</string>
 
 
 </resources>
