@@ -16,13 +16,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.example.museaapplication.Classes.Adapters.BD.ChatsDBHelper;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageAdapter;
@@ -35,7 +37,6 @@ import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.ServerSocket;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,10 @@ public class ChatActivity extends AppCompatActivity {
     private boolean startTyping = false;
     private int time = 2;
 
+    // For deleting
+    private boolean isSelected;
+    private ArrayList<MessageFormat> selectedMessages;
+
     private Socket mSocket;
     {
         try {
@@ -77,7 +82,7 @@ public class ChatActivity extends AppCompatActivity {
             super.handleMessage(msg);
             Log.i(TAG, "handleMessage: typing stopped " + startTyping);
             if(time == 0){
-                setTitle("SocketIO");
+                setTitle(getIntent().getStringExtra("ChatName"));
                 Log.i(TAG, "handleMessage: typing stopped time is " + time);
                 startTyping = false;
                 time = 2;
@@ -90,6 +95,8 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        SocketService.onNewMessageActive = onNewMessage;
+        setTitle(getIntent().getStringExtra("ChatName"));
         Log.e(TAG, "" + mSocket);
         dbHelper = ChatsDBHelper.getInstance(ChatActivity.this);
         dbHelper.insertChat("Chat1");
@@ -100,6 +107,8 @@ public class ChatActivity extends AppCompatActivity {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("MyChannel", name, importance);
             channel.setDescription(description);
+            channel.enableVibration(true);
+            channel.enableLights(true);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
@@ -107,15 +116,7 @@ public class ChatActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
             notificationManager.createNotificationChannel(channel2);
 
-            Notification summaryNot = new NotificationCompat.Builder(getApplicationContext(), "MyChannel")
-                    .setSmallIcon(R.drawable.ic_notification)
-                    .setGroupSummary(true)
-                    .setGroup("Messages")
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
-                    .build();
-// notificationId is a unique int for each notification that you must define
-            notificationManager.notify(2, summaryNot);
+
         }
         Username = "User1";
 
@@ -129,15 +130,15 @@ public class ChatActivity extends AppCompatActivity {
         if(hasConnection){
 
         }else {
-            mSocket.connect();
+            /*mSocket.connect();
             mSocket.on("connect user", onNewUser);
-            //mSocket.on("chat message", onNewMessage);
+            mSocket.on("join room", onJoin);*/
             mSocket.on("on typing", onTyping);
 
             JSONObject userId = new JSONObject();
             try {
                 userId.put("username", Username + " Connected");
-                mSocket.emit("connect user", userId);
+                //mSocket.emit("connect user", userId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -156,8 +157,75 @@ public class ChatActivity extends AppCompatActivity {
         List<MessageFormat> messageFormatList = new ArrayList<>();
         messageAdapter = new MessageAdapter(this, R.layout.item_message, messageFormatList);
         messageListView.setAdapter(messageAdapter);
+        messageListView.setLongClickable(true);
+        messageListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                MessageFormat message = (MessageFormat) parent.getItemAtPosition(position);
+                messageAdapter.remove(message);
+                messageAdapter.notifyDataSetChanged();
+                dbHelper.deleteMessageOfChat(message.getUniqueId());
+                return false;
+            }
+        });
 
         onTypeButtonEnable();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SocketService.curRoom = getIntent().getStringExtra("ChatName");
+        //stopService(new Intent(this, SocketService.class));
+
+        startForegroundService(new Intent(this, SocketService.class));
+
+        Notification summaryNot = new NotificationCompat.Builder(getApplicationContext(), "MyChannel")
+                .setSmallIcon(R.drawable.ic_notification)
+                .setGroupSummary(true)
+                .setGroup("Messages")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+                .build();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            NotificationManager notificationManager = null;
+            notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.notify(102, summaryNot);
+        }
+        // notificationId is a unique int for each notification that you must define
+
+
+        //mSocket.on("chat message", onNewMessage);
+        if (!hasConnection){
+            Log.d(TAG, "Resume");
+            /*mSocket.connect();
+            mSocket.emit("join room", getIntent().getStringExtra("ChatName"));
+            mSocket.on("connect user", onNewUser);
+            //mSocket.on("chat message", onNewMessage);
+            mSocket.on("on typing", onTyping);*/
+
+            JSONObject userId = new JSONObject();
+            try {
+                userId.put("username", Username + " Connected");
+                //mSocket.emit("connect user", userId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+            //notificationManager.cancel(2);
+        }
+        messageAdapter.clear();
+        ArrayList<MessageFormat> messages = dbHelper.getMessagesOfChat(getIntent().getStringExtra("ChatName"));
+        for (MessageFormat m: messages){
+            messageAdapter.add(m);
+        }
+        messageListView.smoothScrollToPosition(messages.size()-1);
+        Intent service = new Intent(this , SocketService.class);
+        //stopService(service);
     }
 
     @Override
@@ -180,6 +248,7 @@ public class ChatActivity extends AppCompatActivity {
                     onTyping.put("typing", true);
                     onTyping.put("username", Username);
                     onTyping.put("uniqueId", uniqueId);
+                    onTyping.put("room", getIntent().getStringExtra("ChatName"));
                     mSocket.emit("on typing", onTyping);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -197,8 +266,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
-
-    private NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
     Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -208,22 +275,23 @@ public class ChatActivity extends AppCompatActivity {
                     Log.i(TAG, "run: ");
                     Log.i(TAG, "run: " + args.length);
                     JSONObject data = (JSONObject) args[0];
+                    Log.d(TAG, "data:" + data.toString());
                     String username;
                     String message;
                     String id;
+                    String room;
                     try {
                         username = data.getString("username");
                         message = data.getString("message");
                         id = data.getString("uniqueId");
-                        Log.i(TAG, "run: " + username + message + id);
-
-                        MessageFormat format = new MessageFormat(id, username, message);
-                        MessageFormat messageFormat = new MessageFormat(UUID.randomUUID().toString(), username, message);
-                        dbHelper.insertMessage("Chat1", messageFormat);
-                        Log.i(TAG, "run:4 ");
-                        messageAdapter.add(format);
-                        Log.i(TAG, "run:5 ");
-
+                        room = data.getString("room");
+                        MessageFormat messageFormat = new MessageFormat(UUID.randomUUID().toString(), username, message, room);
+                        if (room.equals(getIntent().getStringExtra("ChatName"))) {
+                            Log.i(TAG, "run: " + username + message + id);
+                            Log.i(TAG, "run:4 ");
+                            messageAdapter.add(messageFormat);
+                            Log.i(TAG, "run:5 ");
+                        }
                     } catch (Exception e) {
                         return;
                     }
@@ -254,11 +322,24 @@ public class ChatActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    MessageFormat format = new MessageFormat(null, username, null);
+                    MessageFormat format = new MessageFormat(null, username, null, "");
                     messageAdapter.add(format);
                     //messageListView.smoothScrollToPosition(0);
                     messageListView.scrollTo(0, messageAdapter.getCount()-1);
                     Log.i(TAG, "run: " + username);
+                }
+            });
+        }
+    };
+
+    Emitter.Listener onJoin = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String room = args[0].toString();
+                    Log.d(TAG, "Joined " + room);
                 }
             });
         }
@@ -277,42 +358,43 @@ public class ChatActivity extends AppCompatActivity {
                         Boolean typingOrNot = data.getBoolean("typing");
                         String userName = data.getString("username") + " is Typing......";
                         String id = data.getString("uniqueId");
-
-                        if(id.equals(uniqueId)){
-                            typingOrNot = false;
-                        }else {
-                            setTitle(userName);
-                        }
-
-                        if(typingOrNot){
-
-                            if(!startTyping){
-                                startTyping = true;
-                                thread2=new Thread(
-                                        new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                while(time > 0) {
-                                                    synchronized (this){
-                                                        try {
-                                                            wait(1000);
-                                                            Log.i(TAG, "run: typing " + time);
-                                                        } catch (InterruptedException e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                        time--;
-                                                    }
-                                                    handler2.sendEmptyMessage(0);
-                                                }
-
-                                            }
-                                        }
-                                );
-                                thread2.start();
+                        String room = data.getString("room");
+                        if (room.equals(getIntent().getStringExtra("ChatName"))){
+                            if(id.equals(uniqueId)){
+                                typingOrNot = false;
                             }else {
-                                time = 2;
+                                setTitle(userName);
                             }
 
+                            if(typingOrNot) {
+
+                                if (!startTyping) {
+                                    startTyping = true;
+                                    thread2 = new Thread(
+                                            new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    while (time > 0) {
+                                                        synchronized (this) {
+                                                            try {
+                                                                wait(1000);
+                                                                Log.i(TAG, "run: typing " + time);
+                                                            } catch (InterruptedException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                            time--;
+                                                        }
+                                                        handler2.sendEmptyMessage(0);
+                                                    }
+
+                                                }
+                                            }
+                                    );
+                                    thread2.start();
+                                } else {
+                                    time = 2;
+                                }
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -339,58 +421,30 @@ public class ChatActivity extends AppCompatActivity {
             jsonObject.put("message", message);
             jsonObject.put("username", Username);
             jsonObject.put("uniqueId", uniqueId);
+            jsonObject.put("room", getIntent().getStringExtra("ChatName"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Log.i(TAG, "sendMessage: 1"+ mSocket.emit("chat message", jsonObject));
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        stopService(new Intent(this, SocketService.class));
-        mSocket.on("chat message", onNewMessage);
-        if (!hasConnection){
-            Log.d(TAG, "Resume");
-            mSocket.connect();
-            mSocket.on("connect user", onNewUser);
-            //mSocket.on("chat message", onNewMessage);
-            mSocket.on("on typing", onTyping);
-
-            JSONObject userId = new JSONObject();
-            try {
-                userId.put("username", Username + " Connected");
-                mSocket.emit("connect user", userId);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.cancel(1);
-        }
-        messageAdapter.clear();
-        ArrayList<MessageFormat> messages = dbHelper.getMessagesOfChat("Chat1");
-        for (MessageFormat m: messages){
-            messageAdapter.add(m);
-        }
-        messageListView.smoothScrollToPosition(messages.size()-1);
-        Intent service = new Intent(this , SocketService.class);
-        //stopService(service);
-    }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mSocket.disconnect();
-        mSocket.off("chat message", onNewMessage);
+        Log.d(TAG, "OnStop");
+        //mSocket.disconnect();
+        /*mSocket.off("chat message", onNewMessage);
         mSocket.off("connect user", onNewUser);
         mSocket.off("on typing", onTyping);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        mSocket.off("join room", onJoin);*/
+
+        SocketService.curRoom = "";
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(new Intent(this, SocketService.class));
             }else{
                 startService(new Intent(this, SocketService.class));
-        }
+        }*/
     }
 
     @Override
@@ -402,7 +456,7 @@ public class ChatActivity extends AppCompatActivity {
             JSONObject userId = new JSONObject();
             try {
                 userId.put("username", Username + " DisConnected");
-                mSocket.emit("connect user", userId);
+                //mSocket.emit("connect user", userId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

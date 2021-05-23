@@ -43,6 +43,7 @@
         android:layout_alignBottom="@id/image_chat"/>
 
     <TextView
+        android:id="@+id/users_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/iconUsers"

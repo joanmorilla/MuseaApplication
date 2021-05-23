@@ -9,14 +9,16 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.museaapplication.Classes.Adapters.Chats.ChatFormat;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class ChatsDBHelper extends SQLiteOpenHelper {
     public ChatsDBHelper(@Nullable Context context) {
-        super(context, "ChatsDB", null, 8);
+        super(context, "ChatsDB", null, 11);
     }
 
     private static ChatsDBHelper _instance;
@@ -55,7 +57,6 @@ public class ChatsDBHelper extends SQLiteOpenHelper {
     public void insertMessage(String chatId, MessageFormat message){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues value = new ContentValues();
-        Log.e("DBHELPER", "ENTRO");
         value.put("UniqueId", message.getUniqueId()); // 0
         value.put("ChatName", chatId);  // 1
         value.put("Username", message.getUsername());   // 2
@@ -67,20 +68,38 @@ public class ChatsDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.query("MESSAGES", null,"ChatName=?", new String[]{chatName}, null, null, null);
         while (c.moveToNext()){
-            MessageFormat m = new MessageFormat(c.getString(0), c.getString(2), c.getString(3) );
+            MessageFormat m = new MessageFormat(c.getString(0), c.getString(2), c.getString(3), chatName);
             messages.add(m);
         }
         c.close();
         return messages;
     }
+    public void deleteMessageOfChat(String messageId) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("MESSAGES", "UniqueId=?", new String[]{messageId});
+    }
     public void insertChat(String chatName){
         SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
         try {
             ContentValues value = new ContentValues();
             value.put("Chat", chatName);
             db.insertOrThrow("CHATS", null, value);
         }catch (Exception e){
             return;
+        }finally {
+            db.endTransaction();
         }
+    }
+    public ArrayList<ChatFormat> getChats(){
+        ArrayList<ChatFormat> chats = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query("CHATS", null,null, null, null, null, null);
+        while (c.moveToNext()){
+            ChatFormat chat = new ChatFormat(c.getString(0), 5);
+            chats.add(chat);
+        }
+        c.close();
+        return chats;
     }
 }
