@@ -1,7 +1,6 @@
 package com.example.museaapplication;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -24,15 +23,17 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 
 import com.example.museaapplication.Classes.Adapters.BD.ChatsDBHelper;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageAdapter;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
+import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SocketService;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +42,13 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.Multipart;
 
 import static android.graphics.Color.argb;
 
@@ -101,23 +109,6 @@ public class ChatActivity extends AppCompatActivity {
         dbHelper = ChatsDBHelper.getInstance(ChatActivity.this);
         dbHelper.insertChat("Chat1");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "A channel";
-            String description = "Just a channel";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("MyChannel", name, importance);
-            channel.setDescription(description);
-            channel.enableVibration(true);
-            channel.enableLights(true);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            NotificationChannel channel2 = new NotificationChannel("BackGround", "Background", importance);
-            notificationManager.createNotificationChannel(channel);
-            notificationManager.createNotificationChannel(channel2);
-
-
-        }
         Username = "User1";
 
         uniqueId = UUID.randomUUID().toString();
@@ -130,10 +121,12 @@ public class ChatActivity extends AppCompatActivity {
         if(hasConnection){
 
         }else {
-            /*mSocket.connect();
+            mSocket.connect();
             mSocket.on("connect user", onNewUser);
-            mSocket.on("join room", onJoin);*/
+            mSocket.on("join room", onJoin);
             mSocket.on("on typing", onTyping);
+            mSocket.on("chat message", onNewMessage);
+            mSocket.emit("join room", getIntent().getStringExtra("ChatName"));
 
             JSONObject userId = new JSONObject();
             try {
@@ -179,9 +172,9 @@ public class ChatActivity extends AppCompatActivity {
         SocketService.curRoom = getIntent().getStringExtra("ChatName");
         //stopService(new Intent(this, SocketService.class));
 
-        startForegroundService(new Intent(this, SocketService.class));
+        //startForegroundService(new Intent(this, SocketService.class));
 
-        Notification summaryNot = new NotificationCompat.Builder(getApplicationContext(), "MyChannel")
+        /*Notification summaryNot = new NotificationCompat.Builder(getApplicationContext(), "MyChannel")
                 .setSmallIcon(R.drawable.ic_notification)
                 .setGroupSummary(true)
                 .setGroup("Messages")
@@ -193,18 +186,18 @@ public class ChatActivity extends AppCompatActivity {
             NotificationManager notificationManager = null;
             notificationManager = getSystemService(NotificationManager.class);
             notificationManager.notify(102, summaryNot);
-        }
+        }*/
         // notificationId is a unique int for each notification that you must define
 
 
         //mSocket.on("chat message", onNewMessage);
         if (!hasConnection){
             Log.d(TAG, "Resume");
-            /*mSocket.connect();
+            mSocket.connect();
             mSocket.emit("join room", getIntent().getStringExtra("ChatName"));
             mSocket.on("connect user", onNewUser);
-            //mSocket.on("chat message", onNewMessage);
-            mSocket.on("on typing", onTyping);*/
+            mSocket.on("chat message", onNewMessage);
+            mSocket.on("on typing", onTyping);
 
             JSONObject userId = new JSONObject();
             try {
@@ -291,6 +284,7 @@ public class ChatActivity extends AppCompatActivity {
                             Log.i(TAG, "run:4 ");
                             messageAdapter.add(messageFormat);
                             Log.i(TAG, "run:5 ");
+                            dbHelper.insertMessage(room, messageFormat);
                         }
                     } catch (Exception e) {
                         return;
@@ -425,6 +419,28 @@ public class ChatActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        JsonObject content = new JsonObject();
+        Log.d(TAG, getIntent().getStringExtra("ChatName").replace(" ", ""));
+        content.addProperty("to", "/topics/" + getIntent().getStringExtra("ChatName").replace(" ", ""));
+        content.addProperty("priority", "high");
+        JsonObject data = new JsonObject();
+        data.addProperty("room", getIntent().getStringExtra("ChatName"));
+        data.addProperty("content", message);
+        data.addProperty("username", Username);
+        content.add("data", data);
+
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().sendMessage(content);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Toast.makeText(ChatActivity.this, ""+response.code(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
         Log.i(TAG, "sendMessage: 1"+ mSocket.emit("chat message", jsonObject));
     }
 
@@ -433,11 +449,11 @@ public class ChatActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "OnStop");
-        //mSocket.disconnect();
-        /*mSocket.off("chat message", onNewMessage);
+        mSocket.disconnect();
+        mSocket.off("chat message", onNewMessage);
         mSocket.off("connect user", onNewUser);
         mSocket.off("on typing", onTyping);
-        mSocket.off("join room", onJoin);*/
+        mSocket.off("join room", onJoin);
 
         SocketService.curRoom = "";
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

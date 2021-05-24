@@ -80,15 +80,13 @@ public class ChatsDBHelper extends SQLiteOpenHelper {
     }
     public void insertChat(String chatName){
         SQLiteDatabase db = getWritableDatabase();
-        db.beginTransaction();
         try {
             ContentValues value = new ContentValues();
             value.put("Chat", chatName);
-            db.insertOrThrow("CHATS", null, value);
+            db.insert("CHATS", null, value);
         }catch (Exception e){
+            Log.e("DB", "Something went wrong");
             return;
-        }finally {
-            db.endTransaction();
         }
     }
     public ArrayList<ChatFormat> getChats(){

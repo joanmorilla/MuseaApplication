@@ -27,9 +27,25 @@
         android:clickable="true"
         android:elevation="1dp"
         android:gravity="center"
-        android:text="ASDASDASD"
         android:textColor="?android:textColorPrimary"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/chatName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/image_chat"
+        android:layout_toLeftOf="@id/users_count"
+        android:layout_alignBottom="@+id/chat_name"
+        android:layout_alignTop="@+id/chat_name"
+        android:gravity="center"
+        android:elevation="6dp"
+        android:text="ADASDASD"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="?android:textColorPrimary"/>
 
     <ImageView
         android:id="@+id/iconUsers"

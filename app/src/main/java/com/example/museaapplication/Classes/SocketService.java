@@ -35,7 +35,8 @@ import static android.graphics.Color.argb;
 
 public class SocketService extends Service {
     ChatsDBHelper dbHelper;
-    private NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+    public static NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+    public static ArrayList<NotificationCompat.InboxStyle> inboxes = new ArrayList<>();
     public static ArrayList<String> openRooms = new ArrayList<>();
     public static String curRoom = "";
 

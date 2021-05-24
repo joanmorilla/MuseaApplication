@@ -22,8 +22,6 @@ public class MessageAdapter extends ArrayAdapter<MessageFormat> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.i(ChatActivity.TAG, "getView:");
-
         MessageFormat message = getItem(position);
 
         if(TextUtils.isEmpty(message.getMessage())){
@@ -32,21 +30,15 @@ public class MessageAdapter extends ArrayAdapter<MessageFormat> {
 
             TextView messageText = convertView.findViewById(R.id.message_body);
 
-            Log.i(ChatActivity.TAG, "getView: is empty ");
             String userConnected = message.getUsername();
             messageText.setText(userConnected);
 
         }else if(message.getUsername().equals("User1")){
-            Log.i(ChatActivity.TAG, "getView: " + message.getUniqueId() + " " + ChatActivity.uniqueId);
-
-
             convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.my_message, parent, false);
             TextView messageText = convertView.findViewById(R.id.message_body);
             messageText.setText(message.getMessage());
 
         }else {
-            Log.i(ChatActivity.TAG, "getView: is not empty");
-
             convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.their_message, parent, false);
 
             TextView messageText = convertView.findViewById(R.id.message_body);

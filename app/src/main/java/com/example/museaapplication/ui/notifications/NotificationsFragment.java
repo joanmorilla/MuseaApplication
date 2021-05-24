@@ -1,6 +1,9 @@
 package com.example.museaapplication.ui.notifications;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +23,13 @@ import com.example.museaapplication.ChatActivity;
 import com.example.museaapplication.Classes.Adapters.BD.ChatsDBHelper;
 import com.example.museaapplication.Classes.Adapters.Chats.ChatFormat;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
+import com.example.museaapplication.Classes.SocketService;
 import com.example.museaapplication.R;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.rey.material.widget.Button;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -35,6 +42,19 @@ public class NotificationsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ChatsDBHelper dbHelper = ChatsDBHelper.getInstance(getContext());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "A channel";
+            String description = "Just a channel";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("MyChannel", name, importance);
+            channel.setDescription(description);
+            channel.enableVibration(true);
+            channel.enableLights(true);
+            NotificationManager notificationManager = requireActivity().getSystemService(NotificationManager.class);
+            NotificationChannel channel2 = new NotificationChannel("BackGround", "Background", importance);
+            notificationManager.createNotificationChannel(channel);
+            notificationManager.createNotificationChannel(channel2);
+        }
         dbHelper.insertChat("Chat1");
     }
 
@@ -45,15 +65,20 @@ public class NotificationsFragment extends Fragment {
         ll = root.findViewById(R.id.llayout_chats_view);
         ChatsDBHelper dbHelper = ChatsDBHelper.getInstance(getContext());
         ArrayList<ChatFormat> chats = dbHelper.getChats();
+
+        FirebaseMessaging.getInstance().subscribeToTopic("Messages");
+
         for (int i = 0; i < chats.size(); i++){
             ChatFormat chat = chats.get(i);
+            SocketService.openRooms.add(chat.getChatName());
+            SocketService.inboxes.add(new NotificationCompat.InboxStyle());
+            FirebaseMessaging.getInstance().subscribeToTopic(chat.getChatName().replace(" ", ""));
             RelativeLayout holder = new RelativeLayout(getContext());
             View v = inflater.inflate(R.layout.custom_chat_button, holder);
             MaterialButton content = v.findViewById(R.id.chat_name);
+            TextView chatName = v.findViewById(R.id.chatName);
             TextView usersCount = v.findViewById(R.id.users_count);
-            content.setMinHeight(0);
-            content.setMinWidth(0);
-            content.setText(chats.get(i).getChatName());
+            chatName.setText(chats.get(i).getChatName());
             content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

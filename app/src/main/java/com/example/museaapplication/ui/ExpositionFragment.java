@@ -45,6 +45,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.museaapplication.Classes.APIRequests;
+import com.example.museaapplication.Classes.Adapters.BD.ChatsDBHelper;
 import com.example.museaapplication.Classes.DepthPageTransformer;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Likes;
@@ -85,6 +86,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
     private String mParam2;
     SharedViewModel sharedViewModel;
     UserViewModel userViewModel;
+    String chatName;
 
     public ExpositionFragment() {
         // Required empty public constructor
@@ -128,11 +130,25 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
 
 
         ImageButton backArrow = root.findViewById(R.id.back_arrow_work);
+        ImageButton joinChat = root.findViewById(R.id.join_chat_button);
         backArrow.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
             @Override
             public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
                 ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).topMargin = insets.getSystemWindowInsetTop();
                 return insets;
+            }
+        });
+        joinChat.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
+                ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).topMargin = insets.getSystemWindowInsetTop();
+                return insets;
+            }
+        });
+        joinChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChatsDBHelper.getInstance(getContext()).insertChat(chatName);
             }
         });
         backArrow.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +170,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
         sharedViewModel.getCurExposition().observe(getViewLifecycleOwner(), new Observer<Exhibition>() {
             @Override
             public void onChanged(Exhibition exhibition) {
+                chatName = exhibition.getName() + " " + MuseuActivity.curMuseum.getName();
                 ImageView imageView = root.findViewById(R.id.image_holder_expo);
                 Picasso.get().load(validateUrl(exhibition.getImage())).centerCrop().fit().into(imageView);
                 txt.setText(exhibition.getName());

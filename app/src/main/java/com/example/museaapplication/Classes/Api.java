@@ -1,5 +1,6 @@
 package com.example.museaapplication.Classes;
 
+import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
 import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.User;
 import com.example.museaapplication.Classes.Json.CommentsValue;
@@ -16,6 +17,9 @@ import com.example.museaapplication.Classes.Json.VisitedValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
 import com.example.museaapplication.Classes.Json.WorksArray;
 import com.example.museaapplication.Classes.Json.WorksValue;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -24,6 +28,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -120,5 +125,10 @@ public interface Api {
     // Reports
     @POST("https://musea-api.herokuapp.com/reports")
     Call<Void> reportUser(@Query("informant") String idInformant, @Query("comment") String idComment);
+
+    // Chat notifications
+    @Headers({"Authorization: key= AAAAyrp4IOM:APA91bFokX5YIGqgiXdnrt9GhNeKncYDGRGnAwzFrQpjaBQ_IsPmKrzXe2mvK3bvpGNW4dg8gML-wbimjX6lK6Ymtfsbi018Non98uSaHhBDMAcPI9Jzi7KqWzSYRfpC4IlIflby6LDZ", "Content-Type:application/json"})
+    @POST("https://fcm.googleapis.com/fcm/send")
+    Call<Void> sendMessage(@Body JsonObject body);
 
 }
