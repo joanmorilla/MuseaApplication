@@ -174,14 +174,14 @@ public class ChatActivity extends AppCompatActivity {
                 if (isSelected) {
                     MessageFormat message = (MessageFormat) parent.getItemAtPosition(position);
                     if (selectedMessages == null) selectedMessages = new ArrayList<>();
-                    selectedMessages.add(message);
                     messageListView.setItemChecked(position, true);
                     int res = messageAdapter.addSelected(position);
-                    if (res > 0)
+                    if (res >= 0) {
                         selectedMessages.remove(res);
+                    }else selectedMessages.add(message);
                     if (messageAdapter.noSelecteds()) {
-
                         isSelected = false;
+                        selectedMessages = new ArrayList<>();
                         invalidateOptionsMenu();
                     }
                     messageAdapter.notifyDataSetChanged();

@@ -73,7 +73,8 @@ public class MessageAdapter extends ArrayAdapter<MessageFormat> {
 
     public int addSelected(int id){
         int res = ids.indexOf(id);
-        if (ids.contains(id)) {
+        Log.e("ADAPter", "" + res);
+        if (res >= 0) {
             ids.remove(res);
         }
         else {

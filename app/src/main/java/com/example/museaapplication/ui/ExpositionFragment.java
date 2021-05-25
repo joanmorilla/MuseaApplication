@@ -58,8 +58,12 @@ import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.ui.InitialActivity;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.user.UserViewModel;
+import com.github.chrisbanes.photoview.PhotoView;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+import com.zolad.zoominimageview.ZoomInImageView;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -76,6 +80,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
     View root;
     Boolean love = false;
     ViewPager viewPager2;
+
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -265,6 +270,7 @@ class MyViewPagerAdapter extends PagerAdapter  {
     private FragmentManager fm;
     private ArrayList<Work> works = new ArrayList<>();
     private boolean love = false;
+    PhotoViewAttacher mAttacher;
 
     private SharedViewModel sharedViewModel;
     public TextToSpeech mTTs;
@@ -352,15 +358,19 @@ class MyViewPagerAdapter extends PagerAdapter  {
         title.setText(works.get(position).getDescriptions().getText());
         title = v.findViewById(R.id.text_author_work);
         title.setText(works.get(position).getAuthor());
-        ImageView imageHolder = v.findViewById(R.id.image_holder_work);
-        imageHolder.setOnClickListener(new View.OnClickListener() {
+        PhotoView imageHolder = v.findViewById(R.id.image_holder_work);
+        mAttacher = null;
+        /*imageHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialog(validateUrl(works.get(position).getImage()));
             }
-        });
+        });*/
+        try {
+            Picasso.get().load(validateUrl(works.get(position).getImage())).fit().into(imageHolder);
+        }catch (Exception e){
 
-        Picasso.get().load(validateUrl(works.get(position).getImage())).fit().into(imageHolder);
+        }
         //imageHolder.setImageBitmap(draw);
 
         container.addView(v);
