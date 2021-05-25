@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //final Fragment mDashboardFragment = new DashboardFragment();
     final Fragment mSearchFragment = new SearchFragment();
     final Fragment mMapFragment = new MapFragment();
-    final Fragment mNotificationsFragment = new NotificationsFragment();
+    Fragment mNotificationsFragment = new NotificationsFragment();
 
     Fragment mUserFragment = new UserFragment();
     // Cogemos el fragment manager e inicializamos estado activo
@@ -163,7 +163,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         getSupportActionBar().hide();
                         return true;
                     case R.id.navigation_notifications:
-                        fm.beginTransaction().hide(active).show(mNotificationsFragment).commit();
+                        mNotificationsFragment = new NotificationsFragment();
+                        fm.beginTransaction().add(R.id.nav_host_fragment, mNotificationsFragment, "2").hide(active).show(mNotificationsFragment).commit();
                         active = mNotificationsFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 2;
                         txt.setText(R.string.title_notifications);

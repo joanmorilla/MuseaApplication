@@ -2,6 +2,7 @@ package com.example.museaapplication.Classes.Adapters.Chats;
 
 public class ChatFormat {
     private String chatName;
+    private String image;
     private int connectedUsers;
 
     public ChatFormat(String cn, int cu){
@@ -23,5 +24,13 @@ public class ChatFormat {
 
     public void setConnectedUsers(int connectedUsers) {
         this.connectedUsers = connectedUsers;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

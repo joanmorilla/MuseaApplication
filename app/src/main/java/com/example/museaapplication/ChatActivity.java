@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,12 +23,17 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.example.museaapplication.Classes.Adapters.BD.ChatsDBHelper;
+import com.example.museaapplication.Classes.Adapters.Chats.ChatFormat;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageAdapter;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
 import com.example.museaapplication.Classes.RetrofitClient;
+import com.example.museaapplication.Classes.Services.MyFirebaseNotifications;
 import com.example.museaapplication.Classes.SocketService;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -73,8 +79,10 @@ public class ChatActivity extends AppCompatActivity {
     private int time = 2;
 
     // For deleting
-    private boolean isSelected;
-    private ArrayList<MessageFormat> selectedMessages;
+    private boolean isSelected = false;
+    private ArrayList<MessageFormat> selectedMessages = new ArrayList<>();
+
+    Menu menu;
 
     private Socket mSocket;
     {
@@ -103,13 +111,22 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+
         SocketService.onNewMessageActive = onNewMessage;
         setTitle(getIntent().getStringExtra("ChatName"));
-        Log.e(TAG, "" + mSocket);
         dbHelper = ChatsDBHelper.getInstance(ChatActivity.this);
-        dbHelper.insertChat("Chat1");
-
         Username = "User1";
+
+        int index = dbHelper.getRowIdOfChat(getIntent().getStringExtra("ChatName"))-1;
+        NotificationCompat.InboxStyle newInbox = new NotificationCompat.InboxStyle();
+        SocketService.inboxes.set(index, newInbox);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+        notificationManager.cancel(index);
 
         uniqueId = UUID.randomUUID().toString();
         Log.i(TAG, "onCreate: " + uniqueId);
@@ -151,13 +168,33 @@ public class ChatActivity extends AppCompatActivity {
         messageAdapter = new MessageAdapter(this, R.layout.item_message, messageFormatList);
         messageListView.setAdapter(messageAdapter);
         messageListView.setLongClickable(true);
+        messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (isSelected) {
+                    MessageFormat message = (MessageFormat) parent.getItemAtPosition(position);
+                    if (selectedMessages == null) selectedMessages = new ArrayList<>();
+                    selectedMessages.add(message);
+                    messageListView.setItemChecked(position, true);
+                    int res = messageAdapter.addSelected(position);
+                    if (res > 0)
+                        selectedMessages.remove(res);
+                    if (messageAdapter.noSelecteds()) {
+
+                        isSelected = false;
+                        invalidateOptionsMenu();
+                    }
+                    messageAdapter.notifyDataSetChanged();
+                }
+            }
+        });
         messageListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                MessageFormat message = (MessageFormat) parent.getItemAtPosition(position);
-                messageAdapter.remove(message);
-                messageAdapter.notifyDataSetChanged();
-                dbHelper.deleteMessageOfChat(message.getUniqueId());
+                if (!isSelected) {
+                    isSelected = true;
+                    invalidateOptionsMenu();
+                }
                 return false;
             }
         });
@@ -170,27 +207,8 @@ public class ChatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         SocketService.curRoom = getIntent().getStringExtra("ChatName");
-        //stopService(new Intent(this, SocketService.class));
+        ChatsDBHelper.getInstance(this).clearNewMessages(getIntent().getStringExtra("ChatName"));
 
-        //startForegroundService(new Intent(this, SocketService.class));
-
-        /*Notification summaryNot = new NotificationCompat.Builder(getApplicationContext(), "MyChannel")
-                .setSmallIcon(R.drawable.ic_notification)
-                .setGroupSummary(true)
-                .setGroup("Messages")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
-                .build();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            NotificationManager notificationManager = null;
-            notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.notify(102, summaryNot);
-        }*/
-        // notificationId is a unique int for each notification that you must define
-
-
-        //mSocket.on("chat message", onNewMessage);
         if (!hasConnection){
             Log.d(TAG, "Resume");
             mSocket.connect();
@@ -422,7 +440,6 @@ public class ChatActivity extends AppCompatActivity {
         JsonObject content = new JsonObject();
         Log.d(TAG, getIntent().getStringExtra("ChatName").replace(" ", ""));
         content.addProperty("to", "/topics/" + getIntent().getStringExtra("ChatName").replace(" ", ""));
-        content.addProperty("priority", "high");
         JsonObject data = new JsonObject();
         data.addProperty("room", getIntent().getStringExtra("ChatName"));
         data.addProperty("content", message);
@@ -491,21 +508,46 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.delete_message).setVisible(isSelected);
+        /*if (isSelected)
+            menu.findItem(android.R.id.home).setIcon(R.drawable.ic_outline_cancel_24);
+        else
+            menu.findItem(android.R.id.home).setIcon()*/
+        return true;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.chat_activity_menu, menu);
+        this.menu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.change_state) {
-            stopService(new Intent(this, SocketService.class));
-            return true;
+        if (item.getItemId() == android.R.id.home) onBackPressed();
+        else if (item.getItemId() == R.id.delete_message){
+            for (MessageFormat message : selectedMessages) {
+                messageAdapter.remove(message);
+                messageAdapter.clear();
+                messageAdapter.notifyDataSetChanged();
+                dbHelper.deleteMessageOfChat(message.getUniqueId());
+            }
+            isSelected = false;
+            invalidateOptionsMenu();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isSelected){
+            selectedMessages = new ArrayList<>();
+            messageAdapter.clear();
+            messageAdapter.notifyDataSetChanged();
+            isSelected = false;
+            invalidateOptionsMenu();
+        } else super.onBackPressed();
     }
 }

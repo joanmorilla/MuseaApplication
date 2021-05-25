@@ -5,9 +5,11 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,11 +25,14 @@ import com.example.museaapplication.ChatActivity;
 import com.example.museaapplication.Classes.Adapters.BD.ChatsDBHelper;
 import com.example.museaapplication.Classes.Adapters.Chats.ChatFormat;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
+import com.example.museaapplication.Classes.Services.MyFirebaseNotifications;
 import com.example.museaapplication.Classes.SocketService;
+import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.rey.material.widget.Button;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -55,7 +60,7 @@ public class NotificationsFragment extends Fragment {
             notificationManager.createNotificationChannel(channel);
             notificationManager.createNotificationChannel(channel2);
         }
-        dbHelper.insertChat("Chat1");
+        dbHelper.insertChat("Chat1", "https://museaimages1.s3.amazonaws.com/museums%20/Interior_Museo_Egipcio_de_Barcelona_colecci%C3%B3n_permanente.jpg");
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -78,6 +83,8 @@ public class NotificationsFragment extends Fragment {
             MaterialButton content = v.findViewById(R.id.chat_name);
             TextView chatName = v.findViewById(R.id.chatName);
             TextView usersCount = v.findViewById(R.id.users_count);
+            ImageView image = v.findViewById(R.id.image_chat);
+            //Picasso.get().load(validateUrl(chat.getImage())).into(image);
             chatName.setText(chats.get(i).getChatName());
             content.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -91,5 +98,9 @@ public class NotificationsFragment extends Fragment {
             ll.addView(holder);
         }
         return root;
+    }
+    private String validateUrl(String url) {
+        if (!url.contains("https")) url = url.replace("http", "https");
+        return url;
     }
 }

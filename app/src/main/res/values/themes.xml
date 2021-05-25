@@ -46,4 +46,8 @@
         <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="activated" parent="android:Theme.Holo">
+        <item name="android:background">@android:color/holo_green_light</item>
+    </style>
 </resources>

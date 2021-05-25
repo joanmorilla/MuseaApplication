@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.museaapplication.Classes.APIRequests;
+import com.example.museaapplication.Classes.Adapters.Chats.ChatFormat;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Likes;
 import com.example.museaapplication.Classes.Dominio.Museo;
@@ -40,6 +41,7 @@ public class SharedViewModel extends ViewModel {
     private MutableLiveData<Exhibition> curExposition = new MutableLiveData<>();
     private MutableLiveData<Work> curWork = new MutableLiveData<>();
     private MutableLiveData<String> status = new MutableLiveData<>();
+    private MutableLiveData<ChatFormat> newChat = new MutableLiveData<>();
 
     private Fragment mMuseoFragment;
     private Fragment mExpositionFragment;
@@ -53,6 +55,16 @@ public class SharedViewModel extends ViewModel {
 
     public Museo getCurMuseo() {
         return curMuseum;
+    }
+
+    public LiveData<ChatFormat> getNewChat(){
+        if (newChat == null) newChat = new MutableLiveData<>();
+        return newChat;
+    }
+    public void setNewChat(ChatFormat newChat){
+        Log.d("SharedViewModel", "adding");
+        if (this.newChat == null) this.newChat = new MutableLiveData<>();
+        this.newChat.postValue(newChat);
     }
 
     public LiveData<Museo> getMuseum() {

@@ -15,15 +15,33 @@ import com.example.museaapplication.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static android.graphics.Color.argb;
 
 public class MyFirebaseNotifications extends FirebaseMessagingService {
-    private final NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+    private NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+    public static ArrayList<NotificationCompat.InboxStyle> inboxes = new ArrayList<>();
+
+    private ArrayList<MessageFormat> messages = new ArrayList<>();
+
+    // Mapear nuevos mensajes en la bd
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
+        String room = remoteMessage.getData().get("room");
+        String message = remoteMessage.getData().get("content");
+        String username = remoteMessage.getData().get("username");
+        ChatsDBHelper dbHelper = ChatsDBHelper.getInstance(getApplicationContext());
+        dbHelper.insertNewMessage(new MessageFormat(UUID.randomUUID().toString(), username, message, room));
+        inboxStyle = new NotificationCompat.InboxStyle();
+        messages = dbHelper.getNewMessagesOfChat(room);
+        int start = 0;
+        if (messages.size() > 7) start = messages.size()-7;
+        for( int i = start; i < messages.size(); i++){
+            inboxStyle.addLine(messages.get(i).getUsername() + ": " + messages.get(i).getMessage());
+        }
         Notification summaryNot = new NotificationCompat.Builder(getApplicationContext(), "MyChannel")
                 .setSmallIcon(R.drawable.ic_notification)
                 .setGroupSummary(true)
@@ -31,29 +49,20 @@ public class MyFirebaseNotifications extends FirebaseMessagingService {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
                 .build();
-        String room = remoteMessage.getData().get("room");
-        String message = remoteMessage.getData().get("content");
-        String username = remoteMessage.getData().get("username");
-        ChatsDBHelper dbHelper = ChatsDBHelper.getInstance(getApplicationContext());
+
         MessageFormat mFormat = new MessageFormat(UUID.randomUUID().toString(), username, message, room);
+        //int index = dbHelper.getRowIdOfChat(room) - 1;
+        int index = dbHelper.getRowIdOfChat(room);
         if (!SocketService.curRoom.equals(room)) {
-            int index = SocketService.openRooms.indexOf(room);
-            NotificationCompat.InboxStyle style;
-            // For alert messaging
-            if (index < 0) {
-                index = 103;
-                style = new NotificationCompat.InboxStyle();
-            }else{
-                style = SocketService.inboxes.get(index);
-            }
             NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(getApplicationContext(), "MyChannel")
                     .setSmallIcon(R.drawable.ic_notification)
                     .setContentTitle(room)
                     .setColor(argb(150, 30, 50, 255))
                     .setContentText(username + ": " + message)
-                    .setStyle(style.addLine(username + ": " + message))
+                    .setStyle(inboxStyle)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setAutoCancel(true)
+                    .setOnlyAlertOnce(true)
                     .setGroup("Messages");
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
 

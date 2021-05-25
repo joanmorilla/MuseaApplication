@@ -33,6 +33,7 @@ import android.view.WindowInsets;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -46,6 +47,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.museaapplication.Classes.APIRequests;
 import com.example.museaapplication.Classes.Adapters.BD.ChatsDBHelper;
+import com.example.museaapplication.Classes.Adapters.Chats.ChatFormat;
 import com.example.museaapplication.Classes.DepthPageTransformer;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Likes;
@@ -128,6 +130,8 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
         txt = root.findViewById(R.id.expo_title);
         viewPager2 = root.findViewById(R.id.view_pager_works);
 
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         ImageButton backArrow = root.findViewById(R.id.back_arrow_work);
         ImageButton joinChat = root.findViewById(R.id.join_chat_button);
@@ -148,7 +152,14 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
         joinChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChatsDBHelper.getInstance(getContext()).insertChat(chatName);
+                if (ChatsDBHelper.getInstance(getContext()).insertChat(chatName, curExpo.getImage())){
+                    Toast.makeText(getContext(), "Joined!", Toast.LENGTH_SHORT).show();
+                    ChatFormat newChat = new ChatFormat(chatName, 5);
+                    newChat.setImage(curExpo.getImage());
+                    sharedViewModel.setNewChat(newChat);
+                }else{
+                    Toast.makeText(getContext(), "Already joined", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         backArrow.setOnClickListener(new View.OnClickListener() {
@@ -165,11 +176,11 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
                 return insets;
             }
         });
-        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
         sharedViewModel.getCurExposition().observe(getViewLifecycleOwner(), new Observer<Exhibition>() {
             @Override
             public void onChanged(Exhibition exhibition) {
+                curExpo = exhibition;
                 chatName = exhibition.getName() + " " + MuseuActivity.curMuseum.getName();
                 ImageView imageView = root.findViewById(R.id.image_holder_expo);
                 Picasso.get().load(validateUrl(exhibition.getImage())).centerCrop().fit().into(imageView);

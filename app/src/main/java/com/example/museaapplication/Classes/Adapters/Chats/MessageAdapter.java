@@ -3,6 +3,7 @@ package com.example.museaapplication.Classes.Adapters.Chats;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -13,9 +14,12 @@ import android.widget.TextView;
 import com.example.museaapplication.ChatActivity;
 import com.example.museaapplication.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MessageAdapter extends ArrayAdapter<MessageFormat> {
+    private ArrayList<Integer> ids = new ArrayList<>();
     public MessageAdapter(Context context, int resource, List<MessageFormat> objects) {
         super(context, resource, objects);
     }
@@ -50,6 +54,9 @@ public class MessageAdapter extends ArrayAdapter<MessageFormat> {
             messageText.setText(message.getMessage());
             usernameText.setText(message.getUsername());
         }
+        if (ids.contains(position)) {
+            convertView.setBackgroundColor(Color.argb(120,88, 169, 245));
+        }
 
         return convertView;
     }
@@ -62,5 +69,22 @@ public class MessageAdapter extends ArrayAdapter<MessageFormat> {
     @Override
     public boolean isEnabled(int position) {
         return super.isEnabled(position);
+    }
+
+    public int addSelected(int id){
+        int res = ids.indexOf(id);
+        if (ids.contains(id)) {
+            ids.remove(res);
+        }
+        else {
+            ids.add(id);
+        }
+        return res;
+    }
+    public boolean noSelecteds(){
+        return ids.size() == 0;
+    }
+    public void clear(){
+        ids = new ArrayList<>();
     }
 }

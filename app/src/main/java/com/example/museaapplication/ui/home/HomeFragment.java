@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
@@ -173,7 +174,7 @@ public class HomeFragment extends Fragment implements Permissions {
             LocationManager manager = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
             gpsEnabled = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 25000, new LocationListener() {
+            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 25000, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     if (getActivity() == null || MapFragment.curPosMarker != null) return;
@@ -212,7 +213,7 @@ public class HomeFragment extends Fragment implements Permissions {
                 public void onProviderDisabled(String s) {
 
                 }
-            });
+            }, Looper.getMainLooper());
         }
         if (!gpsEnabled) {
             // We go through the museums
@@ -281,7 +282,7 @@ public class HomeFragment extends Fragment implements Permissions {
             if (m[i].getLocation() != null && m[i].getLocation().length != 0) {
                 List<Address> addressList = null;
                 try {
-                    addressList = geocoder.getFromLocation(m[i].getLocation()[0].getNumberDecimal(), m[i].getLocation()[1].getNumberDecimal(), 1);
+                    addressList = geocoder.getFromLocation(m[i].getLocation()[0], m[i].getLocation()[1], 1);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -329,7 +330,7 @@ public class HomeFragment extends Fragment implements Permissions {
             // Finally add it to the scroll layout
             List<Address> addressList = null;
             try {
-                addressList = geocoder.getFromLocation(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal(), 1);
+                addressList = geocoder.getFromLocation(m.getLocation()[0], m.getLocation()[1], 1);
                 double musLat = addressList.get(0).getLatitude();
                 double musLong = addressList.get(0).getLongitude();
                 double myLat = adreesses.get(0).getLatitude();

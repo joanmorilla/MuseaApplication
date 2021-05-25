@@ -343,7 +343,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                     museums = museos;
                     for (Museo m : museos) {
                         if (m.getLocation() != null && m.getLocation().length != 0){
-                            MyClusterItem item = new MyClusterItem(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal(), m.getName(), m.getAddress());
+                            MyClusterItem item = new MyClusterItem(m.getLocation()[0], m.getLocation()[1], m.getName(), m.getAddress());
                             item.setId(m.get_id());
                             //mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                             if (manager != null)
