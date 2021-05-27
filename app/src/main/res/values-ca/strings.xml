@@ -84,6 +84,11 @@
     <string name="quizzed_name">Quizzed!</string>
 
 
+    <!-- Shop Dialog -->
+    <string name="title_shop">La botiga de MUSEA</string>
+    <string name="available_points">Punts disponibles:</string>
+    <string name="premium_date">Data premium:</string>
+
     <!-- Visited -->
     <string name="title_visited">Museus Visitats</string>
   

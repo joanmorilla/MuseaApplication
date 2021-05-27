@@ -1,6 +1,7 @@
 package com.example.museaapplication.Classes.Dominio;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class UserInfo implements Serializable {
     private String userId;
@@ -12,6 +13,8 @@ public class UserInfo implements Serializable {
     private boolean premium;
     private String[] visited;
     private String[] likes;
+    private Date premiumDate;
+    private String email;
 
 
     public String getUserId() {
@@ -85,4 +88,12 @@ public class UserInfo implements Serializable {
     public void setLikes(String[] likes) {
         this.likes = likes;
     }
+
+    public Date getPremiumDate() { return premiumDate; }
+
+    public void setPremiumDate(Date d) { premiumDate = d; }
+
+    public String getMail() { return email; }
+
+    public void setMail(String mailUser) { email = mailUser; }
 }

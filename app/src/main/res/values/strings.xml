@@ -82,6 +82,11 @@
     <string name="start">Start</string>
     <string name="quizzed_name">Quizzed!</string>
 
+    <!-- Shop Dialog -->
+    <string name="title_shop">MUSEA shop</string>
+    <string name="available_points">Available points:</string>
+    <string name="premium_date">Premium date:</string>
+
 
     <!-- Visited -->
     <string name="title_visited">Visited Museums</string>

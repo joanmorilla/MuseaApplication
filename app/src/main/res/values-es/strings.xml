@@ -104,4 +104,10 @@
     <string name="geocode_error">No se ha encontrado, prueba a escribirlo diferente o ser mas específico</string>
 
 
+    <!-- Shop Dialog -->
+    <string name="title_shop">La tienda de MUSEA</string>
+    <string name="available_points">Puntos disponibles:</string>
+    <string name="premium_date">Fecha premium:</string>
+
+
 </resources>

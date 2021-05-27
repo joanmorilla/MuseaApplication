@@ -3,31 +3,25 @@ package com.example.museaapplication.Classes;
 import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.User;
 import com.example.museaapplication.Classes.Json.CommentsValue;
-import com.example.museaapplication.Classes.Json.ExhibitionValue;
 import com.example.museaapplication.Classes.Json.ExpositionListValue;
-import com.example.museaapplication.Classes.Json.ExpositionsList;
-import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.InfoValue;
+import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.QuizzValue;
 import com.example.museaapplication.Classes.Json.UserInfoValue;
 import com.example.museaapplication.Classes.Json.UserValue;
 import com.example.museaapplication.Classes.Json.VisitedValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
-import com.example.museaapplication.Classes.Json.WorksArray;
 import com.example.museaapplication.Classes.Json.WorksValue;
 
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -53,8 +47,8 @@ public interface Api {
     @GET("museums/{idMuseo}/{idExpo}/{idObra}")
     Call<WorkValue> getWork(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId, @Path("idObra") String idObra);
 
-    @GET("https://musea-api.herokuapp.com/users/RaulPes")
-    Call<UserInfoValue> getUserInfo();
+    @GET("https://musea-api.herokuapp.com/users/{mailUser}")
+    Call<UserInfoValue> getUserInfo(@Path("mailUser") String mailUser);
 
     // Comments
     @GET("https://musea-api.herokuapp.com/comments?")
@@ -92,6 +86,13 @@ public interface Api {
     @GET("https://musea-api.herokuapp.com/info?")
     Call<InfoValue> getInfo(@Query("name") String nameMuseo, @Query("city") String cityMuseo);
 
+    // User premium
+    @PUT("https://musea-api.herokuapp.com/users/{username}/premium")
+    Call<Void> addPremiumMembership(@Path("username") String username,@Query("days") String days);
+
+    // User spend points
+    @POST("https://musea-api.herokuapp.com/users/{username}/spend")
+    Call<Void> spendPoints(@Path("username") String username,@Query("points") String points);
 
     // User authentication
     @POST("https://musea-authorization-server.herokuapp.com/signup")
