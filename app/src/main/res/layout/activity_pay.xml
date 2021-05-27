@@ -145,6 +145,7 @@
                     android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/pay_method_visa"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_marginVertical="10dp"
@@ -164,7 +165,10 @@
                                 android:background="@drawable/image_pay_visa"
                                 android:backgroundTint="@color/grey_700"/>
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>    <androidx.cardview.widget.CardView
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                    android:id="@+id/pay_method_master"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_marginVertical="10dp"
@@ -184,7 +188,9 @@
                             android:background="@drawable/image_pay_mastercard"
                             android:backgroundTint="@color/grey_700"/>
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>    <androidx.cardview.widget.CardView
+                </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                    android:id="@+id/pay_method_paypal"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_marginVertical="10dp"

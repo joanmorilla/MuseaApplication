@@ -103,7 +103,6 @@ public class LoginFragment extends Fragment {
                                 UserInfoValue myuserinfo = response.body();
                                 UserInfo loggedUser = myuserinfo.getUserinfo();
                                 SingletonDataHolder.getInstance().setLoggedUser(loggedUser);
-
                                 Toast.makeText(getContext(), "Logged", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getContext(), MainActivity.class);
                                 startActivity(intent);
@@ -134,6 +133,10 @@ public class LoginFragment extends Fragment {
                 else if (r.equals(2)) {
                     Log.d("Response state","Wrong username or password");
                     textWarnings.setText(getContext().getResources().getString(R.string.warning_login));
+                }
+                else if (r.equals(3)) {
+                    Log.d("Response state","Service unavailable");
+                    Toast.makeText(getContext(), "Service currently unavailable", Toast.LENGTH_SHORT).show();
                 }
                 else if (r.equals(-1)){
                     Log.d("Response state","algo ocurrio");

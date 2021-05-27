@@ -18,81 +18,101 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:textSize="20dp"
-            android:text="General" />
+            android:text="@string/help_general" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:ellipsize="end"
-            android:text="Para rcibir más ayuda o enviar sugerencias por favor envie un correo a esta dirección (support@musea.com) o clicando en el botón de más arriba" />
+            android:text="@string/help_general_text"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:textSize="20dp"
-            android:text="Usuarios Premium" />
+            android:text="@string/help_usuarios_premium" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:ellipsize="end"
-            android:text="Para rcibir más ayuda o enviar sugerencias por favor envie un correo a esta dirección (support@musea.com) o clicando en el botón de más arriba" />
+            android:text="@string/help_usuarios_premium_text" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:textSize="20dp"
-            android:text="Comentarios" />
+            android:text="@string/help_comentarios" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:ellipsize="end"
-            android:text="Para rcibir más ayuda o enviar sugerencias por favor envie un correo a esta dirección (support@musea.com) o clicando en el botón de más arriba" />
+            android:text="@string/help_comentarios_text" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="20dp"
+            android:text="@string/help_chats" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:ellipsize="end"
+            android:text="@string/help_chats_text" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:textSize="20dp"
-            android:text="Visitar museos" />
+            android:text="@string/help_visitar_museos" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:ellipsize="end"
-            android:text="Para rcibir más ayuda o enviar sugerencias por favor envie un correo a esta dirección (support@musea.com) o clicando en el botón de más arriba" />
+            android:text="@string/help_visitar_museos_text" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:textSize="20dp"
-            android:text="Quizzes" />
+            android:text="@string/help_quizzes" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:ellipsize="end"
-            android:text="Para rcibir más ayuda o enviar sugerencias por favor envie un correo a esta dirección (support@musea.com) o clicando en el botón de más arriba" />
-
+            android:text="@string/help_quizzes_text" />
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:background="@drawable/image_howto"/>
 
-
-
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="20dp"
+            android:text="@string/help_mapa" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:ellipsize="end"
+            android:text="@string/help_mapa_text" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:textSize="20dp"
-            android:text="Política de privacidad" />
+            android:text="@string/help_pol_tica_de_privacidad" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
