@@ -82,9 +82,8 @@ public class NotificationsFragment extends Fragment {
             View v = inflater.inflate(R.layout.custom_chat_button, holder);
             MaterialButton content = v.findViewById(R.id.chat_name);
             TextView chatName = v.findViewById(R.id.chatName);
-            TextView usersCount = v.findViewById(R.id.users_count);
             ImageView image = v.findViewById(R.id.image_chat);
-            //Picasso.get().load(validateUrl(chat.getImage())).into(image);
+            Picasso.get().load(validateUrl(chat.getImage())).into(image);
             chatName.setText(chats.get(i).getChatName());
             content.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -94,7 +93,6 @@ public class NotificationsFragment extends Fragment {
                     startActivity(intent);
                 }
             });
-            usersCount.setText("" + chats.get(i).getConnectedUsers());
             ll.addView(holder);
         }
         return root;

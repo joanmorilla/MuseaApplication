@@ -105,7 +105,12 @@ public class HomeFragment extends Fragment implements Permissions {
                 GenerarBotones(museos);
                 pb.setVisibility(View.GONE);
             }
-
+        });
+        homeViewModel.getErrorMessage().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+            }
         });
         homeViewModel.getFavouriteMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
             @Override

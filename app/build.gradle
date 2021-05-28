@@ -80,5 +80,9 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.0.1')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging'
+
+    implementation ('com.amazonaws:aws-android-sdk-mobile-client:2.6.7@aar') { transitive = true }
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.6.31'
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.6.31'
 }
 apply plugin: 'com.google.gms.google-services'

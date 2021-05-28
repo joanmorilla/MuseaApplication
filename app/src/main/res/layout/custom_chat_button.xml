@@ -37,9 +37,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/image_chat"
-        android:layout_toLeftOf="@id/users_count"
+        android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/chat_name"
         android:layout_alignTop="@+id/chat_name"
+        android:layout_marginRight="10dp"
         android:gravity="center"
         android:elevation="6dp"
         android:text="ADASDASD"
@@ -48,31 +49,5 @@
         android:maxLines="2"
         android:ellipsize="end"
         android:textColor="?android:textColorPrimary"/>
-
-    <ImageView
-        android:id="@+id/iconUsers"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:clickable="false"
-        android:elevation="11dp"
-        android:background="@drawable/ic_action_user"
-        android:backgroundTint="?android:textColorPrimary"
-        android:layout_alignParentRight="true"
-        android:layout_alignBottom="@id/image_chat"/>
-
-    <TextView
-        android:id="@+id/users_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/iconUsers"
-        android:layout_alignBottom="@id/iconUsers"
-        android:layout_alignTop="@id/iconUsers"
-        android:elevation="11dp"
-        android:clickable="false"
-        android:gravity="center"
-        android:text="10"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        />
 
 </RelativeLayout>

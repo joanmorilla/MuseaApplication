@@ -2,12 +2,14 @@ package com.example.museaapplication.Classes.Services;
 
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.museaapplication.ChatActivity;
 import com.example.museaapplication.Classes.Adapters.BD.ChatsDBHelper;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
 import com.example.museaapplication.Classes.SocketService;
@@ -46,12 +48,17 @@ public class MyFirebaseNotifications extends FirebaseMessagingService {
                 .setSmallIcon(R.drawable.ic_notification)
                 .setGroupSummary(true)
                 .setGroup("Messages")
+                .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
                 .build();
 
         MessageFormat mFormat = new MessageFormat(UUID.randomUUID().toString(), username, message, room);
         //int index = dbHelper.getRowIdOfChat(room) - 1;
+        Intent openChatIntent = new Intent(this, ChatActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        openChatIntent.putExtra("ChatName", room);
+        PendingIntent openChatPendingIntent = PendingIntent.getActivity(this, 0, openChatIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
         int index = dbHelper.getRowIdOfChat(room);
         if (!SocketService.curRoom.equals(room)) {
             NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(getApplicationContext(), "MyChannel")
@@ -60,6 +67,7 @@ public class MyFirebaseNotifications extends FirebaseMessagingService {
                     .setColor(argb(150, 30, 50, 255))
                     .setContentText(username + ": " + message)
                     .setStyle(inboxStyle)
+                    .setContentIntent(openChatPendingIntent)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setAutoCancel(true)
                     .setOnlyAlertOnce(true)

@@ -58,7 +58,7 @@ public interface Api {
     @GET("museums/{idMuseo}/{idExpo}/{idObra}")
     Call<WorkValue> getWork(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId, @Path("idObra") String idObra);
 
-    @GET("https://musea-api.herokuapp.com/users/RaulPes")
+    @GET("https://musea-api.herokuapp.com/users/raulprueba@gmail.com")
     Call<UserInfoValue> getUserInfo();
 
     // Comments
@@ -74,8 +74,13 @@ public interface Api {
     @GET("https://musea-api.herokuapp.com/users/RaulPes/likes")
     Call<LikesValue> getLikes();
 
+    // Users
+
     @PUT("https://musea-api.herokuapp.com/users/{userId}?")
     Call<Void> addInfoUser(@Path("userId") String userId, @Query("name") String nameuser, @Query("bio") String userbio);
+
+    @PUT("https://musea-api.herokuapp.com/users/{userId}?")
+    Call<Void> updateProfilePic(@Path("userId") String userId, @Query("profilePic") String profilePicUrl);
 
     @POST("https://musea-api.herokuapp.com/users/{username}/visited?")
     Call<Void> addVisitedMuseum(@Path("username") String username, @Query("museum") String museum);
@@ -112,6 +117,8 @@ public interface Api {
 
     @GET("https://museaimages.s3.eu-west-3.amazonaws.com/logo.png")
     Call<User> getImage();
+
+
 
     // Quizzes
     @GET("https://musea-api.herokuapp.com/quizzes")

@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.amazonaws.mobile.client.AWSMobileClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.Map.MapFragment;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AWSMobileClient.getInstance().initialize(this).execute();
 
         mMapView = findViewById(R.id.map_view);
         hvm = new ViewModelProvider(this).get(HomeViewModel.class);

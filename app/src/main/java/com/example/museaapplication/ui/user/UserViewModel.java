@@ -65,7 +65,7 @@ public class UserViewModel extends ViewModel {
 
     public MutableLiveData<UserInfo> getinfoUser() {
         if (Userinfo == null){
-            Userinfo = new MutableLiveData<UserInfo>();
+            Userinfo = new MutableLiveData<>();
             loadUsersinfo();
         }
         return Userinfo;
@@ -80,7 +80,7 @@ public class UserViewModel extends ViewModel {
                 UserInfoValue myuserinfo = response.body();
                 if (myuserinfo != null){
                     UserInfo userin = myuserinfo.getUserinfo();
-                    Userinfo.setValue(userin);
+                    Userinfo.postValue(userin);
                 }
             }
 
