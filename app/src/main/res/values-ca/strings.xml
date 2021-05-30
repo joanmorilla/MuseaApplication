@@ -76,9 +76,9 @@
     <string name="points">Punts:</string>
     <string name="how_to_play">HOW TO PLAY</string>
     <string name="end_message_gold">¡As de la cultura!</string>
-    <string name="end_message_silver">Genio indiscutible</string>
-    <string name="end_message_bronze">Capáz de culturizar al cuñado</string>
-    <string name="end_message_garbage">Cultura de suegro</string>
+    <string name="end_message_silver">Geni indiscutible</string>
+    <string name="end_message_bronze">Pots asseure\'t a la taula dels grans</string>
+    <string name="end_message_garbage">Nivell de camaco</string>
     <string name="go_back">go back</string>
     <string name="start">Start</string>
     <string name="quizzed_name">Quizzed!</string>

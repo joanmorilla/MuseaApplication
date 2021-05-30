@@ -75,10 +75,10 @@
     <string name="restriccions_text_dialog_covid">Restrictions</string>
     <string name="points">Points:</string>
     <string name="how_to_play">HOW TO PLAY</string>
-    <string name="end_message_gold">¡As de la cultura!</string>
-    <string name="end_message_silver">Genio indiscutible</string>
-    <string name="end_message_bronze">Capáz de culturizar al cuñado</string>
-    <string name="end_message_garbage">Cultura de suegro</string>
+    <string name="end_message_gold">¡Master of culture!</string>
+    <string name="end_message_silver">Undisputed genius</string>
+    <string name="end_message_bronze">First time in culture</string>
+    <string name="end_message_garbage">Enough for christmas dinners</string>
     <string name="go_back">go back</string>
     <string name="start">Start</string>
     <string name="quizzed_name">Quizzed!</string>
