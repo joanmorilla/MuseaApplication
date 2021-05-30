@@ -64,7 +64,7 @@ public class LoginFragment extends Fragment {
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
         // Carga de preferencias compartidas
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("infoUser", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
 
         // Imagen de portada
         ImageView imageView = root.findViewById(R.id.image_holder);

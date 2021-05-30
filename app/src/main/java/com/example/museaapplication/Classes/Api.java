@@ -53,7 +53,7 @@ public interface Api {
     @GET("museums/{idMuseo}/{idExpo}/{idObra}")
     Call<WorkValue> getWork(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId, @Path("idObra") String idObra);
 
-    @GET("https://musea-api.herokuapp.com/users/RaulPes")
+    @GET("https://musea-api.herokuapp.com/users/raul@gmail.com")
     Call<UserInfoValue> getUserInfo();
 
     // Comments

@@ -16,24 +16,41 @@ import android.widget.Button;
 
 import com.example.museaapplication.ui.InitialActivity;
 import com.example.museaapplication.R;
+import com.example.museaapplication.ui.login.LoginFragment;
 
 import java.util.Locale;
 
 public class SettingsActivity extends AppCompatActivity {
 
     Button idiomaSettings;
+    Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         idiomaSettings = findViewById(R.id.btn_idioma);
+        logout = findViewById(R.id.et_cerrar_ses);
         idiomaSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showChangeLanguageDialog();
             }
         });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DeleteSharedPreferences();
+                Intent intent = new Intent(SettingsActivity.this, InitialActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void DeleteSharedPreferences() {
+        SharedPreferences sharedPref = this.getSharedPreferences("Settings",0);
+        sharedPref.edit().clear().commit();
     }
 
 
