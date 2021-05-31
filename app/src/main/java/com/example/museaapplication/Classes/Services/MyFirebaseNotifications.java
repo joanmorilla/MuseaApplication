@@ -36,8 +36,9 @@ public class MyFirebaseNotifications extends FirebaseMessagingService {
         String room = remoteMessage.getData().get("room");
         String message = remoteMessage.getData().get("content");
         String username = remoteMessage.getData().get("username");
+        String profilePic = remoteMessage.getData().get("profilePic");
         ChatsDBHelper dbHelper = ChatsDBHelper.getInstance(getApplicationContext());
-        dbHelper.insertNewMessage(new MessageFormat(UUID.randomUUID().toString(), username, message, room));
+        dbHelper.insertNewMessage(new MessageFormat(UUID.randomUUID().toString(), username, message, room, profilePic));
         inboxStyle = new NotificationCompat.InboxStyle();
         messages = dbHelper.getNewMessagesOfChat(room);
         int start = 0;
@@ -59,7 +60,7 @@ public class MyFirebaseNotifications extends FirebaseMessagingService {
                 .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
                 .build();
 
-        MessageFormat mFormat = new MessageFormat(UUID.randomUUID().toString(), username, message, room);
+        MessageFormat mFormat = new MessageFormat(UUID.randomUUID().toString(), username, message, room, profilePic);
         //int index = dbHelper.getRowIdOfChat(room) - 1;
 
 

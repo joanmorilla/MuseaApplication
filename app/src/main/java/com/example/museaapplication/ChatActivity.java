@@ -295,12 +295,14 @@ public class ChatActivity extends AppCompatActivity {
                     String message;
                     String id;
                     String room;
+                    String profPic;
                     try {
                         username = data.getString("username");
                         message = data.getString("message");
                         id = data.getString("uniqueId");
                         room = data.getString("room");
-                        MessageFormat messageFormat = new MessageFormat(UUID.randomUUID().toString(), username, message, room);
+                        profPic = data.getString("profilePic");
+                        MessageFormat messageFormat = new MessageFormat(UUID.randomUUID().toString(), username, message, room, profPic);
                         if (room.equals(roomActivity)) {
                             Log.i(TAG, "run: " + username + message + id);
                             Log.i(TAG, "run:4 ");
@@ -338,7 +340,7 @@ public class ChatActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    MessageFormat format = new MessageFormat(null, username, null, "");
+                    MessageFormat format = new MessageFormat(null, username, null, "", "");
                     messageAdapter.add(format);
                     //messageListView.smoothScrollToPosition(0);
                     messageListView.scrollTo(0, messageAdapter.getCount()-1);
@@ -438,6 +440,7 @@ public class ChatActivity extends AppCompatActivity {
             jsonObject.put("username", Username);
             jsonObject.put("uniqueId", uniqueId);
             jsonObject.put("room", roomActivity);
+            jsonObject.put("profilePic", SingletonDataHolder.getInstance().getLoggedUser().getProfilePic());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -448,6 +451,7 @@ public class ChatActivity extends AppCompatActivity {
         data.addProperty("room", roomActivity);
         data.addProperty("content", message);
         data.addProperty("username", Username);
+        data.addProperty("profilePic", SingletonDataHolder.getInstance().getLoggedUser().getProfilePic());
         content.add("data", data);
 
         Call<Void> call = RetrofitClient.getInstance().getMyApi().sendMessage(content);

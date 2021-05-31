@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.example.museaapplication.ChatActivity;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
+import com.github.siyamed.shapeimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +49,10 @@ public class MessageAdapter extends ArrayAdapter<MessageFormat> {
             convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.their_message, parent, false);
 
             TextView messageText = convertView.findViewById(R.id.message_body);
-            TextView usernameText = (TextView) convertView.findViewById(R.id.name);
+            TextView usernameText = convertView.findViewById(R.id.name);
+            CircularImageView profilePic = convertView.findViewById(R.id.avatar);
+            if (!message.getProfilePic().equals(""))
+                Picasso.get().load(message.getProfilePic()).into(profilePic);
 
             messageText.setVisibility(View.VISIBLE);
             usernameText.setVisibility(View.VISIBLE);

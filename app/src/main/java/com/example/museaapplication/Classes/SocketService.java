@@ -146,7 +146,7 @@ public class SocketService extends Service {
 // notificationId is a unique int for each notification that you must define
                     notificationManager.notify(openRooms.indexOf(room), notBuilder.build());
                 }
-                dbHelper.insertMessage(room, new MessageFormat(UUID.randomUUID().toString(), username, message, room));
+                dbHelper.insertMessage(room, new MessageFormat(UUID.randomUUID().toString(), username, message, room, ""));
             } catch (Exception e) {
                 return;
             }

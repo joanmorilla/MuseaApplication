@@ -5,13 +5,15 @@ public class MessageFormat {
     private String Username;
     private String Message;
     private String UniqueId;
+    private String profilePic;
     private String Room;
 
-    public MessageFormat(String uniqueId, String username, String message, String room) {
+    public MessageFormat(String uniqueId, String username, String message, String room, String pPic) {
         Username = username;
         Message = message;
         UniqueId = uniqueId;
         Room = room;
+        profilePic = pPic;
     }
 
     public String getUsername() {
@@ -44,5 +46,13 @@ public class MessageFormat {
 
     public void setRoom(String room) {
         this.Room = room;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
     }
 }

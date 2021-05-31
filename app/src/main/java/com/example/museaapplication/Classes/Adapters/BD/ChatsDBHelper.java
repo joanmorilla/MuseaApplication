@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 
 public class ChatsDBHelper extends SQLiteOpenHelper {
     public ChatsDBHelper(@Nullable Context context) {
-        super(context, "ChatsDB", null, 13);
+        super(context, "ChatsDB", null, 16);
     }
 
     private static ChatsDBHelper _instance;
@@ -39,7 +39,8 @@ public class ChatsDBHelper extends SQLiteOpenHelper {
                 "UniqueId" + " TEXT PRIMARY KEY," + // Define a primary key
                 "ChatName" + " TEXT REFERENCES " + "CHATS" + "," + // Define a foreign key
                 "Username" + " TEXT," +
-                "Message" + " TEXT" +
+                "Message" + " TEXT," +
+                "ProfilePic" + " TEXT" +
                 ")";
         String CREATE_NEW_MESSAGES_TABLE = "CREATE TABLE " + "NEW_MESSAGES" +
                 "(" +
@@ -59,6 +60,7 @@ public class ChatsDBHelper extends SQLiteOpenHelper {
             // Simplest implementation is to drop all old tables and recreate them
             db.execSQL("DROP TABLE IF EXISTS " + "CHATS");
             db.execSQL("DROP TABLE IF EXISTS " + "MESSAGES");
+            db.execSQL("DROP TABLE IF EXISTS " + "NEW_MESSAGES");
             onCreate(db);
         }
     }
@@ -70,6 +72,7 @@ public class ChatsDBHelper extends SQLiteOpenHelper {
         value.put("ChatName", chatId);  // 1
         value.put("Username", message.getUsername());   // 2
         value.put("Message", message.getMessage());  // 3
+        value.put("ProfilePic", message.getProfilePic()); // 4
         db.insert("MESSAGES", null, value);
     }
     public ArrayList<MessageFormat> getMessagesOfChat(String chatName){
@@ -77,7 +80,8 @@ public class ChatsDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.query("MESSAGES", null,"ChatName=?", new String[]{chatName}, null, null, null);
         while (c.moveToNext()){
-            MessageFormat m = new MessageFormat(c.getString(0), c.getString(2), c.getString(3), chatName);
+            // TODO profile pic in database
+            MessageFormat m = new MessageFormat(c.getString(0), c.getString(2), c.getString(3), chatName, c.getString(4));
             messages.add(m);
         }
         c.close();
@@ -139,7 +143,8 @@ public class ChatsDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.query("NEW_MESSAGES", null, "ChatName=?", new String[]{room}, null, null, null);
         while (c.moveToNext()){
-            MessageFormat m = new MessageFormat(c.getString(0), c.getString(2), c.getString(3), c.getString(1));
+            // TODO profile pic in database as well
+            MessageFormat m = new MessageFormat(c.getString(0), c.getString(2), c.getString(3), c.getString(1), "");
             res.add(m);
         }
         return res;
