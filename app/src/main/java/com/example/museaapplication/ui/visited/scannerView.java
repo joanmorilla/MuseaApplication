@@ -54,7 +54,6 @@ public class scannerView extends AppCompatActivity implements ZXingScannerView.R
     public void handleResult(Result rawResult) {
         vmvm.addVisitedMuseum(rawResult.getText().toString());
         vmvm.loadVisited();
-        Log.e("llega","LEIDOOOOOO");
         //onBackPressed();
     }
 
