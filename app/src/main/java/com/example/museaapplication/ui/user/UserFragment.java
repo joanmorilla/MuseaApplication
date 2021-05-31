@@ -33,6 +33,7 @@ import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Dominio.UserInfo;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
+import com.example.museaapplication.ui.PayActivity;
 import com.example.museaapplication.ui.SettingsActivity;
 
 import com.example.museaapplication.ui.visited.VisitedMus;
@@ -187,6 +188,21 @@ public class UserFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), edit_user.class);
                 intent.putExtra("username", user_name.getText().toString());
                 intent.putExtra("bio", user_bio.getText().toString());
+                startActivity(intent);
+            }
+        });
+
+        Button premium = root.findViewById(R.id.button_premium);
+        boolean isPremium = uvm.IsPremium();
+        if (isPremium)
+            premium.setText("Extend premium");
+        else {
+            premium.setText("Become premium");
+        }
+        premium.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PayActivity.class);
                 startActivity(intent);
             }
         });

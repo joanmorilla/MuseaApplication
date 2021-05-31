@@ -26,6 +26,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.museaapplication.Classes.Dominio.UserInfo;
+import com.example.museaapplication.Classes.Json.UserInfoValue;
+import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.MainActivity;
@@ -40,6 +43,10 @@ import com.google.android.gms.tasks.Task;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginFragment extends Fragment {
 
@@ -88,6 +95,30 @@ public class LoginFragment extends Fragment {
                 loadingPanel.setVisibility(View.GONE);
                 if (r.equals(1)) {
                     Log.d("Response state","Succesfuly Login");
+                    Call<UserInfoValue> call = RetrofitClient.getInstance().getMyApi().getUserInfo(username.getText().toString());
+                    call.enqueue(new Callback<UserInfoValue>() {
+                        @Override
+                        public void onResponse(Call<UserInfoValue> call, Response<UserInfoValue> response) {
+                            if (response.code() == 200){
+                                UserInfoValue myuserinfo = response.body();
+                                UserInfo loggedUser = myuserinfo.getUserinfo();
+                                SingletonDataHolder.getInstance().setLoggedUser(loggedUser);
+                                Toast.makeText(getContext(), "Logged", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                startActivity(intent);
+                            }
+                            else if (response.code() == 404)
+                            {
+                                Toast.makeText(getContext(), "There is no user for such id", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<UserInfoValue> call, Throwable t) {
+                            Log.e("TAG1", t.getLocalizedMessage());
+                            Log.e("TAG2", t.getMessage());
+                            t.printStackTrace();
+                        }
+                    });
 
                     SharedPreferences.Editor editor = sharedPref.edit();
                     if (checkBoxRememberMe.isChecked()) {
@@ -98,15 +129,14 @@ public class LoginFragment extends Fragment {
                         editor.putString(getString(R.string.auto_signin_key), "");
                     }
                     editor.apply();
-
-
-                    Toast.makeText(getContext(), "Logged", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    startActivity(intent);
                 }
                 else if (r.equals(2)) {
                     Log.d("Response state","Wrong username or password");
                     textWarnings.setText(getContext().getResources().getString(R.string.warning_login));
+                }
+                else if (r.equals(3)) {
+                    Log.d("Response state","Service unavailable");
+                    Toast.makeText(getContext(), "Service currently unavailable", Toast.LENGTH_SHORT).show();
                 }
                 else if (r.equals(-1)){
                     Log.d("Response state","algo ocurrio");
@@ -124,10 +154,9 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SingletonDataHolder.getInstance().setLoggedUser(username.getText().toString());
                 if (!loginViewModel.validUsernamePassword(username.getText().toString(),password.getText().toString())) {
                     if (textWarnings.getText().toString().isEmpty()) textWarnings.setText(getContext().getResources().getString(R.string.warning_login2));
-                    SingletonDataHolder.getInstance().setLoggedUser("");
+                    SingletonDataHolder.getInstance().setLoggedUser(null);
                 }
             }
         });

@@ -21,10 +21,22 @@
         android:roundIcon="@mipmap/ic_launcher_musea_2_round"
         android:supportsRtl="true"
 
+
         android:theme="@style/Theme.MuseaApplication"
         tools:ignore="AllowBackup">
         <activity android:name=".ChatActivity" >
         </activity>
+
+        android:theme="@style/Theme.MuseaApplication">
+        <activity android:name=".ui.PayActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MuseaApplication"/>
+        <activity
+            android:name=".ui.HelpActivity"
+            android:label="@string/title_activity_help"
+            android:theme="@style/Theme.MuseaApplication.NoActionBar" />
+        <activity android:name=".ui.favourite.FavouriteMus" />
+
         <activity android:name=".ui.visited.scannerView" />
         <activity android:name=".ui.visited.VisitedMus" />
         <activity android:name=".ui.SettingsActivity" />
@@ -38,6 +50,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MuseuActTheme" >
             <intent-filter android:label="Museums" >
+
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />

@@ -58,8 +58,9 @@ public interface Api {
     @GET("museums/{idMuseo}/{idExpo}/{idObra}")
     Call<WorkValue> getWork(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId, @Path("idObra") String idObra);
 
-    @GET("https://musea-api.herokuapp.com/users/raulprueba@gmail.com")
-    Call<UserInfoValue> getUserInfo();
+
+    @GET("https://musea-api.herokuapp.com/users/{email}")
+    Call<UserInfoValue> getUserInfo(@Path("email") String email);
 
     // Comments
     @GET("https://musea-api.herokuapp.com/comments?")
@@ -71,8 +72,8 @@ public interface Api {
     @DELETE("https://musea-api.herokuapp.com/comments/{commentId}")
     Call<Void> deleteComment(@Path("commentId") String commentId);
 
-    @GET("https://musea-api.herokuapp.com/users/RaulPes/likes")
-    Call<LikesValue> getLikes();
+    @GET("https://musea-api.herokuapp.com/users/{username}/likes")
+    Call<LikesValue> getLikes(@Path("username") String username);
 
     // Users
 
@@ -137,5 +138,9 @@ public interface Api {
     @Headers({"Authorization: key= AAAAyrp4IOM:APA91bFokX5YIGqgiXdnrt9GhNeKncYDGRGnAwzFrQpjaBQ_IsPmKrzXe2mvK3bvpGNW4dg8gML-wbimjX6lK6Ymtfsbi018Non98uSaHhBDMAcPI9Jzi7KqWzSYRfpC4IlIflby6LDZ", "Content-Type:application/json"})
     @POST("https://fcm.googleapis.com/fcm/send")
     Call<Void> sendMessage(@Body JsonObject body);
+  
+    @PUT("https://musea-api.herokuapp.com/users/{username}/premium")
+    Call<Void> updatePremium(@Path("username") String username,
+                            @Query("days") String days);
 
 }

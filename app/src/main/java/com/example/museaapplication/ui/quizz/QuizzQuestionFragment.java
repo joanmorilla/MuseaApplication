@@ -321,10 +321,8 @@ public class QuizzQuestionFragment extends Fragment {
         endTotal.setText(""+totalPoints);
 
         // Update points
-        String username = SingletonDataHolder.getInstance().getLoggedUser();
+        String username = SingletonDataHolder.getInstance().getLoggedUser().getUserId();
         Log.d("Check Singleton:","" + username);
-        // borrar la siguiente linea cuando tengamos el username
-        username = "luisitodescomunica";
         Call<Void> call = RetrofitClient.getInstance().getMyApi().updatePoints(username,String.valueOf(points),String.valueOf(totalPoints));
         call.enqueue(new Callback<Void>() {
             @Override
@@ -340,6 +338,7 @@ public class QuizzQuestionFragment extends Fragment {
                         Log.d("Update Points:","Something unexpected happened");
                         break;
                 }
+                SingletonDataHolder.userViewModel.UpdateUserInfo();
             }
 
             @Override
@@ -359,7 +358,7 @@ public class QuizzQuestionFragment extends Fragment {
         countDownTimer = new CountDownTimer(timeAnimation,10) {
             @Override
             public void onTick(long millisUntilFinished) {
-                Log.d("timestamp:", ""+(points * ((timeAnimation-millisUntilFinished)*100/timeAnimation)/100));
+                //Log.d("timestamp:", ""+(points * ((timeAnimation-millisUntilFinished)*100/timeAnimation)/100));
                 final int current = (int) (points * ((timeAnimation-millisUntilFinished)*100/timeAnimation)/100);
                 endBar.setProgress(current);
                 endPoints.setText(""+current);

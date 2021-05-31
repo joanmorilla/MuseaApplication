@@ -79,6 +79,11 @@ public class LoginViewModel extends ViewModel {
                     Log.d("Respuesta","Usuario no existe");
                     res.setValue(2);
                 }
+                else if (response.code() == 503) {
+                    Log.d("Respuesta","Servicio no disponible");
+                    // TODO: CAMBIARLO A 3 CUANDO FUNCIONE EL AUTH!!!!
+                    res.setValue(1);
+                }
 
             }
 

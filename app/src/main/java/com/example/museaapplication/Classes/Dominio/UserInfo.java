@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class UserInfo implements Serializable {
     private String userId;
     private String name;
+    private String email;
     private String bio;
     private String[] favourites;
     private int points;
@@ -84,5 +85,13 @@ public class UserInfo implements Serializable {
 
     public void setLikes(String[] likes) {
         this.likes = likes;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
