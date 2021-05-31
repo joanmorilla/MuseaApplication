@@ -67,6 +67,7 @@ public class ChatActivity extends AppCompatActivity {
     public static String uniqueId;
 
     private String Username;
+    private String roomActivity;
 
     private Boolean hasConnection = false;
 
@@ -98,7 +99,7 @@ public class ChatActivity extends AppCompatActivity {
             super.handleMessage(msg);
             Log.i(TAG, "handleMessage: typing stopped " + startTyping);
             if(time == 0){
-                setTitle(getIntent().getStringExtra("ChatName"));
+                setTitle(roomActivity);
                 Log.i(TAG, "handleMessage: typing stopped time is " + time);
                 startTyping = false;
                 time = 2;
@@ -111,6 +112,9 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        if (getIntent() != null && getIntent().hasExtra("ChatName")) roomActivity = getIntent().getStringExtra("ChatName");
+        else roomActivity = "AAAAAAA";
+        Toast.makeText(this, "HolaPues", Toast.LENGTH_SHORT).show();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -118,11 +122,11 @@ public class ChatActivity extends AppCompatActivity {
 
 
         SocketService.onNewMessageActive = onNewMessage;
-        setTitle(getIntent().getStringExtra("ChatName"));
+        setTitle(roomActivity);
         dbHelper = ChatsDBHelper.getInstance(ChatActivity.this);
         Username = "User1";
 
-        int index = dbHelper.getRowIdOfChat(getIntent().getStringExtra("ChatName"))-1;
+        int index = dbHelper.getRowIdOfChat(roomActivity)-1;
         NotificationCompat.InboxStyle newInbox = new NotificationCompat.InboxStyle();
         SocketService.inboxes.set(index, newInbox);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
@@ -143,7 +147,7 @@ public class ChatActivity extends AppCompatActivity {
             mSocket.on("join room", onJoin);
             mSocket.on("on typing", onTyping);
             mSocket.on("chat message", onNewMessage);
-            mSocket.emit("join room", getIntent().getStringExtra("ChatName"));
+            mSocket.emit("join room", roomActivity);
 
             JSONObject userId = new JSONObject();
             try {
@@ -206,13 +210,13 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        SocketService.curRoom = getIntent().getStringExtra("ChatName");
-        ChatsDBHelper.getInstance(this).clearNewMessages(getIntent().getStringExtra("ChatName"));
+        SocketService.curRoom = roomActivity;
+        ChatsDBHelper.getInstance(this).clearNewMessages(roomActivity);
 
         if (!hasConnection){
             Log.d(TAG, "Resume");
             mSocket.connect();
-            mSocket.emit("join room", getIntent().getStringExtra("ChatName"));
+            mSocket.emit("join room", roomActivity);
             mSocket.on("connect user", onNewUser);
             mSocket.on("chat message", onNewMessage);
             mSocket.on("on typing", onTyping);
@@ -230,7 +234,7 @@ public class ChatActivity extends AppCompatActivity {
             //notificationManager.cancel(2);
         }
         messageAdapter.clear();
-        ArrayList<MessageFormat> messages = dbHelper.getMessagesOfChat(getIntent().getStringExtra("ChatName"));
+        ArrayList<MessageFormat> messages = dbHelper.getMessagesOfChat(roomActivity);
         for (MessageFormat m: messages){
             messageAdapter.add(m);
         }
@@ -259,7 +263,7 @@ public class ChatActivity extends AppCompatActivity {
                     onTyping.put("typing", true);
                     onTyping.put("username", Username);
                     onTyping.put("uniqueId", uniqueId);
-                    onTyping.put("room", getIntent().getStringExtra("ChatName"));
+                    onTyping.put("room", roomActivity);
                     mSocket.emit("on typing", onTyping);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -297,7 +301,7 @@ public class ChatActivity extends AppCompatActivity {
                         id = data.getString("uniqueId");
                         room = data.getString("room");
                         MessageFormat messageFormat = new MessageFormat(UUID.randomUUID().toString(), username, message, room);
-                        if (room.equals(getIntent().getStringExtra("ChatName"))) {
+                        if (room.equals(roomActivity)) {
                             Log.i(TAG, "run: " + username + message + id);
                             Log.i(TAG, "run:4 ");
                             messageAdapter.add(messageFormat);
@@ -371,7 +375,7 @@ public class ChatActivity extends AppCompatActivity {
                         String userName = data.getString("username") + " is Typing......";
                         String id = data.getString("uniqueId");
                         String room = data.getString("room");
-                        if (room.equals(getIntent().getStringExtra("ChatName"))){
+                        if (room.equals(roomActivity)){
                             if(id.equals(uniqueId)){
                                 typingOrNot = false;
                             }else {
@@ -433,15 +437,15 @@ public class ChatActivity extends AppCompatActivity {
             jsonObject.put("message", message);
             jsonObject.put("username", Username);
             jsonObject.put("uniqueId", uniqueId);
-            jsonObject.put("room", getIntent().getStringExtra("ChatName"));
+            jsonObject.put("room", roomActivity);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         JsonObject content = new JsonObject();
-        Log.d(TAG, getIntent().getStringExtra("ChatName").replace(" ", ""));
-        content.addProperty("to", "/topics/" + getIntent().getStringExtra("ChatName").replace(" ", ""));
+        Log.d(TAG, roomActivity.replace(" ", ""));
+        content.addProperty("to", "/topics/" + roomActivity.replace(" ", ""));
         JsonObject data = new JsonObject();
-        data.addProperty("room", getIntent().getStringExtra("ChatName"));
+        data.addProperty("room", roomActivity);
         data.addProperty("content", message);
         data.addProperty("username", Username);
         content.add("data", data);
