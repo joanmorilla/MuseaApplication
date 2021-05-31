@@ -123,4 +123,10 @@
     <string name="help_pol_tica_de_privacidad">Política de privacidad</string>
 
 
+    <!-- Shop Dialog -->
+    <string name="title_shop">La tienda de MUSEA</string>
+    <string name="available_points">Puntos disponibles:</string>
+    <string name="premium_date">Fecha premium:</string>
+
+
 </resources>

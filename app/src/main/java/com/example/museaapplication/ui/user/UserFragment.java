@@ -1,17 +1,9 @@
 package com.example.museaapplication.ui.user;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
-
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -22,28 +14,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.museaapplication.Classes.Dominio.Likes;
-import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Dominio.UserInfo;
+import com.example.museaapplication.Classes.ShopDialog;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.PayActivity;
 import com.example.museaapplication.ui.SettingsActivity;
-
-import com.example.museaapplication.ui.visited.VisitedMus;
 import com.example.museaapplication.ui.edit.edit_user;
+import com.example.museaapplication.ui.visited.VisitedMus;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -249,6 +241,10 @@ public class UserFragment extends Fragment {
         if(id == R.id.config){
             Intent intent = new Intent(getActivity(), SettingsActivity.class);
             startActivity(intent);
+        } else if (id == R.id.shop) {
+            ShopDialog dialog = new ShopDialog(getContext(),uvm);
+            //CustomDialog dialog = new CustomDialog(null, 0, museum.getRestrictions(), getContext()); // For testing
+            dialog.show(getChildFragmentManager(), "Informacio");
         }
 
         return super.onOptionsItemSelected(item);

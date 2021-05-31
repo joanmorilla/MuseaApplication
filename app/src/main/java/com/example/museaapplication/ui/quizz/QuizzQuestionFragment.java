@@ -1,11 +1,6 @@
 package com.example.museaapplication.ui.quizz;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
@@ -17,6 +12,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.museaapplication.Classes.Dominio.Quizz;
 import com.example.museaapplication.Classes.RetrofitClient;
