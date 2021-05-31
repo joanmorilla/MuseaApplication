@@ -165,7 +165,7 @@ public class edit_user extends AppCompatActivity {
             public void onStateChanged(int id, TransferState state) {
                 if (TransferState.COMPLETED == state) {
 
-                    Call<Void> call = RetrofitClient.getInstance().getMyApi().updateProfilePic("RaulPes", baseUrl + fileName + "." + getFileExtension(selectedImageUri));
+                    Call<Void> call = RetrofitClient.getInstance().getMyApi().updateProfilePic(SingletonDataHolder.getInstance().getLoggedUser().getUserId(), baseUrl + fileName + "." + getFileExtension(selectedImageUri));
                     call.enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {

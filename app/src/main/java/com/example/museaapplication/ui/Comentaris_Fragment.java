@@ -48,6 +48,7 @@ import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
+import com.github.siyamed.shapeimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 import com.xw.repo.widget.BounceScrollView;
 
@@ -75,6 +76,7 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
 
     EditText newCommentText;
     ImageButton postButton;
+    CircularImageView profilePic;
     SwipeRefreshLayout refresLayout;
     int progress;
     public static boolean loaded = false;
@@ -120,7 +122,10 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
         newCommentText = root.findViewById(R.id.comment_input);
         postButton = root.findViewById(R.id.post_comment_button);
         refresLayout = root.findViewById(R.id.refresh_layout_comments);
+        profilePic = root.findViewById(R.id.user_image_bottom);
         RelativeLayout bottompannel = root.findViewById(R.id.bottom_panel);
+
+        Picasso.get().load(SingletonDataHolder.getInstance().getLoggedUser().getProfilePic()).into(profilePic);
 
         bottompannel.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
             @Override
@@ -170,7 +175,7 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
             public void onClick(View view) {
                 if (!newCommentText.getText().toString().equals("")) {
                     YoYo.with(Techniques.SlideInLeft).duration(200).playOn(view);
-                    Call<Comment> call = RetrofitClient.getInstance().getMyApi().postComment(sharedViewModel.getCurWork().getValue().get_id(), newCommentText.getText().toString(), "user1");
+                    Call<Comment> call = RetrofitClient.getInstance().getMyApi().postComment(sharedViewModel.getCurWork().getValue().get_id(), newCommentText.getText().toString(), SingletonDataHolder.getInstance().getLoggedUser().getUserId());
                     call.enqueue(new Callback<Comment>() {
                         @Override
                         public void onResponse(Call<Comment> call, Response<Comment> response) {
