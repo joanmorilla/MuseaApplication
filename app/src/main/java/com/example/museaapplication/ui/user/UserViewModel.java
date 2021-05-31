@@ -10,9 +10,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.museaapplication.Classes.Dominio.Likes;
+import com.example.museaapplication.Classes.Dominio.Prize;
 import com.example.museaapplication.Classes.Dominio.UserInfo;
 import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.UserInfoValue;
+import com.example.museaapplication.Classes.Json.prizeValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 
@@ -30,8 +32,38 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<UserInfo> Userinfo;
     private MutableLiveData<Likes[]> Likes;
     private MutableLiveData<String> finishBuy;
+    private MutableLiveData<Prize[]> prizes;
 
     public UserViewModel() {
+    }
+
+    public LiveData<Prize[]> getprizes(){
+        if(prizes == null){
+        prizes = new MutableLiveData<Prize[]>();
+        loadprize();
+        }
+        return prizes;
+    }
+
+    private void loadprize() {
+
+        Call<prizeValue> call = RetrofitClient.getInstance().getMyApi().getprizesuser(SingletonDataHolder.getInstance().getLoggedUser().getUserId());
+        call.enqueue(new Callback<prizeValue>() {
+            @Override
+            public void onResponse(Call<prizeValue> call, Response<prizeValue> response) {
+                prizeValue myprizelist = response.body();
+                Prize[] Prizes = myprizelist.getPrizeList();
+                prizes.postValue(Prizes);
+
+            }
+
+            @Override
+            public void onFailure(Call<prizeValue> call, Throwable t) {
+                Log.e("PRIZES", t.getLocalizedMessage());
+                Log.e("PRIZES2", t.getMessage());
+                t.printStackTrace();
+            }
+        });
     }
 
     public LiveData<Likes[]> getLikes()

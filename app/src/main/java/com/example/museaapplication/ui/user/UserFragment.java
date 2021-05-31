@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.museaapplication.Classes.Dominio.Likes;
+import com.example.museaapplication.Classes.Dominio.Prize;
 import com.example.museaapplication.Classes.Dominio.UserInfo;
 import com.example.museaapplication.Classes.ShopDialog;
 import com.example.museaapplication.Classes.SingletonDataHolder;
@@ -52,6 +53,7 @@ public class UserFragment extends Fragment {
     String[] mus_vis;
     String[] mus_vis_id;
     String[] mus_vis_image;
+
 
     Likes[] work_likes;
 
@@ -104,6 +106,9 @@ public class UserFragment extends Fragment {
         TextView fav_n = root.findViewById(R.id.favourties);
         TextView vis_n = root.findViewById(R.id.visited_mus);
         TextView points = root.findViewById(R.id.points);
+        TextView text_oro = root.findViewById(R.id.gold_num);
+        TextView text_plata = root.findViewById(R.id.silver_num);
+        TextView text_bronze = root.findViewById(R.id.bronce_num);
         circularImageView = root.findViewById(R.id.circularImageView);
 
         SingletonDataHolder.userViewModel = uvm;
@@ -150,6 +155,30 @@ public class UserFragment extends Fragment {
             }
 
         });
+
+/*
+        uvm.getprizes().observe(getViewLifecycleOwner(), new Observer<Prize[]>() {
+            @Override
+            public void onChanged(Prize[] prizes) {
+                int bronze=0;
+                int plata=0;
+                int oro = 0;
+                for(int i = 0; i < prizes.length ; ++i){
+                    if(prizes[i].getBadge() == "1"){
+                        oro++;
+                    }
+                    else if(prizes[i].getBadge() == "2"){
+                        plata++;
+                    }
+                    else if (prizes[i].getBadge() == "3"){
+                        bronze++;
+                    }
+                }
+                text_oro.setText(String.valueOf(oro));
+                text_plata.setText(String.valueOf(plata));
+                text_bronze.setText(String.valueOf(bronze));
+            }
+        });*/
 
 
         uvm.getLikes().observe(getViewLifecycleOwner(), new Observer<Likes[]>() {

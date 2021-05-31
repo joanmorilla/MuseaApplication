@@ -14,6 +14,7 @@ import com.example.museaapplication.Classes.Json.UserValue;
 import com.example.museaapplication.Classes.Json.VisitedValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
 import com.example.museaapplication.Classes.Json.WorksValue;
+import com.example.museaapplication.Classes.Json.prizeValue;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
@@ -84,6 +85,9 @@ public interface Api {
 
     @GET("https://musea-api.herokuapp.com/users/{username}/visited")
     Call<VisitedValue> getVisitedMuseum(@Path("username") String username);
+
+    @GET("https://musea-api.herokuapp.com/prizes")
+    Call<prizeValue> getprizesuser(@Query("user") String user);
 
     // User favorites
     @POST("https://musea-api.herokuapp.com/users/{username}/likes?")
