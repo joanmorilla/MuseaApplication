@@ -431,6 +431,6 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
             }
             return elapsedDays + "d";
         }
-        return elapsedMonths + "m";
+        return elapsedMonths + "M";
     }
 }
