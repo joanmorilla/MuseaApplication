@@ -15,7 +15,6 @@ public class UserInfo implements Serializable {
     private String[] visited;
     private String[] likes;
     private Date premiumDate;
-    private String email;
 
 
     public String getUserId() {

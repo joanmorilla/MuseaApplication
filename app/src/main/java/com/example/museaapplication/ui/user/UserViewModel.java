@@ -112,6 +112,7 @@ public class UserViewModel extends ViewModel {
 
     public boolean IsPremium() {
         return SingletonDataHolder.getInstance().getLoggedUser().isPremium();
+    }
 
     public void addPremiumMembership(int days) {
         Call<Void> call = RetrofitClient.getInstance().getMyApi().addPremiumMembership(getinfoUser().getValue().getUserId(),String.valueOf(days));
