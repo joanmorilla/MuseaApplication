@@ -45,6 +45,7 @@ import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.Json.CommentsValue;
 import com.example.museaapplication.Classes.OnBackPressed;
 import com.example.museaapplication.Classes.RetrofitClient;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
 import com.squareup.picasso.Picasso;
@@ -167,7 +168,6 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (!newCommentText.getText().toString().equals("")) {
                     YoYo.with(Techniques.SlideInLeft).duration(200).playOn(view);
                     Call<Comment> call = RetrofitClient.getInstance().getMyApi().postComment(sharedViewModel.getCurWork().getValue().get_id(), newCommentText.getText().toString(), "user1");
@@ -255,7 +255,7 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                     SeekBar seekBarReport = v.findViewById(R.id.seek_bar_report_comment);
                     TextView elapsed = v.findViewById(R.id.elapsed_time_comment);
                     // Different behaviour for current user's comments and others'
-                    if (!c.getAuthor().equals("user1")){
+                    if (!c.getAuthor().equals(SingletonDataHolder.getInstance().getLoggedUser().getUserId())){
                         seekBar.setEnabled(false);
                         seekBarReport.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                             @Override

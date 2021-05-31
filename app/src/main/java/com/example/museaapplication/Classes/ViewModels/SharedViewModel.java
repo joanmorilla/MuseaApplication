@@ -357,7 +357,7 @@ public class SharedViewModel extends ViewModel {
         });
     }
     public void likeMuseum(String _id){
-        Call<Void> call = RetrofitClient.getInstance().getMyApi().favMuseum("RaulPes", _id);
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().favMuseum(SingletonDataHolder.getInstance().getLoggedUser().getUserId(), _id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

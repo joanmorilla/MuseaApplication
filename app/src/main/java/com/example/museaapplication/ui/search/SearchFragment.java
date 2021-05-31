@@ -160,6 +160,7 @@ public class SearchFragment extends Fragment implements SearchMuseosAdapter.Recy
         //i.putExtra("Museu", (Serializable) museo);
         Uri uri = Uri.parse("/museums/" + museo.get_id());
         i.setData(uri);
-        getContext().startActivity(i);
+        MuseuActivity.curMuseum = museo;
+        startActivityForResult(i, 1);
     }
 }

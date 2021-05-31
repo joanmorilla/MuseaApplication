@@ -95,7 +95,7 @@ public class HomeFragment extends Fragment implements Permissions {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
-        ProgressBar pb = (ProgressBar) root.findViewById(R.id.progress_bar);
+        ProgressBar pb = root.findViewById(R.id.progress_bar);
         pb.setVisibility(View.VISIBLE);
         homeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

@@ -34,6 +34,7 @@ import com.example.museaapplication.Classes.Adapters.Chats.MessageAdapter;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.Services.MyFirebaseNotifications;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.SocketService;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -114,7 +115,6 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         if (getIntent() != null && getIntent().hasExtra("ChatName")) roomActivity = getIntent().getStringExtra("ChatName");
         else roomActivity = "AAAAAAA";
-        Toast.makeText(this, "HolaPues", Toast.LENGTH_SHORT).show();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -124,7 +124,7 @@ public class ChatActivity extends AppCompatActivity {
         SocketService.onNewMessageActive = onNewMessage;
         setTitle(roomActivity);
         dbHelper = ChatsDBHelper.getInstance(ChatActivity.this);
-        Username = "User1";
+        Username = SingletonDataHolder.getInstance().getLoggedUser().getUserId();
 
         int index = dbHelper.getRowIdOfChat(roomActivity)-1;
         NotificationCompat.InboxStyle newInbox = new NotificationCompat.InboxStyle();

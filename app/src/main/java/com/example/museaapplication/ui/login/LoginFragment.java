@@ -312,12 +312,39 @@ public class LoginFragment extends Fragment {
                 Log.d("Valeeeee", String.valueOf(personEmail.split("@")[0]));
                 Log.d("Valeeeee",String.valueOf(personGivenName));
                 loginViewModel.createUserInfo(personEmail.split("@")[0],personEmail);
+
+                Call<UserInfoValue> call = RetrofitClient.getInstance().getMyApi().getUserInfo(personEmail);
+                call.enqueue(new Callback<UserInfoValue>() {
+                    @Override
+                    public void onResponse(Call<UserInfoValue> call, Response<UserInfoValue> response) {
+                        if (response.code() == 200){
+                            UserInfoValue myuserinfo = response.body();
+                            UserInfo loggedUser = myuserinfo.getUserinfo();
+                            SingletonDataHolder.getInstance().setLoggedUser(loggedUser);
+                            Toast.makeText(getContext(), "Logged", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
+                        else if (response.code() == 404)
+                        {
+                            Toast.makeText(getContext(), "There is no user for such id", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<UserInfoValue> call, Throwable t) {
+                        Log.e("TAG1", t.getLocalizedMessage());
+                        Log.e("TAG2", t.getMessage());
+                        t.printStackTrace();
+                    }
+                });
+
+
             }
 
 
             Toast.makeText(getContext(), "Logged", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            startActivity(intent);
+            /*Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);*/
 
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.

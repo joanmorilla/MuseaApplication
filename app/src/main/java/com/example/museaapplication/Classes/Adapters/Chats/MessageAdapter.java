@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.museaapplication.ChatActivity;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class MessageAdapter extends ArrayAdapter<MessageFormat> {
             String userConnected = message.getUsername();
             messageText.setText(userConnected);
 
-        }else if(message.getUsername().equals("User1")){
+        }else if(message.getUsername().equals(SingletonDataHolder.getInstance().getLoggedUser().getUserId())){
             convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.my_message, parent, false);
             TextView messageText = convertView.findViewById(R.id.message_body);
             messageText.setText(message.getMessage());

@@ -112,37 +112,37 @@ public class UserViewModel extends ViewModel {
 
     public boolean IsPremium() {
         return SingletonDataHolder.getInstance().getLoggedUser().isPremium();
-
-    public void addPremiumMembership(int days) {
-        Call<Void> call = RetrofitClient.getInstance().getMyApi().addPremiumMembership(getinfoUser().getValue().getUserId(),String.valueOf(days));
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.d("toString",response.toString());
-                Log.d("code","" + response.code());
-
-                if (response.code() == 200) {
-                    finishBuy.postValue("OK");
-                    loadUsersinfo();
-                    Log.d("Respuesta", "Se ha añadido membership al usuario");
-
-                }
-                else if (response.code() == 404) {
-                    finishBuy.postValue("NOT_OK");
-                    loadUsersinfo();
-                    Log.d("Respuesta","No se ha podido añadir membership");
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("TAG3", t.getLocalizedMessage());
-                Log.e("TAG4", t.getMessage());
-                t.printStackTrace();
-            }
-        });
     }
+
+        public void addPremiumMembership( int days){
+            Call<Void> call = RetrofitClient.getInstance().getMyApi().addPremiumMembership(getinfoUser().getValue().getUserId(), String.valueOf(days));
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    Log.d("toString", response.toString());
+                    Log.d("code", "" + response.code());
+
+                    if (response.code() == 200) {
+                        finishBuy.postValue("OK");
+                        loadUsersinfo();
+                        Log.d("Respuesta", "Se ha añadido membership al usuario");
+
+                    } else if (response.code() == 404) {
+                        finishBuy.postValue("NOT_OK");
+                        loadUsersinfo();
+                        Log.d("Respuesta", "No se ha podido añadir membership");
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("TAG3", t.getLocalizedMessage());
+                    Log.e("TAG4", t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        }
 
     public void spendPoints(int points) {
         Call<Void> call = RetrofitClient.getInstance().getMyApi().spendPoints(getinfoUser().getValue().getUserId(),String.valueOf(points));
