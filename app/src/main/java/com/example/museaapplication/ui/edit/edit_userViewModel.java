@@ -36,7 +36,7 @@ public class edit_userViewModel extends ViewModel {
         Log.d("Respuesta",name);
         Log.d("Respuesta",bio);
         //"60903ae74bba1e0015582853"
-        Call<Void> call = RetrofitClient.getInstance().getMyApi().addInfoUser("RaulPes",name,bio);
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().addInfoUser(SingletonDataHolder.getInstance().getLoggedUser().getUserId(),name,bio);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

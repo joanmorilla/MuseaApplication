@@ -1,12 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.Map.MapFragment">
+
     <com.google.android.gms.maps.MapView
         android:id="@+id/map_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</FrameLayout>
+    <!--<fragment
+        android:id="@+id/autocomplete_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_view_maps"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"/>
+-->
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view_maps"
+        app:queryHint="@string/search_map"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        app:iconifiedByDefault="false"
+        android:elevation="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:queryBackground="@android:color/transparent"
+        android:background="@drawable/ocupation_button"
+        android:backgroundTint="?attr/colorSurface"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_holder_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/button_holder"
+        android:layout_alignBottom="@+id/button_holder"
+        android:layout_marginRight="15dp"
+        app:backgroundTint="?attr/colorSurface"
+        android:contentDescription="New Location"
+        android:tooltipText="New Location"
+        android:src="@drawable/ic_baseline_pin_drop_24"
+        android:scaleType="center"
+        app:tint="?android:textColorPrimary"
+        app:borderWidth="0dp"
+        app:fabSize="normal" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:tooltipText="My Location"
+        android:layout_marginBottom="70dp"
+        android:layout_marginRight="15dp"
+        app:backgroundTint="?attr/colorSurface"
+        android:contentDescription="My Location"
+        android:src="@drawable/ic_baseline_my_location_24"
+        android:scaleType="center"
+        app:tint="?android:textColorPrimary"
+        app:borderWidth="0dp"
+        app:fabSize="normal" />
+
+
+    <!--<ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="6dp"
+        android:layout_alignRight="@+id/button_holder"
+        android:layout_alignLeft="@+id/button_holder"
+        android:layout_alignTop="@+id/button_holder"
+        android:layout_alignBottom="@+id/button_holder"
+        android:layout_margin="15dp"
+        android:clickable="false"
+        android:backgroundTint="?android:textColorPrimary"
+        android:background="@drawable/ic_baseline_my_location_24"
+        />-->
+
+    <!--<TextView
+        android:elevation="5dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_toLeftOf="@+id/button_holder"
+        android:layout_alignBottom="@+id/button_holder"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/ocupation_button"
+        android:backgroundTint="?attr/colorSurface"/>
+
+    <ImageView
+        android:id="@+id/icon_pin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="6dp"
+        android:layout_alignRight="@+id/button_holder_2"
+        android:layout_alignLeft="@+id/button_holder_2"
+        android:layout_alignTop="@+id/button_holder_2"
+        android:layout_alignBottom="@+id/button_holder_2"
+        android:layout_margin="15dp"
+        android:clickable="false"
+        android:backgroundTint="?android:textColorPrimary"
+        android:background="@drawable/ic_baseline_pin_drop_24" />-->
+ <ScrollView
+        android:layout_below="@+id/search_view_maps"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignRight="@+id/search_view_maps"
+        android:layout_alignLeft="@+id/search_view_maps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/maps_recomendations"
+            android:background="?android:windowBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

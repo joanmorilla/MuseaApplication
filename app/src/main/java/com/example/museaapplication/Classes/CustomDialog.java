@@ -73,22 +73,6 @@ public class CustomDialog extends AppCompatDialogFragment {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(getActivity(), "MyChannel")
-                .setSmallIcon(R.drawable.ic_notification)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
-                        R.drawable.mnac_default))
-                .setContentTitle("Test notification")
-                .setColor(argb(150, 30, 50, 255))
-                .setContentText("Much longer text that cannot fit one line...")
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Much much much much longer text that cannot fit one line..."))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-
-// notificationId is a unique int for each notification that you must define
-        notificationManager.notify(1, notBuilder.build());
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -125,7 +109,9 @@ public class CustomDialog extends AppCompatDialogFragment {
             }
 
             AfluenceDay day = afluenceWeek[TimeClass.getCurDay()];
-            int perc = day.getHours()[TimeClass.getCurHour() - start - 1];
+            int index = TimeClass.getCurHour() - start - 1;
+            if (index < 0) index = 0;
+            int perc = day.getHours()[index];
             if (perc <= 40) curColor = colors[2];
             else if(perc > 40 && perc <= 70) curColor = colors[1];
             else curColor = colors[0];

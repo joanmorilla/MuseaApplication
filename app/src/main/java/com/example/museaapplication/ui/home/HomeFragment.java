@@ -2,6 +2,7 @@ package com.example.museaapplication.ui.home;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -14,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
@@ -49,13 +51,21 @@ import com.example.museaapplication.Classes.Delegate;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Permissions;
 import com.example.museaapplication.Classes.TimeClass;
+import com.example.museaapplication.ui.Map.MapFragment;
 import com.example.museaapplication.ui.QuizzActivity;
 import com.example.museaapplication.ui.MuseuActivity;
 import com.example.museaapplication.Classes.Vector2;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.MainActivity;
 import com.example.museaapplication.ui.MuseuActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -67,6 +77,7 @@ import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
 
 
 public class HomeFragment extends Fragment implements Permissions {
@@ -78,6 +89,7 @@ public class HomeFragment extends Fragment implements Permissions {
     Museo[] museums;
     Geocoder geocoder;
     View root;
+    Location curLocation;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,12 +105,35 @@ public class HomeFragment extends Fragment implements Permissions {
                 GenerarBotones(museos);
                 pb.setVisibility(View.GONE);
             }
-
+        });
+        homeViewModel.getErrorMessage().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+            }
         });
         homeViewModel.getFavouriteMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
             @Override
             public void onChanged(Museo[] museos) {
                 GenerateFavourites(museos);
+            }
+        });
+
+        homeViewModel.getCurPosMarker().observe(getViewLifecycleOwner(), new Observer<Marker>() {
+            @Override
+            public void onChanged(Marker marker) {
+                if (marker == null) {
+                    // Reload from your current location
+                    return;
+            }
+                geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.ENGLISH);
+                try {
+                    List<Address> adreesses = geocoder.getFromLocation(marker.getPosition().latitude, marker.getPosition().longitude, 1);
+                    country = adreesses.get(0).getCountryName();
+                    generator(museums, adreesses);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         setHasOptionsMenu(true);
@@ -144,15 +179,14 @@ public class HomeFragment extends Fragment implements Permissions {
             LocationManager manager = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
             gpsEnabled = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 25000, new LocationListener() {
+            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 25000, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-                    if (getActivity() == null) return;
+                    if (getActivity() == null || MapFragment.curPosMarker != null) return;
                     try {
                         geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.ENGLISH);
                         List<Address> adreesses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         if (adreesses != null && adreesses.size() != 0) {
-                            Log.e("Error", "Entra");
                             //if (country != null && !country.equals(adreesses.get(0).getCountryName())){
                             country = adreesses.get(0).getCountryName();
                             scrollPais.removeAllViews();
@@ -162,47 +196,7 @@ public class HomeFragment extends Fragment implements Permissions {
                         }
 
                         if (!created) {
-                            for (int i = m.length - 1; i >= 0; i--) {
-                                // For the complex button we use relative layout
-                                RelativeLayout holder = new RelativeLayout(getContext());
-                                View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
-                                // Adding enter animation
-                                YoYo.with(Techniques.ZoomIn)/*.delay((museums.length - i) * 200)*/.duration(700).playOn(v);
-                                TextView txt = v.findViewById(R.id.title_text);
-                                // Setting the texts in custom button
-                                txt.setText(m[i].getName());
-                                txt = v.findViewById(R.id.text_horari);
-                                if (m[i].getCovidInformation() != null) {
-                                    txt.setText(timeStringValidation(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
-                                    m[i].setOpeningHour(parseOpeningHour(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
-                                }
-                                txt = v.findViewById(R.id.text_pais);
-                                txt.setText(m[i].getCity());
-                                ImageButton ib = v.findViewById(R.id.image_view);
-                                ib.setOnClickListener(clickFunc(m[i]));
-                                if (!m[i].getImage().equals(""))
-                                    Picasso.get().load(m[i].getImage()).fit().centerCrop().into(ib);
-                                // Size the relative layout
-                                RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, pixToDp(155));
-                                newParams.setMargins(pixToDp(5), 0, pixToDp(5), pixToDp(0));
-                                holder.setLayoutParams(newParams);
-
-                                if (m[i].getLocation() != null && m[i].getLocation().length != 0) {
-                                    List<Address> addressList = geocoder.getFromLocation(m[i].getLocation()[0].getNumberDecimal(), m[i].getLocation()[1].getNumberDecimal(), 1);
-                                    if (addressList != null && adreesses != null && adreesses.size() != 0) {
-                                        double musLat = addressList.get(0).getLatitude();
-                                        double musLong = addressList.get(0).getLongitude();
-                                        double myLat = adreesses.get(0).getLatitude();
-                                        double myLong = adreesses.get(0).getLongitude();
-                                        float[] results = new float[1];
-                                        if (country != null && country.equals(addressList.get(0).getCountryName())) {
-                                            scrollPais.addView(holder);
-                                        }
-                                        android.location.Location.distanceBetween(musLat, musLong, myLat, myLong, results);
-                                        if (results[0] / 1000 <= 50) GenerateClose(m[i], adreesses);
-                                    }
-                                }
-                            }
+                            generator(m, adreesses);
                             created = true;
                         }
                     } catch (IOException e) {
@@ -224,7 +218,7 @@ public class HomeFragment extends Fragment implements Permissions {
                 public void onProviderDisabled(String s) {
 
                 }
-            });
+            }, Looper.getMainLooper());
         }
         if (!gpsEnabled) {
             // We go through the museums
@@ -260,8 +254,61 @@ public class HomeFragment extends Fragment implements Permissions {
         }
     }
 
-    private void GenerateClose(Museo m, List<Address> adreesses) {
+    private void generator(Museo[] m, List<Address> adreesses) {
+        LinearLayout scrollPais = root.findViewById(R.id.layout_pais);
         LinearLayout scrollPropers = root.findViewById(R.id.layout_close);
+        scrollPropers.removeAllViews();
+        scrollPais.removeAllViews();
+        for (int i = m.length - 1; i >= 0; i--) {
+            // For the complex button we use relative layout
+            RelativeLayout holder = new RelativeLayout(getContext());
+            View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
+            // Adding enter animation
+            YoYo.with(Techniques.ZoomIn)/*.delay((museums.length - i) * 200)*/.duration(700).playOn(v);
+            TextView txt = v.findViewById(R.id.title_text);
+            // Setting the texts in custom button
+            txt.setText(m[i].getName());
+            txt = v.findViewById(R.id.text_horari);
+            if (m[i].getCovidInformation() != null) {
+                txt.setText(timeStringValidation(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+                m[i].setOpeningHour(parseOpeningHour(m[i].getCovidInformation().getHorari()[TimeClass.getInstance().getToday()]));
+            }
+            txt = v.findViewById(R.id.text_pais);
+            txt.setText(m[i].getCity());
+            ImageButton ib = v.findViewById(R.id.image_view);
+            ib.setOnClickListener(clickFunc(m[i]));
+            if (!m[i].getImage().equals(""))
+                Picasso.get().load(m[i].getImage()).fit().centerCrop().into(ib);
+            // Size the relative layout
+            RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, pixToDp(155));
+            newParams.setMargins(pixToDp(5), 0, pixToDp(5), pixToDp(0));
+            holder.setLayoutParams(newParams);
+
+            if (m[i].getLocation() != null && m[i].getLocation().length != 0) {
+                List<Address> addressList = null;
+                try {
+                    addressList = geocoder.getFromLocation(m[i].getLocation()[0], m[i].getLocation()[1], 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (addressList != null && adreesses != null && adreesses.size() != 0) {
+                    double musLat = addressList.get(0).getLatitude();
+                    double musLong = addressList.get(0).getLongitude();
+                    double myLat = adreesses.get(0).getLatitude();
+                    double myLong = adreesses.get(0).getLongitude();
+                    float[] results = new float[1];
+                    if (country != null && country.equals(addressList.get(0).getCountryName())) {
+                        scrollPais.addView(holder);
+                    }
+                    android.location.Location.distanceBetween(musLat, musLong, myLat, myLong, results);
+                    if (results[0] / 1000 <= 50) GenerateClose(m[i], adreesses);
+                }
+            }
+        }
+    }
+
+    private void GenerateClose(Museo m, List<Address> adreesses) {
+            LinearLayout scrollPropers = root.findViewById(R.id.layout_close);
             // For the complex button we use relative layout
             RelativeLayout holder = new RelativeLayout(getContext());
             View v = View.inflate(getContext(), R.layout.custom_button_layout, holder);
@@ -288,7 +335,7 @@ public class HomeFragment extends Fragment implements Permissions {
             // Finally add it to the scroll layout
             List<Address> addressList = null;
             try {
-                addressList = geocoder.getFromLocation(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal(), 1);
+                addressList = geocoder.getFromLocation(m.getLocation()[0], m.getLocation()[1], 1);
                 double musLat = addressList.get(0).getLatitude();
                 double musLong = addressList.get(0).getLongitude();
                 double myLat = adreesses.get(0).getLatitude();
@@ -307,6 +354,7 @@ public class HomeFragment extends Fragment implements Permissions {
         double result = Math.sqrt((distX*distX) + (distY*distY));
         return result;
      }
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void GenerateFavourites(@NotNull Museo[] m){
         LinearLayout scrollFavourites = root.findViewById(R.id.layout_favourites);
         scrollFavourites.removeAllViews();
@@ -325,7 +373,7 @@ public class HomeFragment extends Fragment implements Permissions {
             ImageButton ib = v.findViewById(R.id.image_view);
             ib.setOnClickListener(clickFunc(museo));
             if (!museo.getImage().equals(""))
-                Picasso.get().load(museo.getImage()).fit().centerCrop().into(ib);
+                Picasso.get().load(museo.getImage()).fit().placeholder(getResources().getDrawable(R.drawable.noimage)).centerCrop().into(ib);
             TextView unlikeButton = v.findViewById(R.id.circle_heart);
             unlikeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -353,7 +401,6 @@ public class HomeFragment extends Fragment implements Permissions {
                     i.setData(uri);
                     MuseuActivity.curMuseum = m;
                     startActivityForResult(i, 1);
-                    //startActivity(i);
                     getActivity().overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
                     interactable = false;
                 }

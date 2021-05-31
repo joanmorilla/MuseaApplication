@@ -1,33 +1,33 @@
 package com.example.museaapplication.Classes;
 
+import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
 import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.User;
 import com.example.museaapplication.Classes.Json.CommentsValue;
-import com.example.museaapplication.Classes.Json.ExhibitionValue;
 import com.example.museaapplication.Classes.Json.ExpositionListValue;
-import com.example.museaapplication.Classes.Json.ExpositionsList;
-import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.InfoValue;
+import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.QuizzValue;
 import com.example.museaapplication.Classes.Json.UserInfoValue;
 import com.example.museaapplication.Classes.Json.UserValue;
 import com.example.museaapplication.Classes.Json.VisitedValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
-import com.example.museaapplication.Classes.Json.WorksArray;
 import com.example.museaapplication.Classes.Json.WorksValue;
+import com.google.gson.JsonObject;
 
-import okhttp3.MultipartBody;
+import org.json.JSONObject;
+
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -53,8 +53,10 @@ public interface Api {
     @GET("museums/{idMuseo}/{idExpo}/{idObra}")
     Call<WorkValue> getWork(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId, @Path("idObra") String idObra);
 
-    @GET("https://musea-api.herokuapp.com/users/raul@gmail.com")
-    Call<UserInfoValue> getUserInfo();
+
+    @GET("https://musea-api.herokuapp.com/users/{email}")
+    Call<UserInfoValue> getUserInfo(@Path("email") String email);
+
 
     // Comments
     @GET("https://musea-api.herokuapp.com/comments?")
@@ -66,11 +68,16 @@ public interface Api {
     @DELETE("https://musea-api.herokuapp.com/comments/{commentId}")
     Call<Void> deleteComment(@Path("commentId") String commentId);
 
-    @GET("https://musea-api.herokuapp.com/users/RaulPes/likes")
-    Call<LikesValue> getLikes();
+    @GET("https://musea-api.herokuapp.com/users/{username}/likes")
+    Call<LikesValue> getLikes(@Path("username") String username);
+
+    // Users
 
     @PUT("https://musea-api.herokuapp.com/users/{userId}?")
     Call<Void> addInfoUser(@Path("userId") String userId, @Query("name") String nameuser, @Query("bio") String userbio);
+
+    @PUT("https://musea-api.herokuapp.com/users/{userId}?")
+    Call<Void> updateProfilePic(@Path("userId") String userId, @Query("profilePic") String profilePicUrl);
 
     @POST("https://musea-api.herokuapp.com/users/{username}/visited?")
     Call<Void> addVisitedMuseum(@Path("username") String username, @Query("museum") String museum);
@@ -92,6 +99,13 @@ public interface Api {
     @GET("https://musea-api.herokuapp.com/info?")
     Call<InfoValue> getInfo(@Query("name") String nameMuseo, @Query("city") String cityMuseo);
 
+    // User premium
+    @PUT("https://musea-api.herokuapp.com/users/{username}/premium")
+    Call<Void> addPremiumMembership(@Path("username") String username,@Query("days") String days);
+
+    // User spend points
+    @POST("https://musea-api.herokuapp.com/users/{username}/spend")
+    Call<Void> spendPoints(@Path("username") String username,@Query("points") String points);
 
     // User authentication
     @POST("https://musea-authorization-server.herokuapp.com/signup")
@@ -108,6 +122,8 @@ public interface Api {
     @GET("https://museaimages.s3.eu-west-3.amazonaws.com/logo.png")
     Call<User> getImage();
 
+
+
     // Quizzes
     @GET("https://musea-api.herokuapp.com/quizzes")
     Call<QuizzValue> getQuizzes();
@@ -116,5 +132,18 @@ public interface Api {
     Call<Void> updatePoints(@Path("username") String username,
                             @Query("points") String points,
                             @Query("total") String total);
+
+    // Reports
+    @POST("https://musea-api.herokuapp.com/reports")
+    Call<Void> reportUser(@Query("informant") String idInformant, @Query("comment") String idComment);
+
+    // Chat notifications
+    @Headers({"Authorization: key= AAAAyrp4IOM:APA91bFokX5YIGqgiXdnrt9GhNeKncYDGRGnAwzFrQpjaBQ_IsPmKrzXe2mvK3bvpGNW4dg8gML-wbimjX6lK6Ymtfsbi018Non98uSaHhBDMAcPI9Jzi7KqWzSYRfpC4IlIflby6LDZ", "Content-Type:application/json"})
+    @POST("https://fcm.googleapis.com/fcm/send")
+    Call<Void> sendMessage(@Body JsonObject body);
+  
+    @PUT("https://musea-api.herokuapp.com/users/{username}/premium")
+    Call<Void> updatePremium(@Path("username") String username,
+                            @Query("days") String days);
 
 }

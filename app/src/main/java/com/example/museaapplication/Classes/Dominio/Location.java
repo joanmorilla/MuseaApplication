@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class Location implements Serializable {
-    @SerializedName("$numberDecimal")
+    @SerializedName("b$numerDecimal")
     private float numberDecimal;
 
     public float getNumberDecimal() {

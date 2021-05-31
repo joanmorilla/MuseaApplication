@@ -14,15 +14,14 @@
         android:background="@drawable/rounded_corner"
         android:backgroundTint="?android:windowBackground"/>
 
-    <ImageView
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/image_holder_work"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
-        android:elevation="11dp"
-        android:background="@drawable/mnac_default"/>
+        android:elevation="11dp"/>
 
     <TextView
         android:id="@+id/title_text_work"

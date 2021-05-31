@@ -33,6 +33,7 @@ import android.view.WindowInsets;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -44,6 +45,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.museaapplication.Classes.APIRequests;
+import com.example.museaapplication.Classes.Adapters.BD.ChatsDBHelper;
+import com.example.museaapplication.Classes.Adapters.Chats.ChatFormat;
 import com.example.museaapplication.Classes.DepthPageTransformer;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Likes;
@@ -54,8 +58,12 @@ import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.ui.InitialActivity;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.user.UserViewModel;
+import com.github.chrisbanes.photoview.PhotoView;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+import com.zolad.zoominimageview.ZoomInImageView;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -74,6 +82,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
     ViewPager viewPager2;
 
 
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -84,6 +93,7 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
     private String mParam2;
     SharedViewModel sharedViewModel;
     UserViewModel userViewModel;
+    String chatName;
 
     public ExpositionFragment() {
         // Required empty public constructor
@@ -125,13 +135,36 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
         txt = root.findViewById(R.id.expo_title);
         viewPager2 = root.findViewById(R.id.view_pager_works);
 
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         ImageButton backArrow = root.findViewById(R.id.back_arrow_work);
+        ImageButton joinChat = root.findViewById(R.id.join_chat_button);
         backArrow.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
             @Override
             public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
                 ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).topMargin = insets.getSystemWindowInsetTop();
                 return insets;
+            }
+        });
+        joinChat.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
+                ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).topMargin = insets.getSystemWindowInsetTop();
+                return insets;
+            }
+        });
+        joinChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ChatsDBHelper.getInstance(getContext()).insertChat(chatName, curExpo.getImage())){
+                    Toast.makeText(getContext(), "Joined!", Toast.LENGTH_SHORT).show();
+                    ChatFormat newChat = new ChatFormat(chatName, 5);
+                    newChat.setImage(curExpo.getImage());
+                    sharedViewModel.setNewChat(newChat);
+                }else{
+                    Toast.makeText(getContext(), "Already joined", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         backArrow.setOnClickListener(new View.OnClickListener() {
@@ -148,11 +181,12 @@ public class ExpositionFragment extends Fragment implements OnBackPressed {
                 return insets;
             }
         });
-        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
         sharedViewModel.getCurExposition().observe(getViewLifecycleOwner(), new Observer<Exhibition>() {
             @Override
             public void onChanged(Exhibition exhibition) {
+                curExpo = exhibition;
+                chatName = exhibition.getName() + " " + MuseuActivity.curMuseum.getName();
                 ImageView imageView = root.findViewById(R.id.image_holder_expo);
                 Picasso.get().load(validateUrl(exhibition.getImage())).centerCrop().fit().into(imageView);
                 txt.setText(exhibition.getName());
@@ -236,6 +270,7 @@ class MyViewPagerAdapter extends PagerAdapter  {
     private FragmentManager fm;
     private ArrayList<Work> works = new ArrayList<>();
     private boolean love = false;
+    PhotoViewAttacher mAttacher;
 
     private SharedViewModel sharedViewModel;
     public TextToSpeech mTTs;
@@ -286,6 +321,7 @@ class MyViewPagerAdapter extends PagerAdapter  {
             public void onClick(View v) {
                 //SingletonDataHolder.userViewModel.loadlikes();
                 sharedViewModel.likeWork(works.get(position).get_id());
+                APIRequests.getInstance().addLike(new Likes(works.get(position).get_id(), works.get(position).getImage()));
                 if (works.get(position).likeWork()) {
                     v.setBackground(context.getDrawable(R.drawable.ic_baseline_favorite_24));
                 }
@@ -295,14 +331,14 @@ class MyViewPagerAdapter extends PagerAdapter  {
             }
         });
         ib2.setOnClickListener(new View.OnClickListener() {
-                                   @Override
-                                   public void onClick(View view) {
-                                       sharedViewModel.setCurWork(works.get(position));
-                                       sharedViewModel.setActive(sharedViewModel.getmCommentsFragment());
-                                       Comentaris_Fragment.loaded = false;
-                                       fm.beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmCommentsFragment()).commit();
-                                   }
-                               });
+           @Override
+           public void onClick(View view) {
+               sharedViewModel.setCurWork(works.get(position));
+               sharedViewModel.setActive(sharedViewModel.getmCommentsFragment());
+               Comentaris_Fragment.loaded = false;
+               fm.beginTransaction().hide(sharedViewModel.getmExpositionFragment()).show(sharedViewModel.getmCommentsFragment()).commit();
+           }
+       });
 
         ImageButton iwb = v.findViewById(R.id.sound_button_work);
         iwb.setOnClickListener(new View.OnClickListener() {
@@ -322,15 +358,19 @@ class MyViewPagerAdapter extends PagerAdapter  {
         title.setText(works.get(position).getDescriptions().getText());
         title = v.findViewById(R.id.text_author_work);
         title.setText(works.get(position).getAuthor());
-        ImageView imageHolder = v.findViewById(R.id.image_holder_work);
-        imageHolder.setOnClickListener(new View.OnClickListener() {
+        PhotoView imageHolder = v.findViewById(R.id.image_holder_work);
+        mAttacher = null;
+        /*imageHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialog(validateUrl(works.get(position).getImage()));
             }
-        });
+        });*/
+        try {
+            Picasso.get().load(validateUrl(works.get(position).getImage())).fit().into(imageHolder);
+        }catch (Exception e){
 
-        Picasso.get().load(validateUrl(works.get(position).getImage())).fit().into(imageHolder);
+        }
         //imageHolder.setImageBitmap(draw);
 
         container.addView(v);
