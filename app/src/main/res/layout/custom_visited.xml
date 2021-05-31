@@ -14,15 +14,17 @@
         android:layout_height="45dp"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/mnac_default"
+
         />
 
     <TextView
         android:id="@+id/museum_name_visited"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:text="Usuari"
         android:textColor="@color/skyblue_700"
+
         android:paddingLeft="10dp"
         android:paddingTop="2dp"
         android:textStyle="bold"
@@ -30,8 +32,10 @@
 
     <TextView
         android:id="@+id/elapsed_time_comment"
+
         android:text="2d"
         android:textColor="@color/skyblue_700"
+
         android:layout_alignParentRight="true"
         android:paddingRight="15dp"
         android:paddingTop="2dp"

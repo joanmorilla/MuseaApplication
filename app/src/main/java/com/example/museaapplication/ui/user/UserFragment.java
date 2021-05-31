@@ -115,15 +115,12 @@ public class UserFragment extends Fragment {
         username = (sharedValue.substring(0,index));
         password = (sharedValue.substring(index + 1));*/
 
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("infouser",0);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("Settings",0);
         String defaultValue = "";
         String sharedValue = sharedPref.getString(getString(R.string.auto_signin_key), defaultValue);
-            //int index = sharedValue.lastIndexOf('#');
+            Log.d("Llegaaaaaaaaaaaaa","Login automatico: " + sharedValue);
             Log.d("SharedPreferences2","Login automatico: " + sharedValue);
-           /* Log.d("SharedPreferences2",sharedValue.substring(0,index));
-            Log.d("SharedPreferences2",sharedValue.substring(index + 1));
-            username = (sharedValue.substring(0,index));
-            password = (sharedValue.substring(index+1));*/
+
         uvm.getinfoUser().observe(getViewLifecycleOwner(), new Observer<UserInfo>() {
             @SuppressLint("SetTextI18n")
             @Override

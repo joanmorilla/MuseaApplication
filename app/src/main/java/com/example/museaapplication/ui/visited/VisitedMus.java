@@ -2,6 +2,7 @@ package com.example.museaapplication.ui.visited;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -49,27 +50,34 @@ public class VisitedMus extends AppCompatActivity {
             public void onChanged(Visited[] visited) {
                 LinearLayout ll = findViewById(R.id.linearlayout_visited);
                 ll.removeAllViews();
-                int i = 0;
-                for (int index = visited.length - 1; index >= 0; index--) {
-                    RelativeLayout holder = new RelativeLayout(getApplicationContext());
-                    View v = View.inflate(getApplicationContext(), R.layout.custom_visited, holder);
-                    TextView museum = v.findViewById(R.id.museum_name_visited);
-                   /* vmvm.getMuseobyid(visited[index].museumId()).observe(VisitedMus.this, new Observer<Museo[]>() {
-                        @Override
-                        public void onChanged(Museo[] museos) {
-                            Log.e("MUSEOOOO", String.valueOf(museos.length));
-                            name_m = museos[0].getName();
+                //vmvm.loadMuseums();
+                vmvm.getMuseos().observe(VisitedMus.this, new Observer<ArrayList<Museo>>() {
+                    @Override
+                    public void onChanged(ArrayList<Museo> museos) {
+                        Log.e("FORactivity", String.valueOf(museos.size()));
+                        ll.removeAllViews();
+                        for (int index = museos.size() - 1; index >= 0; index--) {
+                            RelativeLayout holder = new RelativeLayout(getApplicationContext());
+                            View v = View.inflate(getApplicationContext(), R.layout.item_visited, holder);
+                            TextView museum = v.findViewById(R.id.idNombre);
+                            TextView pais = v.findViewById(R.id.idCiudad);
+                            TextView ciudad = v.findViewById(R.id.idPais);
+                            ImageView iv = v.findViewById(R.id.id_image);
+                            museum.setText(museos.get(index).getName());
+
+
+                            ciudad.setText(museos.get(index).getCity());
+
+
+                            Picasso.get().load(museos.get(index).getImage()).into(iv);
+                            Log.e("FOTO",museos.get(index).getImage());
+                            ll.addView(v);
                         }
-                    });*/
-                    museum.setText(visited[index].museumId());
-                    Log.e("IDDDDDDDDD", visited[index].museumId());
-                    ImageView iv = v.findViewById(R.id.museum_image_visited);
-                    Log.e("IDDDDDDDDD", visited[index].image());
-                    Picasso.get().load(visited[index].image()).into(iv);
-                    ll.addView(v);
+                    }
+                    });
                 }
-            }
-        });
+            });
+
 
         scanbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +86,5 @@ public class VisitedMus extends AppCompatActivity {
             }
 
         });
-
-
+        }
     }
-}
