@@ -11,7 +11,7 @@
         android:icon="@drawable/ic_action_search"
         android:title="@string/title_dashboard" />
     <item
-        android:title="Mapa"
+        android:title="@string/title_maps"
         android:id="@+id/navigation_maps"
         android:icon="@drawable/ic_action_map"
         />

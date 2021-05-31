@@ -6,6 +6,7 @@ import java.util.Date;
 public class UserInfo implements Serializable {
     private String userId;
     private String name;
+    private String email;
     private String bio;
     private String[] favourites;
     private int points;
@@ -89,11 +90,16 @@ public class UserInfo implements Serializable {
         this.likes = likes;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+  
     public Date getPremiumDate() { return premiumDate; }
 
     public void setPremiumDate(Date d) { premiumDate = d; }
 
-    public String getMail() { return email; }
-
-    public void setMail(String mailUser) { email = mailUser; }
 }

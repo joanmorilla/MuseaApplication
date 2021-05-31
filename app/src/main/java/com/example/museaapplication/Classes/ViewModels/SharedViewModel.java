@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.museaapplication.Classes.APIRequests;
+import com.example.museaapplication.Classes.Adapters.Chats.ChatFormat;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
 import com.example.museaapplication.Classes.Dominio.Likes;
 import com.example.museaapplication.Classes.Dominio.Museo;
@@ -20,6 +21,7 @@ import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.WorksValue;
 import com.example.museaapplication.Classes.RetrofitClient;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.TimeClass;
 import com.example.museaapplication.ui.ExpositionFragment;
 import com.example.museaapplication.ui.MuseoFragment;
@@ -40,6 +42,7 @@ public class SharedViewModel extends ViewModel {
     private MutableLiveData<Exhibition> curExposition = new MutableLiveData<>();
     private MutableLiveData<Work> curWork = new MutableLiveData<>();
     private MutableLiveData<String> status = new MutableLiveData<>();
+    private MutableLiveData<ChatFormat> newChat = new MutableLiveData<>();
 
     private Fragment mMuseoFragment;
     private Fragment mExpositionFragment;
@@ -53,6 +56,16 @@ public class SharedViewModel extends ViewModel {
 
     public Museo getCurMuseo() {
         return curMuseum;
+    }
+
+    public LiveData<ChatFormat> getNewChat(){
+        if (newChat == null) newChat = new MutableLiveData<>();
+        return newChat;
+    }
+    public void setNewChat(ChatFormat newChat){
+        Log.d("SharedViewModel", "adding");
+        if (this.newChat == null) this.newChat = new MutableLiveData<>();
+        this.newChat.postValue(newChat);
     }
 
     public LiveData<Museo> getMuseum() {
@@ -131,7 +144,7 @@ public class SharedViewModel extends ViewModel {
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
                 AuxMuseo aux = response.body().getMuseum();
                 Museo museum = new Museo();
-                Call<LikesValue> callLikes = RetrofitClient.getInstance().getMyApi().getFavMuseums("RaulPes");
+                Call<LikesValue> callLikes = RetrofitClient.getInstance().getMyApi().getFavMuseums(SingletonDataHolder.getInstance().getLoggedUser().getUserId());
                 callLikes.enqueue(new Callback<LikesValue>() {
                     @Override
                     public void onResponse(Call<LikesValue> call, Response<LikesValue> response) {
@@ -225,7 +238,7 @@ public class SharedViewModel extends ViewModel {
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
                 AuxMuseo aux = response.body().getMuseum();
                 Museo museum = MuseuActivity.curMuseum;
-                Call<LikesValue> callLikes = RetrofitClient.getInstance().getMyApi().getFavMuseums("RaulPes");
+                Call<LikesValue> callLikes = RetrofitClient.getInstance().getMyApi().getFavMuseums(SingletonDataHolder.getInstance().getLoggedUser().getUserId());
                 callLikes.enqueue(new Callback<LikesValue>() {
                     @Override
                     public void onResponse(Call<LikesValue> call, Response<LikesValue> response) {
@@ -331,7 +344,7 @@ public class SharedViewModel extends ViewModel {
     }
 
     public void likeWork(String _id){
-        Call<Void> call = RetrofitClient.getInstance().getMyApi().likeWork("RaulPes", _id);
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().likeWork(SingletonDataHolder.getInstance().getLoggedUser().getUserId(), _id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

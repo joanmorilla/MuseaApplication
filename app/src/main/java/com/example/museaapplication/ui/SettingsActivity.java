@@ -3,6 +3,7 @@ package com.example.museaapplication.ui;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.museaapplication.ui.InitialActivity;
 import com.example.museaapplication.R;
@@ -22,6 +24,7 @@ import java.util.Locale;
 public class SettingsActivity extends AppCompatActivity {
 
     Button idiomaSettings;
+    Button ayudaButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,13 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showChangeLanguageDialog();
+            }
+        });
+        ayudaButton = findViewById(R.id.btn_ajuda);
+        ayudaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showHelp();
             }
         });
     }
@@ -93,5 +103,10 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences("Settings", MODE_PRIVATE).edit();
         editor.putString("MyLanguage", lName);
         editor.apply();
+    }
+
+    void showHelp() {
+        Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
+        startActivity(intent);
     }
 }

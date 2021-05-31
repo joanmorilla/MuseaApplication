@@ -15,6 +15,17 @@
         android:background="@drawable/back_arrow"
         android:elevation="20dp"/>
 
+    <ImageButton
+        android:id="@+id/join_chat_button"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/ic_baseline_add_comment_24"
+        android:backgroundTint="@color/black"
+        android:elevation="20dp"/>
+
     <ImageView
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"

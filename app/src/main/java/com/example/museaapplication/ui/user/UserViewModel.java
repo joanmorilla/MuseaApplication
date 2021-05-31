@@ -1,6 +1,9 @@
 package com.example.museaapplication.ui.user;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -12,6 +15,11 @@ import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.UserInfoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
+
+import com.example.museaapplication.R;
+
+import java.util.ArrayList;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,13 +50,14 @@ public class UserViewModel extends ViewModel {
     }
     public void loadlikes() {
         Log.e("Entra", "aaa");
-        Call<LikesValue> call = RetrofitClient.getInstance().getMyApi().getLikes();
+        Call<LikesValue> call = RetrofitClient.getInstance().getMyApi().getLikes(SingletonDataHolder.getInstance().getLoggedUser().getUserId());
         call.enqueue(new Callback<LikesValue>() {
             @Override
             public void onResponse(Call<LikesValue> call, Response<LikesValue> response) {
                 LikesValue mylikelist = response.body();
                 Likes[] likes = mylikelist.getLikesList();
                 Likes.postValue(likes);
+                Log.d("Load Likes", "response = " + response.code());
             }
 
             @Override
@@ -63,27 +72,25 @@ public class UserViewModel extends ViewModel {
 
     public MutableLiveData<UserInfo> getinfoUser() {
         if (Userinfo == null){
-            Userinfo = new MutableLiveData<UserInfo>();
+            Userinfo = new MutableLiveData<>();
             loadUsersinfo();
         }
         return Userinfo;
     }
 
     public void loadUsersinfo() {
-        // TODO: Use singleton mail direction instead of harcoded mail
-        String mail;
-        if(SingletonDataHolder.getInstance().getLoggedUser().getMail() == null) mail = "oviladrosa@gmail.com";
-        else mail = SingletonDataHolder.getInstance().getLoggedUser().getMail();
-        Call<UserInfoValue> call = RetrofitClient.getInstance().getMyApi().getUserInfo(mail);
+        String loogedUserEmail = SingletonDataHolder.getInstance().getLoggedUser().getEmail();
+        Call<UserInfoValue> call = RetrofitClient.getInstance().getMyApi().getUserInfo(loogedUserEmail);
         call.enqueue(new Callback<UserInfoValue>() {
-
 
             @Override
             public void onResponse(Call<UserInfoValue> call, Response<UserInfoValue> response) {
                 UserInfoValue myuserinfo = response.body();
-                if (myuserinfo != null){
+
+                if (myuserinfo != null) {
                     UserInfo userin = myuserinfo.getUserinfo();
                     Userinfo.setValue(userin);
+                    SingletonDataHolder.getInstance().setLoggedUser(userin);
                 }
             }
 
@@ -102,6 +109,9 @@ public class UserViewModel extends ViewModel {
         Log.e("Funciona", "UPDATELIKES VIEWMODEL");
         loadUsersinfo();
     }
+
+    public boolean IsPremium() {
+        return SingletonDataHolder.getInstance().getLoggedUser().isPremium();
 
     public void addPremiumMembership(int days) {
         Call<Void> call = RetrofitClient.getInstance().getMyApi().addPremiumMembership(getinfoUser().getValue().getUserId(),String.valueOf(days));
@@ -171,6 +181,7 @@ public class UserViewModel extends ViewModel {
     public void resetFinishBuy() {
         finishBuy = new MutableLiveData<>();
         finishBuy.postValue("none");
+
     }
 
 }

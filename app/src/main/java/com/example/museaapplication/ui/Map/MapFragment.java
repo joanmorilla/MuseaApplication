@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
@@ -47,6 +49,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -58,6 +62,7 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.AutocompleteFragment;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
@@ -69,16 +74,15 @@ import java.util.List;
 public class MapFragment extends Fragment implements OnMapReadyCallback, Permissions {
 
     public static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+    public static Marker curPosMarker;
 
     private MapViewModel mViewModel;
     private SearchView searchView;
     private HomeViewModel mHomeViewModel;
-    private TextView myLocB;
     private MapView mMapView;
     private GoogleMap mMap;
     private boolean isSelecting = false;
-    private Marker curPosMarker;
-
+    View locationButton;
 
     private String id;
 
@@ -99,7 +103,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.map_fragment, container, false);
         mMapView = root.findViewById(R.id.map_view);
-        myLocB = root.findViewById(R.id.button_holder);
         searchView = root.findViewById(R.id.search_view_maps);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -161,6 +164,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        /*if (!hidden){
+            if (locationButton != null)
+                locationButton.callOnClick();
+        }*/
+        super.onHiddenChanged(hidden);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(MapViewModel.class);
@@ -216,6 +228,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
         mMapView.onStop();
     }
 
+
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
@@ -224,6 +237,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
         mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
             @Override
             public void onInfoWindowLongClick(Marker marker) {
+                if (curPosMarker != null && marker.getId().equals(curPosMarker.getId())) return;
                 Uri gmmIntentUri = Uri.parse("geo:" + marker.getPosition().latitude + "," + marker.getPosition().longitude + "?q=" + marker.getTitle() + marker.getSnippet());
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
@@ -234,6 +248,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
 
         if (isDarkMode())
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireActivity(), R.raw.maps_dark_style));
+        else mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireActivity(), R.raw.maps_light_style));
 
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
@@ -243,14 +258,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                 @Override
                 public void onMapClick(LatLng latLng) {
                     if (isSelecting) {
-                        if (curPosMarker != null) curPosMarker.remove();
-                        curPosMarker = map.addMarker(new MarkerOptions().position(latLng).title("Added now").snippet("Que onda"));
+                        if (curPosMarker != null) {
+                            curPosMarker.remove();
+                        }
+
+                        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.position);
+                        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
+                        BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
+                        curPosMarker = map.addMarker(new MarkerOptions().position(latLng).title("Current Position").icon(smallMarkerIcon).snippet("Showing museums from this position"));
+                        mHomeViewModel.setCurMarker(curPosMarker);
                         isSelecting = false;
-                        requireActivity().findViewById(R.id.icon_pin).setBackground(getResources().getDrawable(R.drawable.ic_baseline_pin_drop_24));
+                        FloatingActionButton fab = requireActivity().findViewById(R.id.button_holder_2);
+                        fab.setImageResource(R.drawable.ic_baseline_pin_drop_24);
                     }
                 }
             });
-            View locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+            locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
             View compassButton = mMapView.findViewWithTag("GoogleMapCompass");
             RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) compassButton.getLayoutParams();
             // position on top right
@@ -263,6 +286,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
             compassButton.setLayoutParams(rlp);
             map.setOnMarkerClickListener(manager);
             locationButton.setVisibility(View.GONE);
+            locationButton.callOnClick();
 
 
             requireActivity().findViewById(R.id.button_holder).setOnClickListener(new View.OnClickListener() {
@@ -272,15 +296,46 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                     locationButton.callOnClick();
                 }
             });
-            requireActivity().findViewById(R.id.button_holder_2).setOnClickListener(new View.OnClickListener() {
+            /*requireActivity().findViewById(R.id.button_holder).setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        YoYo.with(Techniques.Pulse).duration(500).playOn(v);
+                    }
+                    return false;
+                }
+            });*/
+            FloatingActionButton pinDrop = requireActivity().findViewById(R.id.button_holder_2);
+            pinDrop.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     YoYo.with(Techniques.Landing).duration(1000).playOn(v);
                     isSelecting = !isSelecting;
-                    if (!isSelecting) requireActivity().findViewById(R.id.icon_pin).setBackground(getResources().getDrawable(R.drawable.ic_baseline_pin_drop_24));
-                    else requireActivity().findViewById(R.id.icon_pin).setBackground(getResources().getDrawable(R.drawable.ic_outline_cancel_24));
+                    if (!isSelecting) pinDrop.setImageResource(R.drawable.ic_baseline_pin_drop_24);
+                    else pinDrop.setImageResource(R.drawable.ic_outline_cancel_24);
                 }
             });
+            pinDrop.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) YoYo.with(Techniques.Pulse).duration(500).playOn(v);
+                    return false;
+                }
+            });
+            requireActivity().findViewById(R.id.button_holder_2).setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (curPosMarker != null) {
+                        curPosMarker.remove();
+                        curPosMarker = null;
+                        mHomeViewModel.setCurMarker(null);
+                        YoYo.with(Techniques.ZoomIn).duration(500).playOn(v);
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            );
             // When clicking a cluster make it zoom in
             mHomeViewModel.getMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {
                 @Override
@@ -288,7 +343,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                     museums = museos;
                     for (Museo m : museos) {
                         if (m.getLocation() != null && m.getLocation().length != 0){
-                            MyClusterItem item = new MyClusterItem(m.getLocation()[0].getNumberDecimal(), m.getLocation()[1].getNumberDecimal(), m.getName(), m.getAddress());
+                            MyClusterItem item = new MyClusterItem(m.getLocation()[0], m.getLocation()[1], m.getName(), m.getAddress());
                             item.setId(m.get_id());
                             //mMap.addMarker(new MarkerOptions().position(pos).title(m.getName()).snippet(m.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                             if (manager != null)

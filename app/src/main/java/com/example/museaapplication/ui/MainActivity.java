@@ -4,10 +4,12 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.amazonaws.mobile.client.AWSMobileClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.Map.MapFragment;
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //final Fragment mDashboardFragment = new DashboardFragment();
     final Fragment mSearchFragment = new SearchFragment();
     final Fragment mMapFragment = new MapFragment();
-    final Fragment mNotificationsFragment = new NotificationsFragment();
+    Fragment mNotificationsFragment = new NotificationsFragment();
 
     Fragment mUserFragment = new UserFragment();
     // Cogemos el fragment manager e inicializamos estado activo
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AWSMobileClient.getInstance().initialize(this).execute();
 
         mMapView = findViewById(R.id.map_view);
         hvm = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -161,7 +165,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         getSupportActionBar().hide();
                         return true;
                     case R.id.navigation_notifications:
-                        fm.beginTransaction().hide(active).show(mNotificationsFragment).commit();
+                        mNotificationsFragment = new NotificationsFragment();
+                        fm.beginTransaction().add(R.id.nav_host_fragment, mNotificationsFragment, "2").hide(active).show(mNotificationsFragment).commit();
                         active = mNotificationsFragment;
                         SingletonDataHolder.getInstance().main_initial_frag = 2;
                         txt.setText(R.string.title_notifications);
@@ -223,6 +228,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 active = mMapFragment;
                 txt.setText(R.string.title_maps);
                 txt.setClickable(false);
+                getSupportActionBar().hide();
                 navView.setSelectedItemId(R.id.navigation_maps);
                 break;
             default:
