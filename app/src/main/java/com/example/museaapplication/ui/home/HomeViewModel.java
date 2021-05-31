@@ -12,6 +12,7 @@ import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
+import com.google.android.gms.maps.model.Marker;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 
 import java.util.ArrayList;
@@ -24,11 +25,14 @@ import retrofit2.Response;
 public class HomeViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
+    private MutableLiveData<String> errorText;
     private MutableLiveData<Museo[]> Museums;
     private MutableLiveData<Museo[]> FavouriteMuseums = new MutableLiveData<>();
+    private MutableLiveData<Marker> curPosMarker = new MutableLiveData<>();
     private final Stack<Integer> order = new Stack<>();
 
     private ArrayList<Museo> curFavorites;
+    private int tries = 0;
 
     private Likes[] favourites;
     //private MutableLiveData<String[]> horaris;
@@ -38,6 +42,24 @@ public class HomeViewModel extends ViewModel {
         mText.setValue("Propers");
     }
 
+    public LiveData<String> getErrorMessage() {
+        if (errorText == null) errorText = new MutableLiveData<>();
+        return errorText;
+    }
+
+    public LiveData<Marker> getCurPosMarker() {
+        if (curPosMarker == null) curPosMarker = new MutableLiveData<>();
+        return curPosMarker;
+    }
+    public Marker getMarkerValue() {
+        if (curPosMarker != null)
+            return curPosMarker.getValue();
+        return null;
+    }
+    public void setCurMarker(Marker m) {
+        if (curPosMarker == null) curPosMarker = new MutableLiveData<>();
+        curPosMarker.postValue(m);
+    }
     public LiveData<Museo[]> getFavouriteMuseums() {
         if (FavouriteMuseums == null) {
             FavouriteMuseums = new MutableLiveData<>();
@@ -52,7 +74,20 @@ public class HomeViewModel extends ViewModel {
         }
         return Museums;
     }
+    public void unlikeMuseum(String _id) {
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().favMuseum("RaulPes", _id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
 
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
     public LiveData<Museo[]> getMuseumsInMap() {
         return Museums;
     }
@@ -78,24 +113,24 @@ public class HomeViewModel extends ViewModel {
                         Log.e("TAG1Museo", t.getLocalizedMessage());
                         Log.e("TAG2Museo", t.getMessage());
                         t.printStackTrace();
-                /*new CountDownTimer(1000, 100){
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        loadUsers();
-                    }
-                };*/
+                        if (tries < 5) {
+                            loadUsers();
+                            tries++;
+                        }else{
+                            errorText.postValue("Could not connect, try again later");
+                        }
                     }
                 });
             }
 
             @Override
             public void onFailure(Call<LikesValue> call, Throwable t) {
-
+                if (tries < 5) {
+                    loadUsers();
+                    tries++;
+                }else{
+                    errorText.postValue("Could not connect, try again later");
+                }
             }
        });
 
@@ -162,7 +197,7 @@ public class HomeViewModel extends ViewModel {
                 int i = 0;
                 for(Museo m: museums){
                     order.add(i);
-                    APIRequests.getInstance().getExpositionsOfMuseum(m);
+                    //APIRequests.getInstance().getExpositionsOfMuseum(m);
                     APIRequests.getInstance().getInfo(museums, i, order, Museums);
                     i++;
                 }

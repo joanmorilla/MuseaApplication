@@ -74,13 +74,15 @@
     <string name="ocupation_text_covid_dialog">Ocupació</string>
     <string name="restriccions_text_dialog_covid">Restriccions</string>
     <string name="points">Punts:</string>
-    <string name="how_to_play">HOW TO PLAY</string>
+    <string name="how_to_play">COM JUGAR</string>
     <string name="end_message_gold">¡As de la cultura!</string>
+
     <string name="end_message_silver">Geni indiscutible</string>
     <string name="end_message_bronze">Pots asseure\'t a la taula dels grans</string>
     <string name="end_message_garbage">Nivell de camaco</string>
     <string name="go_back">go back</string>
     <string name="start">Start</string>
+  
     <string name="quizzed_name">Quizzed!</string>
 
 
@@ -99,6 +101,10 @@
     <string name="confirm">Confirmar</string>
     <string name="dialog_cancel">Cancel·lar</string>
     <string name="favourites">Favorits</string>
+  
+    <string name="search_map">Cercar...</string>
+    <string name="geocode_error">Cap resultat, prova a escrivir-ho diferent o ser mes específic</string>
+  
     <string name="help_and_privacity">Ajuda i Política de privacitat</string>
     <string name="button_premium">Become premium</string>
     <string name="help_general">General</string>
@@ -116,6 +122,7 @@
     <string name="help_mapa">Mapa</string>
     <string name="help_mapa_text">L\'aplicació Musea utilitza les dades de geolocalització de la seva dispositiu per mostrar-li els diferents museus que estan situats a prop seu. Accepteu la utilització de la geolocalització per poder utilitzar aquesta funcionalitat. En cap cas aquesta informació és recopilada pel nostre equip.\n\nA la pàgina de mapa pot buscar museus utilitzant la barra de cerca. També pot canviar la seva localització per poder consultar museus propers des de la pàgina principal.\n\nSi creu que requereix de més ajuda o desitja realitzar alguna sugerencia si us plau enviï un correu electrònic a aquesta direcció (support@musea.com) o fent clic sobre el botó de més amunt.</string>
     <string name="help_pol_tica_de_privacidad">Política de privacitat</string>
+
 
 
 </resources>

@@ -39,6 +39,7 @@ import com.example.museaapplication.ui.SettingsActivity;
 import com.example.museaapplication.ui.visited.VisitedMus;
 import com.example.museaapplication.ui.edit.edit_user;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -65,6 +66,7 @@ public class UserFragment extends Fragment {
     View root;
     String username;
     String password;
+    CircularImageView circularImageView;
 
 
 
@@ -110,9 +112,8 @@ public class UserFragment extends Fragment {
         TextView fav_n = root.findViewById(R.id.favourties);
         TextView vis_n = root.findViewById(R.id.visited_mus);
         TextView points = root.findViewById(R.id.points);
-        CircularImageView circularImageView = root.findViewById(R.id.circularImageView);
-        String url = "https://museaimages.s3.eu-west-3.amazonaws.com/logo.png";
-        Picasso.get().load(url).fit().into(circularImageView);
+        circularImageView = root.findViewById(R.id.circularImageView);
+
         SingletonDataHolder.userViewModel = uvm;
 
         /*SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -135,6 +136,7 @@ public class UserFragment extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(UserInfo userInfo) {
+                Log.d("OnChanged", "Entro");
                 user_name.setText(userInfo.getName());
                 user_bio.setText(userInfo.getBio());
                 String n = String.valueOf(userInfo.getFavourites().length);
@@ -144,8 +146,18 @@ public class UserFragment extends Fragment {
                 vis_n.setText(x);
                 points.setText(root.getResources().getString(R.string.points) + " " + userInfo.getPoints());
                 String url = userInfo.getProfilePic();
-                Picasso.get().load(url).fit().into(circularImageView);
+                circularImageView.setBackground(null);
+                Picasso.get().load(url).fit().into(circularImageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.e("Success", "ADASD");
+                    }
 
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
             }
 
         });

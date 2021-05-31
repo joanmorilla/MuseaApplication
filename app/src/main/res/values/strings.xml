@@ -67,7 +67,6 @@
     <string name="bio">Bio</string>
     <string name="name">Name</string>
     <string name="change_val">Save Changes</string>
-
     <!--Dialog Covid Info-->
     <string name="title_covid">Current Information</string>
     <string name="horari_dialog_covid">Schedule</string>
@@ -99,6 +98,10 @@
     <string name="confirm">Confirm</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="favourites">Favourites</string>
+
+    <string name="search_map">Search...</string>
+    <string name="geocode_error">Could not find, try a different spelling or be more specific</string>
+
     <string name="title_activity_help">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -207,6 +210,7 @@
     <string name="help_mapa">Map</string>
     <string name="help_mapa_text">The Musea application uses the geolocation data of your device to show you the different museums that are located near you. Accept the use of geolocation in order to use this functionality. In no case is this information collected by our team.\n\nOn the map page you can search for museums using the search bar. You can also change your location to be able to consult nearby museums from the main page.\n\nIf you think you need more help or want to make a suggestion please send an email to this address (support@musea.com) or by clicking on the button above.</string>
     <string name="help_pol_tica_de_privacidad">Privacy Policy</string>
+
 
 
 </resources>

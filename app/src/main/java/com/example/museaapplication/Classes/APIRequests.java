@@ -6,25 +6,21 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.Exhibition;
-import com.example.museaapplication.Classes.Dominio.Info;
 import com.example.museaapplication.Classes.Dominio.Likes;
-import com.example.museaapplication.Classes.Dominio.Quizz;
 import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.Json.CommentsValue;
-import com.example.museaapplication.Classes.Json.ExhibitionValue;
 import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Json.ExpositionListValue;
-import com.example.museaapplication.Classes.Json.ExpositionsList;
 import com.example.museaapplication.Classes.Json.InfoValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
-import com.example.museaapplication.Classes.Json.QuizzValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
-import com.example.museaapplication.Classes.Json.WorksArray;
 import com.example.museaapplication.Classes.Json.WorksValue;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 import retrofit2.Call;
@@ -232,6 +228,24 @@ public class APIRequests {
     private void CacheWorks(Museo m, Exhibition e){
         getWorksOfExhibition(m, e);
 
+    }
+    public void addLike(Likes l){
+        ArrayList<Likes> list = new ArrayList<>();
+        list.addAll(Arrays.asList(likes));
+        for (Likes liks : likes){
+            if (liks.getArtworkId().equals(l.getArtworkId())){
+                list.remove(liks);
+                likes = list.toArray(new Likes[0]);
+                return;
+            }
+        }
+        list.add(l);
+        likes = list.toArray(new Likes[0]);
+    }
+    public void removeLike(Likes l){
+        List<Likes> list = Arrays.asList(likes);
+        list.remove(l);
+        likes = list.toArray(new Likes[0]);
     }
     public boolean checkLikes(String id) {
         for (Likes l : likes){

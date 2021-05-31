@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Museo implements Serializable{
-    private Location[] location;
+    private float[] location;
     //@SerializedName("expositions")
     //private String[] exhibitions;
     private String _id;
@@ -79,11 +79,11 @@ public class Museo implements Serializable{
         this.name = name;
     }
 
-    public Location[] getLocation() {
+    public float[] getLocation() {
         return location;
     }
 
-    public void setLocation(Location[] location) {
+    public void setLocation(float[] location) {
         this.location = location;
     }
 

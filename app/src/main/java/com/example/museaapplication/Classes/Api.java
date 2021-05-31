@@ -1,5 +1,6 @@
 package com.example.museaapplication.Classes;
 
+import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
 import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.User;
 import com.example.museaapplication.Classes.Json.CommentsValue;
@@ -16,6 +17,9 @@ import com.example.museaapplication.Classes.Json.VisitedValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
 import com.example.museaapplication.Classes.Json.WorksArray;
 import com.example.museaapplication.Classes.Json.WorksValue;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -24,6 +28,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -53,6 +58,7 @@ public interface Api {
     @GET("museums/{idMuseo}/{idExpo}/{idObra}")
     Call<WorkValue> getWork(@Path("idMuseo") String museumId, @Path("idExpo") String exhibitionId, @Path("idObra") String idObra);
 
+
     @GET("https://musea-api.herokuapp.com/users/{email}")
     Call<UserInfoValue> getUserInfo(@Path("email") String email);
 
@@ -69,8 +75,13 @@ public interface Api {
     @GET("https://musea-api.herokuapp.com/users/{username}/likes")
     Call<LikesValue> getLikes(@Path("username") String username);
 
+    // Users
+
     @PUT("https://musea-api.herokuapp.com/users/{userId}?")
     Call<Void> addInfoUser(@Path("userId") String userId, @Query("name") String nameuser, @Query("bio") String userbio);
+
+    @PUT("https://musea-api.herokuapp.com/users/{userId}?")
+    Call<Void> updateProfilePic(@Path("userId") String userId, @Query("profilePic") String profilePicUrl);
 
     @POST("https://musea-api.herokuapp.com/users/{username}/visited?")
     Call<Void> addVisitedMuseum(@Path("username") String username, @Query("museum") String museum);
@@ -108,6 +119,8 @@ public interface Api {
     @GET("https://museaimages.s3.eu-west-3.amazonaws.com/logo.png")
     Call<User> getImage();
 
+
+
     // Quizzes
     @GET("https://musea-api.herokuapp.com/quizzes")
     Call<QuizzValue> getQuizzes();
@@ -117,6 +130,15 @@ public interface Api {
                             @Query("points") String points,
                             @Query("total") String total);
 
+    // Reports
+    @POST("https://musea-api.herokuapp.com/reports")
+    Call<Void> reportUser(@Query("informant") String idInformant, @Query("comment") String idComment);
+
+    // Chat notifications
+    @Headers({"Authorization: key= AAAAyrp4IOM:APA91bFokX5YIGqgiXdnrt9GhNeKncYDGRGnAwzFrQpjaBQ_IsPmKrzXe2mvK3bvpGNW4dg8gML-wbimjX6lK6Ymtfsbi018Non98uSaHhBDMAcPI9Jzi7KqWzSYRfpC4IlIflby6LDZ", "Content-Type:application/json"})
+    @POST("https://fcm.googleapis.com/fcm/send")
+    Call<Void> sendMessage(@Body JsonObject body);
+  
     @PUT("https://musea-api.herokuapp.com/users/{username}/premium")
     Call<Void> updatePremium(@Path("username") String username,
                             @Query("days") String days);

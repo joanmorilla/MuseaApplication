@@ -9,6 +9,11 @@ public class Likes implements Serializable {
     private String artworkId;
     private String image;
 
+    public Likes(String _id, String img){
+        artworkId = _id;
+        image = img;
+    }
+
     public String getArtworkId() {
         return artworkId;
     }

@@ -74,13 +74,14 @@
     <string name="ocupation_text_covid_dialog">Ocupación</string>
     <string name="restriccions_text_dialog_covid">Restricciones</string>
     <string name="points">Puntos:</string>
-    <string name="how_to_play">HOW TO PLAY</string>
+
+    <string name="how_to_play">COMO JUGAR</string>
     <string name="end_message_gold">¡As de la cultura!</string>
     <string name="end_message_silver">Genio indiscutible</string>
     <string name="end_message_bronze">Capáz de culturizar al cuñado</string>
     <string name="end_message_garbage">Cultura de suegro</string>
-    <string name="go_back">go back</string>
-    <string name="start">Start</string>
+    <string name="go_back">Atrás</string>
+    <string name="start">Empezar</string>
     <string name="quizzed_name">Quizzed!</string>
 
 
@@ -99,6 +100,10 @@
     <string name="confirm">Confirmar</string>
     <string name="dialog_cancel">Cancelar</string>
     <string name="favourites">Favoritos</string>
+  
+    <string name="search_map">Buscar...</string>
+    <string name="geocode_error">No se ha encontrado, prueba a escribirlo diferente o ser mas específico</string>
+
     <string name="help_and_privacity">Ayuda y política de privacidad</string>
     <string name="button_premium">Become premium</string>
     <string name="help_general">General</string>
