@@ -46,6 +46,7 @@ import com.example.museaapplication.Classes.Json.CommentsValue;
 import com.example.museaapplication.Classes.OnBackPressed;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
+import com.example.museaapplication.Classes.TimeClass;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
 import com.github.siyamed.shapeimageview.CircularImageView;
@@ -54,6 +55,7 @@ import com.xw.repo.widget.BounceScrollView;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -173,22 +175,28 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Date banDate = SingletonDataHolder.getInstance().getLoggedUser().getBanDate();
                 if (!newCommentText.getText().toString().equals("")) {
-                    YoYo.with(Techniques.SlideInLeft).duration(200).playOn(view);
-                    Call<Comment> call = RetrofitClient.getInstance().getMyApi().postComment(sharedViewModel.getCurWork().getValue().get_id(), newCommentText.getText().toString(), SingletonDataHolder.getInstance().getLoggedUser().getUserId());
-                    call.enqueue(new Callback<Comment>() {
-                        @Override
-                        public void onResponse(Call<Comment> call, Response<Comment> response) {
-                            sharedViewModel.getCurWork().getValue().addComment(response.body());
-                            sharedViewModel.setCurWork(sharedViewModel.getCurWork().getValue());
-                            newCommentText.setText("");
-                        }
+                    if (TimeClass.getNow().after(banDate)) {
+                        YoYo.with(Techniques.SlideInLeft).duration(200).playOn(view);
+                        Call<Comment> call = RetrofitClient.getInstance().getMyApi().postComment(sharedViewModel.getCurWork().getValue().get_id(), newCommentText.getText().toString(), SingletonDataHolder.getInstance().getLoggedUser().getUserId());
+                        call.enqueue(new Callback<Comment>() {
+                            @Override
+                            public void onResponse(Call<Comment> call, Response<Comment> response) {
+                                sharedViewModel.getCurWork().getValue().addComment(response.body());
+                                sharedViewModel.setCurWork(sharedViewModel.getCurWork().getValue());
+                                newCommentText.setText("");
+                            }
 
-                        @Override
-                        public void onFailure(Call<Comment> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<Comment> call, Throwable t) {
 
-                        }
-                    });
+                            }
+                        });
+                    }else {
+                        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
+                        Toast.makeText(getContext(), "Tou cant comment until " + dateFormat.format(banDate), Toast.LENGTH_SHORT).show();
+                    }
                 } else YoYo.with(Techniques.Shake).duration(500).playOn(view);
             }
         });

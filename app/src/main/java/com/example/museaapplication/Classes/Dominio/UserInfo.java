@@ -15,6 +15,7 @@ public class UserInfo implements Serializable {
     private String[] visited;
     private String[] likes;
     private Date premiumDate;
+    private Date banDate;
 
 
     public String getUserId() {
@@ -101,4 +102,11 @@ public class UserInfo implements Serializable {
 
     public void setPremiumDate(Date d) { premiumDate = d; }
 
+    public Date getBanDate() {
+        return banDate;
+    }
+
+    public void setBanDate(Date banDate) {
+        this.banDate = banDate;
+    }
 }
