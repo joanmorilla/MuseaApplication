@@ -3,23 +3,10 @@ package com.example.museaapplication.ui;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 import android.speech.tts.TextToSpeech;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -38,6 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.PagerAdapter;
@@ -55,17 +43,14 @@ import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.OnBackPressed;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
-import com.example.museaapplication.ui.InitialActivity;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.user.UserViewModel;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-import com.zolad.zoominimageview.ZoomInImageView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -271,6 +256,8 @@ class MyViewPagerAdapter extends PagerAdapter  {
     private ArrayList<Work> works = new ArrayList<>();
     private boolean love = false;
     PhotoViewAttacher mAttacher;
+    private boolean isPremium = false;
+
 
     private SharedViewModel sharedViewModel;
     public TextToSpeech mTTs;
@@ -280,6 +267,10 @@ class MyViewPagerAdapter extends PagerAdapter  {
         inflater = LayoutInflater.from(context);
         sharedViewModel = svm;
         fm = fragm;
+        Date datePremium = SingletonDataHolder.getInstance().getLoggedUser().getPremiumDate();
+        Date dateToday = new Date();
+        if (dateToday.compareTo(datePremium) < 0 || dateToday.compareTo(datePremium) == 0) isPremium = true;
+        else isPremium = false;
         mTTs = new TextToSpeech(c, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -346,8 +337,13 @@ class MyViewPagerAdapter extends PagerAdapter  {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
-                String text = getDescription(works.get(position));
-                mTTs.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+                if (isPremium){
+                    String text = getDescription(works.get(position));
+                    mTTs.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+                }
+                else {
+                    Toast.makeText(context, "You are not premium!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         TextView title = v.findViewById(R.id.title_text_work);
