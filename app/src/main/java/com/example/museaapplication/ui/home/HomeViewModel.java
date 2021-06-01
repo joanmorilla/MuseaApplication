@@ -93,6 +93,7 @@ public class HomeViewModel extends ViewModel {
     }
 
     public void loadUsers() {
+        Log.d("getUserID ",SingletonDataHolder.getInstance().getLoggedUser().getUserId());
         Call<LikesValue> callFavourites = RetrofitClient.getInstance().getMyApi().getFavMuseums(SingletonDataHolder.getInstance().getLoggedUser().getUserId());
         callFavourites.enqueue(new Callback<LikesValue>() {
             @Override

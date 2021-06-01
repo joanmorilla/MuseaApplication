@@ -1,9 +1,6 @@
 package com.example.museaapplication.ui.user;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,13 +11,9 @@ import com.example.museaapplication.Classes.Dominio.Prize;
 import com.example.museaapplication.Classes.Dominio.UserInfo;
 import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.UserInfoValue;
-import com.example.museaapplication.Classes.Json.prizeValue;
+import com.example.museaapplication.Classes.Json.PrizeValue;
 import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
-
-import com.example.museaapplication.R;
-
-import java.util.ArrayList;
 
 
 import retrofit2.Call;
@@ -46,19 +39,37 @@ public class UserViewModel extends ViewModel {
     }
 
     private void loadprize() {
-
-        Call<prizeValue> call = RetrofitClient.getInstance().getMyApi().getprizesuser(SingletonDataHolder.getInstance().getLoggedUser().getUserId());
-        call.enqueue(new Callback<prizeValue>() {
+        Call<PrizeValue> call = RetrofitClient.getInstance().getMyApi().getprizesuser(SingletonDataHolder.getInstance().getLoggedUser().getUserId());
+        call.enqueue(new Callback<PrizeValue>() {
             @Override
-            public void onResponse(Call<prizeValue> call, Response<prizeValue> response) {
-                prizeValue myprizelist = response.body();
-                Prize[] Prizes = myprizelist.getPrizeList();
-                prizes.postValue(Prizes);
+            public void onResponse(Call<PrizeValue> call, Response<PrizeValue> response) {
+                Log.d("Prizes", "" + response.code());
+                if (response.code() == 200) {
+                    PrizeValue myprizelist = response.body();
+                    if (myprizelist != null) {
+                        Prize[] Prizes = myprizelist.getPrizes();
+                        /*
 
+                        Log.d("Prizes", String.valueOf(response.body().getPrizes()));
+                        Log.d("Prizes", "not null");
+                        if (Prizes != null) {
+                            Log.d("Prizes", "Chequea tremendos datos");
+                            Log.d("Prizes", "length = " + Prizes.length);
+                            if (Prizes.length > 0)
+                                Log.d("Prizes", Prizes[0].getBadge());
+                        }
+                        else
+                            Log.d("Prizes", "Prizes null");
+                        */
+
+                        prizes.setValue(Prizes);
+                    }
+
+                }
             }
 
             @Override
-            public void onFailure(Call<prizeValue> call, Throwable t) {
+            public void onFailure(Call<PrizeValue> call, Throwable t) {
                 Log.e("PRIZES", t.getLocalizedMessage());
                 Log.e("PRIZES2", t.getMessage());
                 t.printStackTrace();
@@ -106,6 +117,7 @@ public class UserViewModel extends ViewModel {
         if (Userinfo == null){
             Userinfo = new MutableLiveData<>();
             loadUsersinfo();
+
         }
         return Userinfo;
     }
@@ -216,4 +228,7 @@ public class UserViewModel extends ViewModel {
 
     }
 
+    public void updateprizes() {
+        loadprize();
+    }
 }

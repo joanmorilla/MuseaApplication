@@ -139,6 +139,7 @@ public class UserFragment extends Fragment {
                 String x = String.valueOf(userInfo.getVisited().length);
                 vis_n.setText(x);
                 points.setText(root.getResources().getString(R.string.points) + " " + userInfo.getPoints());
+                uvm.updateprizes();
                 String url = userInfo.getProfilePic();
                 circularImageView.setBackground(null);
                 Picasso.get().load(url).fit().into(circularImageView, new Callback() {
@@ -156,29 +157,37 @@ public class UserFragment extends Fragment {
 
         });
 
-/*
+
         uvm.getprizes().observe(getViewLifecycleOwner(), new Observer<Prize[]>() {
             @Override
             public void onChanged(Prize[] prizes) {
                 int bronze=0;
                 int plata=0;
                 int oro = 0;
-                for(int i = 0; i < prizes.length ; ++i){
-                    if(prizes[i].getBadge() == "1"){
-                        oro++;
+                if (prizes != null) {
+                    Log.d("Prizes", "lenght" + prizes.length);
+                    for (Prize prize : prizes) {
+                        switch (prize.getBadge()) {
+                            case "1":
+                                oro++;
+                                break;
+                            case "2":
+                                plata++;
+                                break;
+                            case "3":
+                                bronze++;
+                                break;
+                        }
                     }
-                    else if(prizes[i].getBadge() == "2"){
-                        plata++;
-                    }
-                    else if (prizes[i].getBadge() == "3"){
-                        bronze++;
-                    }
+                    Log.d("Prizes", "or " + oro);
+                    Log.d("Prizes", "pl " + plata);
+                    Log.d("Prizes", "br " + bronze);
+                    text_oro.setText(String.valueOf(oro));
+                    text_plata.setText(String.valueOf(plata));
+                    text_bronze.setText(String.valueOf(bronze));
                 }
-                text_oro.setText(String.valueOf(oro));
-                text_plata.setText(String.valueOf(plata));
-                text_bronze.setText(String.valueOf(bronze));
             }
-        });*/
+        });
 
 
         uvm.getLikes().observe(getViewLifecycleOwner(), new Observer<Likes[]>() {

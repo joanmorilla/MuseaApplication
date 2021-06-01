@@ -1,6 +1,8 @@
 package com.example.museaapplication.Classes.Dominio;
 
-public class Prize {
+import java.io.Serializable;
+
+public class Prize implements Serializable {
 
     private String _id;
     private String user;
@@ -8,7 +10,7 @@ public class Prize {
     private int total;
     private String badge;
     private String image;
-    private int __v;
+    //private int __v;
 
 
 
@@ -60,11 +62,11 @@ public class Prize {
         this._id = _id;
     }
 
-    public int get__v() {
-        return __v;
-    }
+    //public int get__v() {
+    //    return __v;
+    //}
 
-    public void set__v(int __v) {
-        this.__v = __v;
-    }
+    //public void set__v(int __v) {
+    //    this.__v = __v;
+    //}
 }

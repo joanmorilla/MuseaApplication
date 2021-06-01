@@ -1,6 +1,5 @@
 package com.example.museaapplication.Classes;
 
-import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
 import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.User;
 import com.example.museaapplication.Classes.Json.CommentsValue;
@@ -14,10 +13,8 @@ import com.example.museaapplication.Classes.Json.UserValue;
 import com.example.museaapplication.Classes.Json.VisitedValue;
 import com.example.museaapplication.Classes.Json.WorkValue;
 import com.example.museaapplication.Classes.Json.WorksValue;
-import com.example.museaapplication.Classes.Json.prizeValue;
+import com.example.museaapplication.Classes.Json.PrizeValue;
 import com.google.gson.JsonObject;
-
-import org.json.JSONObject;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -26,7 +23,6 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -87,7 +83,7 @@ public interface Api {
     Call<VisitedValue> getVisitedMuseum(@Path("username") String username);
 
     @GET("https://musea-api.herokuapp.com/prizes")
-    Call<prizeValue> getprizesuser(@Query("user") String user);
+    Call<PrizeValue> getprizesuser(@Query("user") String user);
 
     // User favorites
     @POST("https://musea-api.herokuapp.com/users/{username}/likes?")
