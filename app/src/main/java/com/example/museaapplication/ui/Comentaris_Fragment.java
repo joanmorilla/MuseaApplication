@@ -1,15 +1,25 @@
 package com.example.museaapplication.ui;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowInsets;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -18,28 +28,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.Vibrator;
-import android.util.Log;
-import android.view.HapticFeedbackConstants;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowInsets;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.example.museaapplication.Classes.APIRequests;
-import com.example.museaapplication.Classes.Adapters.CustomScrollView;
 import com.example.museaapplication.Classes.Dominio.Comment;
 import com.example.museaapplication.Classes.Dominio.Work;
 import com.example.museaapplication.Classes.Json.CommentsValue;
@@ -51,9 +41,6 @@ import com.example.museaapplication.Classes.ViewModels.SharedViewModel;
 import com.example.museaapplication.R;
 import com.github.siyamed.shapeimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
-import com.xw.repo.widget.BounceScrollView;
-
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -61,7 +48,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import retrofit2.Call;
@@ -195,7 +181,7 @@ public class Comentaris_Fragment extends Fragment implements OnBackPressed {
                         });
                     }else {
                         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
-                        Toast.makeText(getContext(), "Tou cant comment until " + dateFormat.format(banDate), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "You cant comment until " + dateFormat.format(banDate), Toast.LENGTH_SHORT).show();
                     }
                 } else YoYo.with(Techniques.Shake).duration(500).playOn(view);
             }
