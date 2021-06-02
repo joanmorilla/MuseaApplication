@@ -32,6 +32,7 @@ import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.R;
 import com.example.museaapplication.ui.MainActivity;
+import com.example.museaapplication.ui.Map.MapFragment;
 import com.example.museaapplication.ui.signup.SignupFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -60,6 +61,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        MapFragment.curPosMarker = null;
 
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         root = inflater.inflate(R.layout.fragment_login, container, false);

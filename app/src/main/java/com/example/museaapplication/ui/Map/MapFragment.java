@@ -45,6 +45,8 @@ import com.example.museaapplication.R;
 import com.example.museaapplication.ui.MuseuActivity;
 import com.example.museaapplication.ui.home.HomeViewModel;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -83,6 +85,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
     private GoogleMap mMap;
     private boolean isSelecting = false;
     View locationButton;
+    FusedLocationProviderClient fuseProvider;
 
     private String id;
 
@@ -104,6 +107,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
         View root = inflater.inflate(R.layout.map_fragment, container, false);
         mMapView = root.findViewById(R.id.map_view);
         searchView = root.findViewById(R.id.search_view_maps);
+        fuseProvider = LocationServices.getFusedLocationProviderClient(requireActivity());
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -251,6 +255,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
         else mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireActivity(), R.raw.maps_light_style));
 
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fuseProvider.getLastLocation();
             map.setMyLocationEnabled(true);
             map.getUiSettings().setMyLocationButtonEnabled(true);
             map.getUiSettings().setCompassEnabled(true);
