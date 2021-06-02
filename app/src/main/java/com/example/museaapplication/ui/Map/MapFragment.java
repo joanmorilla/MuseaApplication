@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,6 +58,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -96,7 +99,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
     }
 
 
-
     Bitmap d = null;
 
     Museo[] museums;
@@ -113,7 +115,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
             public boolean onQueryTextSubmit(String s) {
                 String location = searchView.getQuery().toString();
                 List<Address> listAddress = null;
-                if (location != null || !location.equals("")){
+                if (location != null || !location.equals("")) {
                     Geocoder geocoderv2 = new Geocoder(requireContext());
                     try {
                         listAddress = geocoderv2.getFromLocationName(location, 1);
@@ -121,7 +123,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                             Address address = listAddress.get(0);
                             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                        }else {
+                        } else {
                             Toast.makeText(getContext(), getResources().getString(R.string.geocode_error), Toast.LENGTH_SHORT).show();
                         }
                     } catch (IOException e) {
@@ -252,7 +254,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
 
         if (isDarkMode())
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireActivity(), R.raw.maps_dark_style));
-        else mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireActivity(), R.raw.maps_light_style));
+        else
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireActivity(), R.raw.maps_light_style));
 
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fuseProvider.getLastLocation();
@@ -284,8 +287,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
             // position on top right
             rlp.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
             rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-            rlp.addRule(RelativeLayout.ALIGN_PARENT_START,0);
-            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP,0);
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_START, 0);
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
             rlp.bottomMargin = pixToDp(150);
             rlp.rightMargin = pixToDp(25);
             compassButton.setLayoutParams(rlp);
@@ -323,7 +326,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
             pinDrop.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) YoYo.with(Techniques.Pulse).duration(500).playOn(v);
+                    if (event.getAction() == MotionEvent.ACTION_DOWN)
+                        YoYo.with(Techniques.Pulse).duration(500).playOn(v);
                     return false;
                 }
             });
@@ -333,6 +337,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                     if (curPosMarker != null) {
                         curPosMarker.remove();
                         curPosMarker = null;
+                        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                            Task<Location> locationResult = fuseProvider.getLastLocation();
+                            locationResult.addOnSuccessListener(requireActivity(), new OnSuccessListener<Location>() {
+                                @Override
+                                public void onSuccess(Location location) {
+                                    Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.position);
+                                    Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
+                                    BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
+                                    curPosMarker = map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("Current Position").icon(smallMarkerIcon).snippet("Showing museums from this position"));
+                                    mHomeViewModel.setCurMarker(curPosMarker);
+                                    curPosMarker.setVisible(false);
+                                    curPosMarker = null;
+                                }
+                            });
+                        }
                         mHomeViewModel.setCurMarker(null);
                         YoYo.with(Techniques.ZoomIn).duration(500).playOn(v);
                         return true;
