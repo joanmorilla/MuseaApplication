@@ -106,7 +106,7 @@ public class ChatsDBHelper extends SQLiteOpenHelper {
     }
     public void deleteChat(String chatName){
         SQLiteDatabase db = getWritableDatabase();
-        deleteMessageOfChat(chatName);
+        db.delete("MESSAGES", "ChatName=?", new String[]{chatName});
         db.delete("CHATS", "Chat=?", new String[]{chatName});
     }
     public ArrayList<ChatFormat> getChats(){

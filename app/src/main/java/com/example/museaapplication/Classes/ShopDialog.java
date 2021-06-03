@@ -74,7 +74,7 @@ public class ShopDialog extends AppCompatDialogFragment {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
 // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(1, notBuilder.build());
+        //notificationManager.notify(1, notBuilder.build());
 
         this.uvm.resetFinishBuy();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

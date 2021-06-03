@@ -141,7 +141,7 @@ public class UserFragment extends Fragment {
                 uvm.updateprizes();
                 String url = userInfo.getProfilePic();
                 circularImageView.setBackground(null);
-                Picasso.get().load(url).fit().into(circularImageView, new Callback() {
+                Picasso.get().load(url).into(circularImageView, new Callback() {
                     @Override
                     public void onSuccess() {
                         Log.e("Success", "ADASD");
