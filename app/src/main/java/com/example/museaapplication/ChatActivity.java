@@ -3,6 +3,7 @@ package com.example.museaapplication;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -536,9 +538,26 @@ public class ChatActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) onBackPressed();
         else if (item.getItemId() == R.id.leave_room){
-            dbHelper.deleteChat(roomActivity);
-            FirebaseMessaging.getInstance().unsubscribeFromTopic(roomActivity.replace(" ", ""));
-            finish();
+            androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(true);
+            builder.setTitle(R.string.leave_room);
+            builder.setMessage(R.string.leave_room_confirmation);
+            builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dbHelper.deleteChat(roomActivity);
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(roomActivity.replace(" ", ""));
+                    finish();
+                }
+            });
+            builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         } else if (item.getItemId() == R.id.delete_message){
             for (MessageFormat message : selectedMessages) {
                 messageAdapter.remove(message);

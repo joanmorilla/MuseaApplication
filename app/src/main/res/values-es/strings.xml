@@ -130,6 +130,8 @@
     <string name="action_settings">Opciones</string>
     <string name="join_a_room_in_an_exhibition">Únete a un chat de una exposición</string>
     <string name="error">No se puedo conectar inténtalo mas tarde</string>
+    <string name="leave_room">Salir</string>
+    <string name="leave_room_confirmation">¿Estas seguro de que quieres salir de la sala?</string>
 
 
 </resources>

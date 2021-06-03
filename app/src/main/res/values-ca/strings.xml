@@ -130,6 +130,8 @@
     <string name="action_settings">Opcions</string>
     <string name="join_a_room_in_an_exhibition">Uneix-te al xat d\'una exposició</string>
     <string name="error">No es va poder conectar, intenta-ho mes tard</string>
+    <string name="leave_room">Abandonar</string>
+    <string name="leave_room_confirmation">Estas segur que vols abandonar aquesta sala?</string>
 
 
 </resources>
