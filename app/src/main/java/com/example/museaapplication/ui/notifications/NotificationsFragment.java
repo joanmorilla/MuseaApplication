@@ -60,7 +60,7 @@ public class NotificationsFragment extends Fragment {
             notificationManager.createNotificationChannel(channel);
             notificationManager.createNotificationChannel(channel2);
         }
-        dbHelper.insertChat("Chat1", "https://museaimages1.s3.amazonaws.com/museums%20/Interior_Museo_Egipcio_de_Barcelona_colecci%C3%B3n_permanente.jpg");
+        //dbHelper.insertChat("Chat1", "https://museaimages1.s3.amazonaws.com/museums%20/Interior_Museo_Egipcio_de_Barcelona_colecci%C3%B3n_permanente.jpg");
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
