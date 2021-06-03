@@ -110,6 +110,7 @@ public class HomeFragment extends Fragment implements Permissions {
             @Override
             public void onChanged(String s) {
                 Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                pb.setVisibility(View.GONE);
             }
         });
         homeViewModel.getFavouriteMuseums().observe(getViewLifecycleOwner(), new Observer<Museo[]>() {

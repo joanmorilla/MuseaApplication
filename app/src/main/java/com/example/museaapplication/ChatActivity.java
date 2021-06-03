@@ -535,7 +535,10 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) onBackPressed();
-        else if (item.getItemId() == R.id.delete_message){
+        else if (item.getItemId() == R.id.leave_room){
+            dbHelper.deleteChat(roomActivity);
+            finish();
+        } else if (item.getItemId() == R.id.delete_message){
             for (MessageFormat message : selectedMessages) {
                 messageAdapter.remove(message);
                 messageAdapter.clear();

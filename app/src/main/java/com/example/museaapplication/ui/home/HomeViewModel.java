@@ -118,6 +118,7 @@ public class HomeViewModel extends ViewModel {
                             loadUsers();
                             tries++;
                         }else{
+                            if (errorText == null) errorText = new MutableLiveData<>();
                             errorText.postValue("Could not connect, try again later");
                         }
                     }
@@ -130,6 +131,7 @@ public class HomeViewModel extends ViewModel {
                     loadUsers();
                     tries++;
                 }else{
+                    if (errorText == null) errorText = new MutableLiveData<>();
                     errorText.postValue("Could not connect, try again later");
                 }
             }

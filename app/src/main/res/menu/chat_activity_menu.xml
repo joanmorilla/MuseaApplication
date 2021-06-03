@@ -5,4 +5,8 @@
         android:icon="@drawable/ic_round_delete_outline_24"
         app:showAsAction="always"
         android:title="Delete" />
+    <item android:id="@+id/leave_room"
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
+        app:showAsAction="always"
+        android:title="Leave room" />
 </menu>
