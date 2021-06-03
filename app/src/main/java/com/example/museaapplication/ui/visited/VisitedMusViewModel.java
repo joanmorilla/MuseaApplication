@@ -11,6 +11,7 @@ import com.example.museaapplication.Classes.Json.AuxMuseo;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.Json.VisitedValue;
 import com.example.museaapplication.Classes.RetrofitClient;
+import com.example.museaapplication.Classes.SingletonDataHolder;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ public class VisitedMusViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Museo>> museos;
 
     public void addVisitedMuseum(String id_museum) {
-        Call<Void> call = RetrofitClient.getInstance().getMyApi().addVisitedMuseum("raulfersan5",id_museum);
+        Call<Void> call = RetrofitClient.getInstance().getMyApi().addVisitedMuseum(SingletonDataHolder.getInstance().getLoggedUser().getUserId(),id_museum);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -57,12 +58,10 @@ public class VisitedMusViewModel extends ViewModel {
     }
 
     public void loadVisited(){
-        Call<VisitedValue> call = RetrofitClient.getInstance().getMyApi().getVisitedMuseum("raulfersan5");
+        Call<VisitedValue> call = RetrofitClient.getInstance().getMyApi().getVisitedMuseum(SingletonDataHolder.getInstance().getLoggedUser().getUserId());
         call.enqueue(new Callback<VisitedValue>() {
             @Override
             public void onResponse(Call<VisitedValue> call, Response<VisitedValue> response) {
-                Log.d("OYEEEEEEEE",response.toString());
-                Log.d("OYEEEEEEEE","" + response.code());
                 VisitedValue myvisitedlist = response.body();
                 Visited[] visited = myvisitedlist.getVisitedList();
                 Visiteds.postValue(visited);
@@ -83,14 +82,11 @@ public class VisitedMusViewModel extends ViewModel {
         if (museo == null){
             museo = new MutableLiveData<String>();
         }
-        Log.e("getmuseo", "Llega:");
-        Log.e("getmuseo", String.valueOf(museo));
         return museo;
     }
 
     public void loadMuseum(String idMuseo){
         Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseum(idMuseo);
-        Log.e("loadmuseo", idMuseo);
         call.enqueue(new Callback<MuseoValue>() {
             @Override
             public void onResponse(Call<MuseoValue> call, Response<MuseoValue> response) {
@@ -126,7 +122,6 @@ public class VisitedMusViewModel extends ViewModel {
             museos = new MutableLiveData<ArrayList<Museo>>();
         }
         ArrayList<Museo> museoslist = new ArrayList<Museo>();
-        Log.e("FORVISITED", String.valueOf(Visiteds.getValue().length));
         for(int i=0; i< Visiteds.getValue().length; ++i){
             Visited[] vis = Visiteds.getValue();
             Call<MuseoValue> call = RetrofitClient.getInstance().getMyApi().getMuseum(vis[i].museumId());
@@ -136,10 +131,8 @@ public class VisitedMusViewModel extends ViewModel {
                     AuxMuseo aux = response.body().getMuseum();
                     Museo museum = new Museo();
                     museum.setName(aux.getName());
-                    Log.e("NAMEMUSEO", aux.getName());
                     museum.setImage(aux.getImage());
                     museoslist.add(museum);
-                    Log.e("FORVISITED", String.valueOf(museoslist.size()));
                     museos.postValue(museoslist);
                 }
 
