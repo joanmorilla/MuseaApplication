@@ -72,6 +72,10 @@ public class NotificationsFragment extends Fragment {
         ArrayList<ChatFormat> chats = dbHelper.getChats();
 
         FirebaseMessaging.getInstance().subscribeToTopic("Messages");
+        TextView txt = root.findViewById(R.id.empty_chats_view);
+        if (chats.size() == 0) {
+            txt.setVisibility(View.VISIBLE);
+        }else txt.setVisibility(View.GONE);
 
         for (int i = 0; i < chats.size(); i++){
             ChatFormat chat = chats.get(i);

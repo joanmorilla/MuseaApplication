@@ -458,7 +458,7 @@ public class ChatActivity extends AppCompatActivity {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(ChatActivity.this, ""+response.code(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ChatActivity.this, ""+response.code(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -537,6 +537,7 @@ public class ChatActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) onBackPressed();
         else if (item.getItemId() == R.id.leave_room){
             dbHelper.deleteChat(roomActivity);
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(roomActivity.replace(" ", ""));
             finish();
         } else if (item.getItemId() == R.id.delete_message){
             for (MessageFormat message : selectedMessages) {

@@ -127,7 +127,9 @@
     <string name="help_mapa">Mapa</string>
     <string name="help_mapa_text">L\'aplicació Musea utilitza les dades de geolocalització de la seva dispositiu per mostrar-li els diferents museus que estan situats a prop seu. Accepteu la utilització de la geolocalització per poder utilitzar aquesta funcionalitat. En cap cas aquesta informació és recopilada pel nostre equip.\n\nA la pàgina de mapa pot buscar museus utilitzant la barra de cerca. També pot canviar la seva localització per poder consultar museus propers des de la pàgina principal.\n\nSi creu que requereix de més ajuda o desitja realitzar alguna sugerencia si us plau enviï un correu electrònic a aquesta direcció (support@musea.com) o fent clic sobre el botó de més amunt.</string>
     <string name="help_pol_tica_de_privacidad">Política de privacitat</string>
-
+    <string name="action_settings">Opcions</string>
+    <string name="join_a_room_in_an_exhibition">Uneix-te al xat d\'una exposició</string>
+    <string name="error">No es va poder conectar, intenta-ho mes tard</string>
 
 
 </resources>

@@ -259,6 +259,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
 
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fuseProvider.getLastLocation();
+            // Get current locatin for devices that dont update provider on start.
+            Task<Location> locationResult = fuseProvider.getLastLocation();
+            locationResult.addOnSuccessListener(requireActivity(), new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.position);
+                    Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
+                    BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
+                    curPosMarker = map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("Current Position").icon(smallMarkerIcon).snippet("Showing museums from this position"));
+                    //mHomeViewModel.setCurMarker(curPosMarker);
+                    curPosMarker.setVisible(false);
+                    curPosMarker = null;
+                    Log.d("MapFragment", "" + location.getLatitude());
+                }
+            });
             map.setMyLocationEnabled(true);
             map.getUiSettings().setMyLocationButtonEnabled(true);
             map.getUiSettings().setCompassEnabled(true);

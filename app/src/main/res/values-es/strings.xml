@@ -127,6 +127,9 @@
     <string name="title_shop">La tienda de MUSEA</string>
     <string name="available_points">Puntos disponibles:</string>
     <string name="premium_date">Fecha premium:</string>
+    <string name="action_settings">Opciones</string>
+    <string name="join_a_room_in_an_exhibition">Únete a un chat de una exposición</string>
+    <string name="error">No se puedo conectar inténtalo mas tarde</string>
 
 
 </resources>

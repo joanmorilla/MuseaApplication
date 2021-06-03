@@ -1,5 +1,6 @@
 package com.example.museaapplication.ui.home;
 
+import android.content.res.Resources;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -12,6 +13,7 @@ import com.example.museaapplication.Classes.Dominio.Museo;
 import com.example.museaapplication.Classes.Json.LikesValue;
 import com.example.museaapplication.Classes.Json.MuseoValue;
 import com.example.museaapplication.Classes.RetrofitClient;
+import com.example.museaapplication.R;
 import com.google.android.gms.maps.model.Marker;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 
@@ -119,7 +121,7 @@ public class HomeViewModel extends ViewModel {
                             tries++;
                         }else{
                             if (errorText == null) errorText = new MutableLiveData<>();
-                            errorText.postValue("Could not connect, try again later");
+                            errorText.postValue(Resources.getSystem().getString(R.string.error));
                         }
                     }
                 });
@@ -132,7 +134,7 @@ public class HomeViewModel extends ViewModel {
                     tries++;
                 }else{
                     if (errorText == null) errorText = new MutableLiveData<>();
-                    errorText.postValue("Could not connect, try again later");
+                    errorText.postValue(Resources.getSystem().getString(R.string.error));
                 }
             }
        });

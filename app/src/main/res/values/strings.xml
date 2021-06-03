@@ -215,7 +215,8 @@
     <string name="help_mapa">Map</string>
     <string name="help_mapa_text">The Musea application uses the geolocation data of your device to show you the different museums that are located near you. Accept the use of geolocation in order to use this functionality. In no case is this information collected by our team.\n\nOn the map page you can search for museums using the search bar. You can also change your location to be able to consult nearby museums from the main page.\n\nIf you think you need more help or want to make a suggestion please send an email to this address (support@musea.com) or by clicking on the button above.</string>
     <string name="help_pol_tica_de_privacidad">Privacy Policy</string>
-
+    <string name="join_a_room_in_an_exhibition">Join a room in an exhibition</string>
+    <string name="error">Could not connect, try again later</string>
 
 
 </resources>
