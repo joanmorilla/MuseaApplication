@@ -97,6 +97,7 @@ public class LoginFragment extends Fragment {
                 loadingPanel.setVisibility(View.GONE);
                 if (r.equals(1)) {
                     Log.d("Response state","Succesfuly Login");
+                    Log.d("Jolas", "Desde el fetch de usuario: " + username.getText().toString());
                     Call<UserInfoValue> call = RetrofitClient.getInstance().getMyApi().getUserInfo(username.getText().toString());
                     call.enqueue(new Callback<UserInfoValue>() {
                         @Override
@@ -248,7 +249,7 @@ public class LoginFragment extends Fragment {
         SharedPreferences sharedPref = getActivity().getSharedPreferences("infoUser", Context.MODE_PRIVATE);
         String defaultValue = "";
         String sharedValue = sharedPref.getString(getString(R.string.auto_signin_key), defaultValue);
-        if (checkBoxRememberMe.isChecked() || !sharedValue.isEmpty()) {
+        if (!sharedValue.isEmpty()) {
             checkBoxRememberMe.setChecked(true);
             int index = sharedValue.lastIndexOf('#');
             Log.d("SharedPreferences2","Login automatico: " + sharedValue);
@@ -258,8 +259,8 @@ public class LoginFragment extends Fragment {
             password.setText(sharedValue.substring(index+1));
         }
         else {
-            password.setText("");
-            username.setText("");
+            //password.setText("");
+            //username.setText("");
         }
     }
 
