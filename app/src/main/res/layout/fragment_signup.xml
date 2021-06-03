@@ -31,16 +31,19 @@
                 android:id="@+id/text_username"
                 android:layout_width="@dimen/text_width_small"
                 android:layout_height="@dimen/text_height"
-                android:text="@string/enter_username" />
+                android:text="@string/enter_username"
+                android:paddingLeft="10dp"/>
 
             <EditText
                 android:id="@+id/enter_username"
-                android:layout_width="@dimen/enter_text_width"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/enter_text_height"
+                android:layout_marginRight="145dp"
+                android:layout_marginLeft="17dp"
                 android:background="@drawable/rounded_corner"
                 android:hint="@string/enter_username"
                 android:inputType="textEmailAddress"
-                android:paddingHorizontal="10dp" />
+                android:paddingHorizontal="10dp"/>
 
             <Space
                 android:layout_width="wrap_content"
@@ -67,12 +70,15 @@
                 android:id="@+id/text_email"
                 android:layout_width="@dimen/text_width_small"
                 android:layout_height="@dimen/text_height"
-                android:text="@string/enter_email" />
+                android:text="@string/enter_email"
+                android:paddingLeft="10dp"/>
 
             <EditText
                 android:id="@+id/enter_email"
-                android:layout_width="@dimen/enter_text_width"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/enter_text_height"
+                android:layout_marginRight="145dp"
+                android:layout_marginLeft="17dp"
                 android:background="@drawable/rounded_corner"
                 android:hint="@string/enter_email"
                 android:inputType="textEmailAddress"
@@ -102,12 +108,15 @@
                 android:id="@+id/text_password"
                 android:layout_width="@dimen/text_width_small"
                 android:layout_height="@dimen/text_height"
+                android:paddingLeft="10dp"
                 android:text="@string/enter_password" />
 
             <EditText
                 android:id="@+id/enter_password"
-                android:layout_width="@dimen/enter_text_width"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/enter_text_height"
+                android:layout_marginRight="145dp"
+                android:layout_marginLeft="17dp"
                 android:background="@drawable/rounded_corner"
                 android:hint="@string/enter_password"
                 android:inputType="textPassword"
@@ -138,12 +147,15 @@
                 android:id="@+id/text_password2"
                 android:layout_width="@dimen/text_width_small"
                 android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
                 android:text="@string/enter_password_twice" />
 
             <EditText
                 android:id="@+id/enter_password2"
-                android:layout_width="@dimen/enter_text_width"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/enter_text_height"
+                android:layout_marginRight="145dp"
+                android:layout_marginLeft="17dp"
                 android:background="@drawable/rounded_corner"
                 android:hint="@string/enter_password_twice"
                 android:inputType="textPassword"
@@ -186,8 +198,10 @@
         app:layout_constraintVertical_bias="@dimen/vertical_bias_s"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         android:text="@string/welcome_message"
         android:textSize="@dimen/text_size_m"
         android:textAlignment="center"
