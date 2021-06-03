@@ -104,7 +104,6 @@ public class UserFragment extends Fragment {
         //TextView id = root.findViewById(R.id.t_id);
         //TextView image = root.findViewById(R.id.t_image);
         TextView fav_n = root.findViewById(R.id.favourties);
-        TextView vis_n = root.findViewById(R.id.visited_mus);
         TextView points = root.findViewById(R.id.points);
         TextView text_oro = root.findViewById(R.id.gold_num);
         TextView text_plata = root.findViewById(R.id.silver_num);
@@ -137,7 +136,7 @@ public class UserFragment extends Fragment {
                 Log.e("FAVVVVV", String.valueOf(userInfo.getFavourites().length));
                 fav_n.setText(n);
                 String x = String.valueOf(userInfo.getVisited().length);
-                vis_n.setText(x);
+                visited_m.setText(x);
                 points.setText(root.getResources().getString(R.string.points) + " " + userInfo.getPoints());
                 uvm.updateprizes();
                 String url = userInfo.getProfilePic();
