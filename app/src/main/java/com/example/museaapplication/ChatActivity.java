@@ -231,6 +231,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "OnResume");
         SocketService.curRoom = roomActivity;
         ChatsDBHelper.getInstance(this).clearNewMessages(roomActivity);
 
@@ -255,11 +256,15 @@ public class ChatActivity extends AppCompatActivity {
             //notificationManager.cancel(2);
         }
         messageAdapter.clear();
+        List<MessageFormat> messageFormatList = new ArrayList<>();
+        messageAdapter = new MessageAdapter(this, R.layout.item_message, messageFormatList);
+        messageListView.setAdapter(messageAdapter);
         ArrayList<MessageFormat> messages = dbHelper.getMessagesOfChat(roomActivity);
         for (MessageFormat m: messages){
             messageAdapter.add(m);
         }
-        messageListView.smoothScrollToPosition(messages.size()-1);
+        messageAdapter.notifyDataSetChanged();
+        //messageListView.smoothScrollToPosition(messages.size()-1);
         Intent service = new Intent(this , SocketService.class);
         //stopService(service);
     }
