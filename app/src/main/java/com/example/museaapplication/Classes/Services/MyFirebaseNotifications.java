@@ -14,6 +14,7 @@ import com.example.museaapplication.Classes.Adapters.BD.ChatsDBHelper;
 import com.example.museaapplication.Classes.Adapters.Chats.MessageFormat;
 import com.example.museaapplication.Classes.SocketService;
 import com.example.museaapplication.R;
+import com.example.museaapplication.ui.InitialActivity;
 import com.example.museaapplication.ui.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -46,7 +47,7 @@ public class MyFirebaseNotifications extends FirebaseMessagingService {
         for( int i = start; i < messages.size(); i++){
             inboxStyle.addLine(messages.get(i).getUsername() + ": " + messages.get(i).getMessage());
         }
-        Intent openChatIntent = new Intent(getBaseContext(), ChatActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent openChatIntent = new Intent(getBaseContext(), ChatActivity.class);
         openChatIntent.putExtra("ChatName", room);
         PendingIntent openChatPendingIntent = PendingIntent.getActivity(getBaseContext(), 1, openChatIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

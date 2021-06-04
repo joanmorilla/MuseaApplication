@@ -40,6 +40,7 @@ import com.example.museaapplication.Classes.RetrofitClient;
 import com.example.museaapplication.Classes.Services.MyFirebaseNotifications;
 import com.example.museaapplication.Classes.SingletonDataHolder;
 import com.example.museaapplication.Classes.SocketService;
+import com.example.museaapplication.ui.InitialActivity;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
@@ -117,7 +118,6 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(this, "AAAA", Toast.LENGTH_SHORT).show();
         setContentView(R.layout.activity_chat);
         if (getIntent() != null && getIntent().hasExtra("ChatName")) roomActivity = getIntent().getStringExtra("ChatName");
         else roomActivity = "AAAAAAA";
@@ -127,15 +127,16 @@ public class ChatActivity extends AppCompatActivity {
         }
         //SocketService.onNewMessageActive = onNewMessage;
         setTitle(roomActivity);
-        Toast.makeText(this, "AAAA", Toast.LENGTH_SHORT).show();
         dbHelper = ChatsDBHelper.getInstance(this);
         if (SingletonDataHolder.getInstance().getLoggedUser() != null) {
-            Toast.makeText(this, "Oops", Toast.LENGTH_SHORT).show();
             Username = SingletonDataHolder.getInstance().getLoggedUser().getUserId();
             profilePic = SingletonDataHolder.getInstance().getLoggedUser().getProfilePic();
         }
         else {
-            SharedPreferences sharedPref = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+            Intent i = new Intent(this, InitialActivity.class);
+            startActivity(i);
+            finish();
+            /*SharedPreferences sharedPref = getSharedPreferences("", Context.MODE_PRIVATE);
             String sharedValue = sharedPref.getString(getString(R.string.auto_signin_key), "");
             profilePic = "https://images-na.ssl-images-amazon.com/images/S/sgp-catalog-images/region_US/g9a9m-MHM425BWQ9F-Full-Image_GalleryBackground-en-US-1521579412582._SX1080_.jpg";
             if (!sharedValue.isEmpty()) {
@@ -143,7 +144,7 @@ public class ChatActivity extends AppCompatActivity {
                 Username = sharedValue.substring(0, index);
             }else {
                 Username = "Anonymous";
-            }
+            }*/
         }
 
         int index = dbHelper.getRowIdOfChat(roomActivity)-1;

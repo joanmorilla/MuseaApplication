@@ -267,11 +267,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Permiss
                     Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.position);
                     Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
                     BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
-                    curPosMarker = map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("Current Position").icon(smallMarkerIcon).snippet("Showing museums from this position"));
-                    //mHomeViewModel.setCurMarker(curPosMarker);
-                    curPosMarker.setVisible(false);
-                    curPosMarker = null;
-                    Log.d("MapFragment", "" + location.getLatitude());
+                    if (location != null) {
+                        curPosMarker = map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("Current Position").icon(smallMarkerIcon).snippet("Showing museums from this position"));
+                        //mHomeViewModel.setCurMarker(curPosMarker);
+                        curPosMarker.setVisible(false);
+                        curPosMarker = null;
+                    }
                 }
             });
             map.setMyLocationEnabled(true);
