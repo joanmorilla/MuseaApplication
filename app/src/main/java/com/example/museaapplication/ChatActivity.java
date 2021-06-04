@@ -264,7 +264,7 @@ public class ChatActivity extends AppCompatActivity {
             messageAdapter.add(m);
         }
         messageAdapter.notifyDataSetChanged();
-        //messageListView.smoothScrollToPosition(messages.size()-1);
+        messageListView.smoothScrollToPosition(messages.size()-1);
         Intent service = new Intent(this , SocketService.class);
         //stopService(service);
     }
