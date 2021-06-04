@@ -46,16 +46,15 @@ public class MyFirebaseNotifications extends FirebaseMessagingService {
         for( int i = start; i < messages.size(); i++){
             inboxStyle.addLine(messages.get(i).getUsername() + ": " + messages.get(i).getMessage());
         }
-        Intent openChatIntent = new Intent(getBaseContext(), MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //openChatIntent.putExtra("ChatName", room);
-        PendingIntent openChatPendingIntent = PendingIntent.getActivity(getBaseContext(), 0, openChatIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        Intent openChatIntent = new Intent(getBaseContext(), ChatActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        openChatIntent.putExtra("ChatName", room);
+        PendingIntent openChatPendingIntent = PendingIntent.getActivity(getBaseContext(), 1, openChatIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification summaryNot = new NotificationCompat.Builder(getApplicationContext(), "MyChannel")
                 .setSmallIcon(R.drawable.ic_notification)
                 .setGroupSummary(true)
                 .setGroup("Messages")
                 .setAutoCancel(true)
-                .setContentIntent(openChatPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
                 .build();

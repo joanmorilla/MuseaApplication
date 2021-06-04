@@ -3,8 +3,10 @@ package com.example.museaapplication;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -81,6 +83,7 @@ public class ChatActivity extends AppCompatActivity {
     private Thread thread2;
     private boolean startTyping = false;
     private int time = 2;
+    String profilePic;
 
     // For deleting
     private boolean isSelected = false;
@@ -114,6 +117,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Toast.makeText(this, "AAAA", Toast.LENGTH_SHORT).show();
         setContentView(R.layout.activity_chat);
         if (getIntent() != null && getIntent().hasExtra("ChatName")) roomActivity = getIntent().getStringExtra("ChatName");
         else roomActivity = "AAAAAAA";
@@ -121,12 +125,26 @@ public class ChatActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-
-        SocketService.onNewMessageActive = onNewMessage;
+        //SocketService.onNewMessageActive = onNewMessage;
         setTitle(roomActivity);
-        dbHelper = ChatsDBHelper.getInstance(ChatActivity.this);
-        Username = SingletonDataHolder.getInstance().getLoggedUser().getUserId();
+        Toast.makeText(this, "AAAA", Toast.LENGTH_SHORT).show();
+        dbHelper = ChatsDBHelper.getInstance(this);
+        if (SingletonDataHolder.getInstance().getLoggedUser() != null) {
+            Toast.makeText(this, "Oops", Toast.LENGTH_SHORT).show();
+            Username = SingletonDataHolder.getInstance().getLoggedUser().getUserId();
+            profilePic = SingletonDataHolder.getInstance().getLoggedUser().getProfilePic();
+        }
+        else {
+            SharedPreferences sharedPref = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+            String sharedValue = sharedPref.getString(getString(R.string.auto_signin_key), "");
+            profilePic = "https://images-na.ssl-images-amazon.com/images/S/sgp-catalog-images/region_US/g9a9m-MHM425BWQ9F-Full-Image_GalleryBackground-en-US-1521579412582._SX1080_.jpg";
+            if (!sharedValue.isEmpty()) {
+                int index = sharedValue.lastIndexOf('#');
+                Username = sharedValue.substring(0, index);
+            }else {
+                Username = "Anonymous";
+            }
+        }
 
         int index = dbHelper.getRowIdOfChat(roomActivity)-1;
         NotificationCompat.InboxStyle newInbox = new NotificationCompat.InboxStyle();
@@ -442,7 +460,7 @@ public class ChatActivity extends AppCompatActivity {
             jsonObject.put("username", Username);
             jsonObject.put("uniqueId", uniqueId);
             jsonObject.put("room", roomActivity);
-            jsonObject.put("profilePic", SingletonDataHolder.getInstance().getLoggedUser().getProfilePic());
+            jsonObject.put("profilePic", profilePic);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -453,7 +471,7 @@ public class ChatActivity extends AppCompatActivity {
         data.addProperty("room", roomActivity);
         data.addProperty("content", message);
         data.addProperty("username", Username);
-        data.addProperty("profilePic", SingletonDataHolder.getInstance().getLoggedUser().getProfilePic());
+        data.addProperty("profilePic", profilePic);
         content.add("data", data);
 
         Call<Void> call = RetrofitClient.getInstance().getMyApi().sendMessage(content);
